@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Product>
+
+<ul class="list-unstyled my-4 mx-md-4 mx-1">
+    @foreach (var product in Model)
+    {
+        <li>
+            <div class="row align-items-center">
+                <div class="col-3">
+                    <img src="@product.ProfilePictureUrl" alt="@product.Name" style="width:100%; max-width:100px">
+                </div>
+                <div class="col-7">
+                    @if (@product.OnSale)
+                    {
+                        <span class="badge bg-danger" style="font-size:xx-small">On Sale</span>
+                        <h5 class="mb-2">@product.Name</h5>
+                        <div>
+                            <span class="text-primary">￥ @product.OnSalePrice </span>
+                            <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <h5 class="mb-2">@product.Name</h5>
+                        <span class="text-primary">￥ @product.Price </span>
+                    }
+                </div>
+                <div class="col-2">
+                    @if ((string)ViewData["Caller"] == "Management")
+                    {
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a> 
+                            <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a> 
+                            <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-action="Add" asp-controller="Cart"><i class="bi bi-cart-plus-fill" style="font-size:150%"></i></a>
+                    }
+
+                </div>
+
+            </div>
+        </li>
+        <hr />
+    }
+
+
+</ul>

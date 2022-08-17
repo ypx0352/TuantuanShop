@@ -1,0 +1,132 @@
+﻿@using TuantuanShop.Data.Enums
+@using TuantuanShop.ViewModels
+@model ProductViewModel
+
+@{
+    ViewData["Title"] = "New Product";
+
+    var brandOptions = Model.Brands.Select(b => new SelectListItem()
+            {
+                Text = b.Name,
+                Value = b.Id.ToString(),
+                Selected = false
+            }).ToList();
+}
+
+
+<p>
+    <span class="h3">New Product</span>
+    <a asp-action="Index" class="btn btn-outline-danger float-end">Back to List</a>
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="text-center my-2">
+                <img style="max-width:150px" id="ProfilePicturePreview" />
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="number"/>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Subtitle" class="control-label"></label>
+                <input asp-for="Subtitle" class="form-control" />
+                <span asp-validation-for="Subtitle" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-control form-select" asp-items="@Html.GetEnumSelectList<ProductCategory>()">
+                    <option value="">--Please select one category--</option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <span>@Html.CheckBox("OnSale",false)</span>
+                <label asp-for="OnSale" class="control-label"></label>
+                <span asp-validation-for="OnSale" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2 visually-hidden" id="OnSalePriceGroup">
+                <label asp-for="OnSalePrice" class="control-label"></label>
+                <input asp-for="OnSalePrice" class="form-control" />
+                <span asp-validation-for="OnSalePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="ProfilePictureUrl" class="control-label"></label>
+                <input asp-for="ProfilePictureUrl" class="form-control" />
+                <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="IntroductionPictureUrl" class="control-label"></label>
+                <input asp-for="IntroductionPictureUrl" class="form-control" />
+                <span asp-validation-for="IntroductionPictureUrl" class="text-danger"></span>
+            </div>           
+            <div class="form-group my-2">
+                <span>@Html.CheckBox("OutOfStock",false)</span>
+                <label asp-for="OutOfStock" class="form-check-label"></label>
+                <span asp-validation-for="OutOfStock" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="BrandId" class="control-label"></label>
+                <select asp-for="BrandId" class="form-control form-select" asp-items="brandOptions">
+                    <option value="">--Please select one brand--</option>
+                </select>               
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+               
+            </div>
+            <div class="form-group my-2">
+                <span>@Html.CheckBox("Disabled",false)</span>
+                <label asp-for="Disabled" class="control-label"></label>
+                <span asp-validation-for="Disabled" class="text-danger"></span>
+            </div>
+            <div class="text-center my-2">
+                <img style="max-width:150px" id="IntroductionPicturePreview" />
+            </div>
+            <div class="col-12 col-md-4 offset-md-4 my-2">
+                <div class="form-group my-5 text-center">
+                    <button type="submit" class="btn btn-success" style="width:100%"><i class="bi bi-plus-circle-dotted"></i> Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        function assignSrc(inputElementId, outputElementId) {
+            var outputElement = document.getElementById(outputElementId)
+            outputElement.src = document.getElementById(inputElementId).value
+        };
+
+        function displayOnSalePriceGroup() {
+            if ($("#OnSale").is(":checked")) {
+                $("#OnSalePriceGroup").removeClass("visually-hidden")
+            } else {
+                $("#OnSalePriceGroup").addClass("visually-hidden")
+            }
+        }
+
+        $(document).ready(() => {
+            assignSrc("ProfilePictureUrl", "ProfilePicturePreview");
+            assignSrc("IntroductionPictureUrl", "IntroductionPicturePreview");
+            displayOnSalePriceGroup();
+        });
+
+        $("#ProfilePictureUrl").on("change", () => assignSrc("ProfilePictureUrl", "ProfilePicturePreview"));
+        $("#IntroductionPictureUrl").on("change", () => assignSrc("IntroductionPictureUrl", "IntroductionPicturePreview"));
+        $("#OnSale").on("change", displayOnSalePriceGroup);
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

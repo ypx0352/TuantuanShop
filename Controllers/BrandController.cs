@@ -30,5 +30,37 @@ namespace TuantuanShop.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var result = await _service.GetByIdAsync(id);
+            return View(result);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _service.GetByIdAsync(id);
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Brand brand)
+        {
+            await _service.UpdateAsync(brand);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _service.GetByIdAsync(id);
+            return View(result);
+        }
+
+        [HttpPost,ActionName("Delete")]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            await _service.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+
     }
 }

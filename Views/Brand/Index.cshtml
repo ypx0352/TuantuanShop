@@ -31,13 +31,13 @@
                     <h5>@item.Name</h5>
                 </td>
                 <td>
-                    <img src="@item.ProfilePictureUrl" style="max-width: 50px">
+                    <img src="@item.ProfilePictureUrl" style="max-width: 80px">
                 </td>
 
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i></a> |
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class="bi bi-eye"></i></a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> <p class="d-none d-sm-inline">Edit</p></a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class="bi bi-eye"></i> <p class="d-none d-sm-inline">Details</p></a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><i class="bi bi-trash"> <p class="d-none d-sm-inline">Delete</p></i></a>
                 </td>
             </tr>
         }

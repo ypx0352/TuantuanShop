@@ -1,0 +1,19 @@
+﻿@using TuantuanShop.Data.Enums
+
+@{
+}
+<div class="flex-column my-3 sticky-top" >
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item my-2">
+            <a class="nav-link active text-center" data-bs-toggle="tab" role="button">All</a>
+        </li>
+        @foreach (var category in Enum.GetValues(typeof(ProductCategory)))
+        {
+            <li class="nav-item my-2">
+                <a class="nav-link text-center" data-bs-toggle="tab" role="button">@category</a>
+            </li>
+        }
+
+    </ul>
+
+</div>

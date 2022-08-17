@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "All Products";
+    ViewData["Caller"] = "Management";
+}
+
+<div class="mb-5">
+    <span class="h3">All Products</span>
+    <a asp-action="Create" class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create New</a>
+</div>
+
+<ul class="nav nav-tabs sticky-top bg-white ">
+    <li class="nav-item">
+        <a class="nav-link active" id="category_tab" href="#category_tab_content" data-bs-toggle="tab">Product Categories</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="brands_tab" href="#brands_tab_content" data-bs-toggle="tab">Brands</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div id="category_tab_content" class="tab-pane active">
+        <div class="row align-items-start">
+            <div class="col-3 col-md-2" style="position:sticky; top:35px">
+                <partial name="_CategorySideBarPartial" />
+            </div>
+            <div class="col-9 col-md-10">
+                <partial name="_ProductListPartial" model="@Model" view-data="ViewData" />
+            </div>
+        </div>
+    </div>
+    <div id="brands_tab_content" class="tab-pane">
+        second pane
+    </div>
+</div>
+
