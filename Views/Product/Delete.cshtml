@@ -1,0 +1,102 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+<p>
+    <span class="h3">Delete Product</span>
+    <a asp-action="Index" asp-route-brandId="@Model.Brand.Id" asp-route-category="@Model.Category" class="btn btn-outline-danger float-end">Back to List</a>
+</p>
+
+
+<div class="row">
+    <div class="col-lg-6 offset-lg-3 align-middle">
+        <form>
+            <div class="text-center my-2">
+                <img style="max-width:150px" src="@Model.ProfilePictureUrl" alt="Profile picture" />
+            </div>
+            <div>
+                @if (@Model.OnSale)
+                {
+                    <span class="badge bg-success ">On Sale</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger ">Not On Sale</span>
+                }
+                @if ((bool)@Model.OutOfStock)
+                {
+                    <span class="badge bg-danger ">Out of Stock</span>
+                }
+                else
+                {
+                    <span class="badge bg-success ">In Stock</span>
+                }
+                @if ((bool)@Model.Disabled)
+                {
+                    <span class="badge bg-danger ">Disabled</span>
+                }
+                else
+                {
+                    <span class="badge bg-success ">Enabled</span>
+
+                }
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" disabled />
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="number" disabled />
+            </div>
+            @if (@Model.OnSale)
+            {
+                <div class="form-group my-2">
+                    <label asp-for="OnSalePrice" class="control-label"></label>
+                    <input asp-for="OnSalePrice" class="form-control" disabled />
+                </div>
+            }
+            <div class="form-group my-2">
+                <label asp-for="Subtitle" class="control-label"></label>
+                <input asp-for="Subtitle" class="form-control" disabled />
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" disabled />
+            </div>
+
+
+            <div class="form-group my-2">
+                <label asp-for="ProfilePictureUrl" class="control-label"></label>
+                <input asp-for="ProfilePictureUrl" class="form-control" disabled />
+                <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="IntroductionPictureUrl" class="control-label"></label>
+                <input asp-for="IntroductionPictureUrl" class="form-control" disabled />
+                <span asp-validation-for="IntroductionPictureUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-2">
+                <label asp-for="Brand" class="control-label"></label>
+                <input asp-for="Brand" class="form-control" value="@Model.Brand.Name" disabled />
+            </div>
+
+            <div class="text-center my-2">
+                <img style="max-width:150px" src="@Model.IntroductionPictureUrl" alt="Introduction picture" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="col-12 col-md-4 offset-md-4 ">
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        <div class="my-5 text-center">
+            <button type="submit" class="btn btn-danger" style="width:100%"><i class="bi bi-trash"></i> Delete</button>
+        </div>
+    </form>
+
+</div>
+

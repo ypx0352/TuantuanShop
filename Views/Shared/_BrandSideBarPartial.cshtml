@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Brand>
+
+
+<div class="flex-column my-3 sticky-top" >
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item my-2">
+            <a class='nav-link text-center @(ViewData["BrandId"].Equals(0)? "active":"")' asp-action="Index" asp-controller="Product" asp-route-brandId="0" asp-route-activeTab="Brand">All</a>
+        </li>
+        @foreach (var brand in Model)
+        {
+            <li class="nav-item my-2">
+                <a class='nav-link text-center @(ViewData["BrandId"].Equals(@brand.Id) ? "active":"")' asp-action="Index" asp-controller="Product" asp-route-brandId="@brand.Id" asp-route-activeTab="Brand">@brand.Name</a>
+            </li>
+        }
+
+    </ul>
+
+</div>

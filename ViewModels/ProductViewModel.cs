@@ -7,6 +7,21 @@ namespace TuantuanShop.ViewModels
 {
     public class ProductViewModel
     {
+        public ProductViewModel(Product product, IEnumerable<Brand> brands)
+        {
+            Name = product.Name;
+            Price = product.Price;
+            Subtitle = product.Subtitle;
+            Category = product.Category;
+            OnSale = product.OnSale;
+            OnSalePrice = product.OnSalePrice;
+            ProfilePictureUrl = product.ProfilePictureUrl;
+            IntroductionPictureUrl = product.IntroductionPictureUrl;
+            OutOfStock = product.OutOfStock;
+            Disabled = product.Disabled;
+            BrandId = product.BrandId.ToString();
+            Brands = brands;
+        }
         
         [Required]
         public string Name { get; set; } = String.Empty;

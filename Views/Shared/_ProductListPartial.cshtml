@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<Product>
 
-<ul class="list-unstyled my-4 mx-md-4 mx-1">
-    @foreach (var product in Model)
+
+
+    <ul class="list-unstyled my-4 mx-md-4 mx-1">
+        @foreach (var product in Model)
     {
-        <li>
-            <div class="row align-items-center">
+        <li role="button">
+            <div class="row align-items-center productItem" id="fuckme">
                 <div class="col-3">
                     <img src="@product.ProfilePictureUrl" alt="@product.Name" style="width:100%; max-width:100px">
                 </div>
@@ -25,11 +27,11 @@
                     }
                 </div>
                 <div class="col-2">
-                    @if ((string)ViewData["Caller"] == "Management")
+                    @if (ViewData["Caller"].Equals("Management"))
                     {
                         <div>
-                            <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a> 
-                            <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a> 
+                            <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
+                            <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
                             <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
                         </div>
                     }
@@ -37,13 +39,22 @@
                     {
                         <a asp-action="Add" asp-controller="Cart"><i class="bi bi-cart-plus-fill" style="font-size:150%"></i></a>
                     }
-
                 </div>
-
             </div>
+
+
         </li>
         <hr />
     }
 
 
 </ul>
+
+<script >
+
+    $(".productItem").click(function() {
+        console.log('fucked');
+    })
+
+           
+</script>
