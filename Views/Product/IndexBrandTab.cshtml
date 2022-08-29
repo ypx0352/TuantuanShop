@@ -1,0 +1,35 @@
+﻿@using TuantuanShop.ViewModels
+@model ProductIndexBrandTabViewModel
+
+@{
+    ViewData["Title"] = "Products by brand";
+    ViewData["Caller"] = "Management";
+    ViewData["BrandId"] = Model.BrandId;
+    ViewData["ReturnAction"] = "IndexBrandTab";
+}
+
+<div class="mb-5">
+    <span class="h3">All Products</span>
+    <a asp-action="Create" asp-route-returnAction="IndexBrandTab" asp-route-brandId="@Model.BrandId" class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create New</a>
+</div>
+
+<ul class="nav nav-tabs sticky-top bg-white ">
+    <li class="nav-item">
+        <a asp-action="IndexCategoryTab" class="nav-link">Categories</a>
+    </li>
+    <li class="nav-item">
+        <a asp-action="IndexBrandTab" class="nav-link active">Brands</a>
+    </li>
+</ul>
+<div class="tab-content">   
+    <div id="brands_tab_content" class="tab-pane active">
+        <div class="row align-items-start">
+            <div class="col-3 col-md-2" style="position:sticky; top:35px">
+                <partial name="_BrandSideBarPartial" model="@Model.Brands" view-data="ViewData" />
+            </div>
+            <div class="col-9 col-md-10">
+                <partial name="_ProductListPartial" model="@Model.Products" view-data="ViewData" />
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,7 +17,9 @@ namespace TuantuanShop.ViewModels
             OnSalePrice = product.OnSalePrice;
             ProfilePictureUrl = product.ProfilePictureUrl;
             IntroductionPictureUrl = product.IntroductionPictureUrl;
-            OutOfStock = product.OutOfStock;
+            InStock = product.InStock;
+            InStockQty = product.InStockQty;
+            HotSale = product.HotSale;
             Disabled = product.Disabled;
             BrandId = product.BrandId.ToString();
             Brands = brands;
@@ -25,10 +27,10 @@ namespace TuantuanShop.ViewModels
         
         [Required]
         public string Name { get; set; } = String.Empty;
-        [Required(ErrorMessage = "Price is required."), Range(0.01,100000,ErrorMessage = "Price must be greater than 0.")]
-        public double Price { get; set; } 
+        [Required(ErrorMessage = "Price is required."), Range(0.01, 100000, ErrorMessage = "Price must be greater than 0.")]
+        public double Price { get; set; }
         public string? Subtitle { get; set; }
-        [Required(ErrorMessage = "Category is required."),Display(Name = "Category")]
+        [Required(ErrorMessage = "Category is required."), Display(Name = "Category")]
         public ProductCategory Category { get; set; }
         [Display(Name = "On Sale")]
         public bool OnSale { get; set; }
@@ -39,9 +41,15 @@ namespace TuantuanShop.ViewModels
         [Display(Name = "Profile Picture URL"), AssertThat("IsUrl(ProfilePictureUrl)", ErrorMessage = "Invalid URL.")]
         public string? ProfilePictureUrl { get; set; }
         [Display(Name = "Introduction Picture URL"), AssertThat("IsUrl(IntroductionPictureUrl)", ErrorMessage = "Invalid URL.")]
-        public string? IntroductionPictureUrl { get; set; }        
-        [Display(Name = "Out of Stock")]
-        public bool OutOfStock { get; set; }
+        public string? IntroductionPictureUrl { get; set; }
+        [Display(Name = "In Stock")]
+        public bool InStock { get; set; }
+        [RequiredIf("InStock == true", ErrorMessage = "In Stock Qty is required.")]
+        [AssertThat("InStockQty > 0", ErrorMessage = "In Stock Qty must be greater than 0.")]
+        [Display(Name = "In Stock Qty")]
+        public int? InStockQty { get; set; } = (int?)null;
+        [Display(Name = "Hot Sale")]
+        public bool HotSale { get; set; }
         public bool Disabled { get; set; }
 
         //Relationships        

@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = "New Product";
 
+
     var brandOptions = Model.Brands.Select(b => new SelectListItem()
             {
                 Text = b.Name,
@@ -16,11 +17,11 @@
 
 <p>
     <span class="h3">New Product</span>
-    <a asp-action="Index" asp-route-brandId="@Model.BrandId" asp-route-category="@Model.Category" class="btn btn-outline-danger float-end">Back to List</a>
+    <a asp-action="@ViewData["ReturnAction"]" asp-route-category="@ViewData["Category"]" asp-route-brandId="@ViewData["BrandId"]" class="btn btn-outline-danger float-end">Back to List</a>
 </p>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" asp-route-returnAction="@ViewData["ReturnAction"]" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="text-center my-2">
@@ -33,7 +34,7 @@
             </div>
             <div class="form-group my-2">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" type="number"/>
+                <input asp-for="Price" class="form-control" type="number" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group my-2">
@@ -48,6 +49,30 @@
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
+
+            <div class="form-group my-2">
+                <label asp-for="ProfilePictureUrl" class="control-label"></label>
+                <input asp-for="ProfilePictureUrl" class="form-control" />
+                <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="IntroductionPictureUrl" class="control-label"></label>
+                <input asp-for="IntroductionPictureUrl" class="form-control" />
+                <span asp-validation-for="IntroductionPictureUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-2">
+                <label asp-for="BrandId" class="control-label"></label>
+                <select asp-for="BrandId" class="form-control form-select" asp-items="brandOptions">
+                    <option value="">--Please select one brand--</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <span>@Html.CheckBox("HotSale",false)</span>
+                <label asp-for="HotSale" class="control-label"></label>
+                <span asp-validation-for="HotSale" class="text-danger"></span>
+            </div>
             <div class="form-group my-2">
                 <span>@Html.CheckBox("OnSale",false)</span>
                 <label asp-for="OnSale" class="control-label"></label>
@@ -59,27 +84,14 @@
                 <span asp-validation-for="OnSalePrice" class="text-danger"></span>
             </div>
             <div class="form-group my-2">
-                <label asp-for="ProfilePictureUrl" class="control-label"></label>
-                <input asp-for="ProfilePictureUrl" class="form-control" />
-                <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
+                <span>@Html.CheckBox("InStock",false)</span>
+                <label asp-for="InStockQty" class="form-check-label"></label>
+                <span asp-validation-for="InStockQty" class="text-danger"></span>
             </div>
-            <div class="form-group my-2">
-                <label asp-for="IntroductionPictureUrl" class="control-label"></label>
-                <input asp-for="IntroductionPictureUrl" class="form-control" />
-                <span asp-validation-for="IntroductionPictureUrl" class="text-danger"></span>
-            </div>           
-            <div class="form-group my-2">
-                <span>@Html.CheckBox("OutOfStock",false)</span>
-                <label asp-for="OutOfStock" class="form-check-label"></label>
-                <span asp-validation-for="OutOfStock" class="text-danger"></span>
-            </div>
-            <div class="form-group my-2">
-                <label asp-for="BrandId" class="control-label"></label>
-                <select asp-for="BrandId" class="form-control form-select" asp-items="brandOptions">
-                    <option value="">--Please select one brand--</option>
-                </select>               
-                <span asp-validation-for="BrandId" class="text-danger"></span>
-               
+             <div class="form-group my-2 visually-hidden" id="InStockQtyGroup">
+                <label asp-for="InStockQty" class="control-label"></label>
+                <input asp-for="InStockQty" class="form-control" />
+                <span asp-validation-for="InStockQty" class="text-danger"></span>
             </div>
             <div class="form-group my-2">
                 <span>@Html.CheckBox("Disabled",false)</span>
@@ -105,25 +117,27 @@
         function assignSrc(inputElementId, outputElementId) {
             var outputElement = document.getElementById(outputElementId)
             outputElement.src = document.getElementById(inputElementId).value
-        };
+        };       
 
-        function displayOnSalePriceGroup() {
-            if ($("#OnSale").is(":checked")) {
-                $("#OnSalePriceGroup").removeClass("visually-hidden")
-            } else {
-                $("#OnSalePriceGroup").addClass("visually-hidden")
+        function displayAdditionalFormInput(triggerId, targetId){
+            if($(triggerId).is(":checked")){
+                $(targetId).removeClass("visually-hidden")
+            }else{
+                $(targetId).addClass("visually-hidden")
             }
         }
 
         $(document).ready(() => {
             assignSrc("ProfilePictureUrl", "ProfilePicturePreview");
             assignSrc("IntroductionPictureUrl", "IntroductionPicturePreview");
-            displayOnSalePriceGroup();
+            displayAdditionalFormInput("#OnSale","#OnSalePriceGroup");
+            displayAdditionalFormInput("#InStock","#InStockQtyGroup");
         });
 
         $("#ProfilePictureUrl").on("change", () => assignSrc("ProfilePictureUrl", "ProfilePicturePreview"));
         $("#IntroductionPictureUrl").on("change", () => assignSrc("IntroductionPictureUrl", "IntroductionPicturePreview"));
-        $("#OnSale").on("change", displayOnSalePriceGroup);
+        $("#OnSale").on("change", () => displayAdditionalFormInput("#OnSale","#OnSalePriceGroup"));
+        $("#InStock").on("change", () => displayAdditionalFormInput("#InStock","#InStockQtyGroup"));
     </script>
 
     @{

@@ -20,9 +20,9 @@ namespace TuantuanShop.Data.Services
         }
 
         public async Task<IEnumerable<Product>> GetProductsByBrandId(int brandId)
-        {
-            var products = await _context.Products.Include(p =>p.Brand).Where(p => p.BrandId == brandId).ToListAsync();
-            return products;
+        {            
+            var brand = await _context.Brands.Include(b => b.Products).FirstOrDefaultAsync(b => b.Id == brandId);
+            return brand.Products;
         }
     }
 }
