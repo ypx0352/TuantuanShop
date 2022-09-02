@@ -1,0 +1,58 @@
+﻿@using TuantuanShop.ViewModels
+@model IEnumerable<ProductHotSaleProductViewModel>
+
+@{
+    ViewData["Title"] = "Hot Sale Products";
+}
+<div class="text-center container-fluid d-block d-md-none position-relative">
+    <img src="https://images.pexels.com/photos/441222/pexels-photo-441222.jpeg?cs=srgb&dl=pexels-len-441222.jpg&fm=jpg" class="w-100" style="max-height:30vh" />
+    <div class="position-absolute bottom-0 text-white" style="left: calc(50% - 48px); font-size:xx-large; font-weight:bolder">Hot Sale</div>
+</div>
+
+<div class="container-fluid">
+    <div class="row row-cols-2 row-cols-md-auto">
+        @if (Model.Count() != 0)
+        {
+            foreach (var product in Model)
+            {
+                <div class="col my-2">
+                    <div class="card h-100 w-100" style="max-width:300px; min-height:180px" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                        <div class="text-center">
+                            <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" style="max-width:300px" />
+                        </div>
+                        <div class=" p-2">
+                            @if (@product.OnSale)
+                            {
+                                <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                <span class="badge bg-danger" style="font-size: xx-small">Hot Sale</span>
+                                <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                <h5 class="mb-2">@product.Name</h5>
+                                <div>
+                                    <span class="text-primary">￥ @product.OnSalePrice </span>
+                                    <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                <span class="badge bg-danger" style="font-size: xx-small">Hot Sale</span>
+                                <h5 class="mb-2">@product.Name</h5>
+                                <span class="text-primary">￥ @product.Price </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="text-center mt-5 mx-auto">
+                <img src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg" style="height: 100px">
+                <p>Oops! No product available.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<partial name="_BottomNavigationBarPartial" />

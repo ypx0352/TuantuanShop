@@ -17,13 +17,13 @@ namespace TuantuanShop.Controllers
             _brandService = brandService;
         }
 
-        private static string currentActiveTab = "Category";
+        //private static string currentActiveTab = "Category";
 
-        public IActionResult SetCurrentActiveTab(string activeTab)
-        {
-            currentActiveTab = activeTab;
-            return RedirectToAction("Index");
-        }
+        //public IActionResult SetCurrentActiveTab(string activeTab)
+        //{
+        //    currentActiveTab = activeTab;
+        //    return RedirectToAction("Index");
+        //}
 
         public IActionResult Index()
         {
@@ -156,10 +156,22 @@ namespace TuantuanShop.Controllers
             return RedirectToAction(returnAction, new { category = category, brandId = brandId });
         }
 
+        // For user's view
         public async Task<IActionResult> Show(int id)
         {
             var product = await _productService.GetByIdAsync(id, p => p.Brand);
-            return View(product);
+            var viewModel = new ProductShowViewModel()
+            {
+                Product = product,
+                HotSaleProducts = (await _productService.GetHotSaleProducts()).Select(product => new ProductHotSaleProductViewModel(product))
+            };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> HotSaleList()
+        {
+            var hotSaleProducts = (await _productService.GetHotSaleProducts()).Select(product => new ProductHotSaleProductViewModel(product));
+            return View(hotSaleProducts);
         }
     }
 }

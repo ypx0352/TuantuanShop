@@ -9,5 +9,7 @@ namespace TuantuanShop.Data.Services
 
         Task<IEnumerable<Product>> GetProductsByCategory(ProductCategory category);
         Task<IEnumerable<Product>> GetProductsByBrandId(int brandId);
+
+        Task<IEnumerable<Product>> GetHotSaleProducts();
     }
 }

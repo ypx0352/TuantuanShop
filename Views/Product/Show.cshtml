@@ -1,102 +1,200 @@
-﻿@model Product
+﻿@using TuantuanShop.ViewModels
+@model ProductShowViewModel
 @{
-    ViewData["Title"] = Model.Name;
+    ViewData["Title"] = Model.Product.Name;
 }
 
-<div class=" container p-2">
-    <div class="row">
-        <div class="row col-12 col-md-10">
-            <div class="col-12 col-md-6" style="height:fit-content;min-height:360px;">
-                <div class="text-center">
-                    <img src="@Model.ProfilePictureUrl" alt="@Model.Name" style="max-width:100%" />
-                </div>
-            </div>
+<div class="container p-2">
+    <div class="row justify-content-center align-items-start">
+        <div class="col-12 col-md-10 align-items-start">
 
-            <div class="col-12 col-md-6 position-relative">
-                <div class="mt-3 mt-md-0">
-                    <div>
-                        <span class='badge bg-warning @(Model.OnSale? "":"d-none")' style="font-size: small"><i class="bi bi-gem"></i> On Sale</span>
-                        <span class='badge bg-danger @(Model.HotSale? "":"d-none")' style="font-size: small"><i class="bi bi-fire"></i> Hot Sale</span>
-                        <span class='badge bg-success @(Model.InStock? "":"d-none")' style="font-size: small"><i class="bi bi-shop"></i> In Stock</span>
-                        <span class='badge bg-dark @(Model.Disabled? "":"d-none")' style="font-size: small">Disabled</span>                        
+            <div class="row">
+                <div class="col-12 col-md-6" style="min-height:360px">
+                    <div class="text-center">
+                        <img src="@Model.Product.ProfilePictureUrl" alt="@Model.Product.Name" style="max-width:100%" />
                     </div>
-                    <div style="font-size:x-large; overflow-wrap: break-word">
-                        @Model.Name
-                    </div>
-                    <div style="color:firebrick">@Model.Subtitle</div>
-                    <div class="mt-md-3">
-                        @if (Model.OnSale)
-                        {
-                            <span style="font-size:x-large; color:firebrick">￥ @Model.OnSalePrice</span>
-                            <sapn class="text-decoration-line-through mx-2">Was ￥ @Model.Price</sapn>
-                        }
-                        else
-                        {
-                            <sapn style="font-size:x-large; color:firebrick">￥ @Model.Price</sapn>
-                        }
-                        <div class="card mt-3" role="button">
-                            <div class="card-body">
-                                <sapn class="card-title">Brand: <b>@Model.Brand.Name</b></sapn>
-                                <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
+                </div>
+
+                <div class="col-12 col-md-6 position-relative">
+                    <div class="mt-3 mt-md-0">
+                        <div>
+                            <span class='badge bg-warning @(Model.Product.OnSale? "":"d-none")' style="font-size: small"><i class="bi bi-gem"></i> On Sale</span>
+                            <span class='badge bg-danger @(Model.Product.HotSale? "":"d-none")' style="font-size: small"><i class="bi bi-fire"></i> Hot Sale</span>
+                            <span class='badge bg-success @(Model.Product.InStock? "":"d-none")' style="font-size: small"><i class="bi bi-shop"></i> In Stock</span>
+                            <span class='badge bg-dark @(Model.Product.Disabled? "":"d-none")' style="font-size: small">Disabled</span>
+                        </div>
+                        <div style="font-size:x-large; overflow-wrap: break-word">
+                            @Model.Product.Name
+                        </div>
+                        <div style="color:firebrick">@Model.Product.Subtitle</div>
+                        <div class="mt-md-3">
+                            @if (Model.Product.OnSale)
+                            {
+                                <span style="font-size:x-large; color:firebrick">￥ @Model.Product.OnSalePrice</span>
+                                <sapn class="text-decoration-line-through mx-2">Was ￥ @Model.Product.Price</sapn>
+                            }
+                            else
+                            {
+                                <sapn style="font-size:x-large; color:firebrick">￥ @Model.Product.Price</sapn>
+                            }
+                            <div class="card mt-3" role="button" onclick="location.href='@Url.Action("Show","Brand", new{id=Model.Product.Brand.Id})'">
+                                <div class="card-body">
+                                    <sapn class="card-title">Brand: <b>@Model.Product.Brand.Name</b></sapn>
+                                    <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
+                                </div>
+                            </div>
+                            <div class='card mt-3 @(Model.Product.InStock ? "":"d-none")' role="button">
+                                <div class="card-body">
+                                    <sapn class="card-title">In Store Qty: <b>@Model.Product.InStockQty</b></sapn>
+                                    <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
+                                </div>
                             </div>
                         </div>
-                        <div class='card mt-3 @(Model.InStock ? "":"d-none")' role="button">
-                            <div class="card-body">
-                                <sapn class="card-title">In Store Qty: <b>@Model.InStockQty</b></sapn>
-                                <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
-                            </div>
-                        </div>
                     </div>
-                    <div class="col-md-12 d-md-block d-none mt-2 position-absolute bottom-0" style="width:100%">
+
+                    <div class="col-md-12 d-md-block d-none mt-2 position-absolute bottom-0  btn-group">
                         <a class="btn btn-danger">Buy</a>
                         <a class="btn btn-primary">Add to Cart</a>
-                        <a role="button" style="color:gold; font-size:large"><i class="bi bi-star"></i></a>
+                        <a class="btn btn-outline-warning text-danger" style="font-size:large"><i class="bi bi-star"></i></a>
+                    </div>
+                </div>
+
+                <div class="fixed-bottom d-block d-md-none">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="row ">
+                                <div class="col-4 my-auto " style="font-size:small">
+                                    <a role="button"><i class="bi bi-house-door"> </i><p class="d-inline">Home</p> </a>
+                                    <a role="button"><i class="bi bi-cart4"></i> <p class="d-inline">Cart</p></a>
+                                </div>
+                                <div class="col-8 my-auto">
+                                    <div class="btn-group w-100">
+                                        <a class="btn btn-danger">Buy</a>
+                                        <a class="btn btn-primary">Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="mt-5">
                 <div class="border-bottom">
-                    <span style="font-size:large ;background-color:firebrick; color:white">Introduction</span>
+                    <span style="font-size:large; background-color:firebrick; color:white">Introduction</span>
                 </div>
-
             </div>
 
-            <div class="text-center col-12 col-md-10 mt-3">
-                <img style=" max-width:100%" src="@Model.IntroductionPictureUrl" alt="introduction picture" />
+            <div class="text-center col-12 col-md-10 mt-3 mx-auto">
+                <img style=" max-width:100%" src="@Model.Product.IntroductionPictureUrl" alt="introduction picture" />
             </div>
 
-
-            <div class="fixed-bottom d-block d-md-none my-2">
-                <div class="card text-center">
+            @*Mobile only hot sale products *@
+            <div class="d-block d-md-none my-3">
+                <div class="card">
+                    <div class="card-header" role="button" onclick="location.href='@Url.Action("HotSaleList","Product")'">
+                        <span class="text-center text-danger h5"><i class="bi bi-fire"></i> Hot sale</span>
+                        <span class="float-end"><i class="bi bi-binoculars"></i> Learn more >></span>
+                    </div>
                     <div class="card-body">
-                        <div class="row ">
-                            <div class="col-4 my-auto " style="font-size:small">
-                                <a role="button"><i class="bi bi-house-door"></i><p class="d-inline">Home</p> </a>
-                                <a role="button"><i class="bi bi-cart4"></i> <p class="d-inline">Cart</p></a>
+                        <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                @for(int i = 0; i < (int)Math.Ceiling((double)Model.HotSaleProducts.Count() / 2); i++)
+                                {
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to=@i class='@(i == 0? "active":"")' aria-current="true" aria-label="Slide 1"></button>
+                                    
+                                }                                
                             </div>
-                            <div class="col-8 my-auto">
-                                <div class="btn-group w-100">
-                                    <a class="btn btn-danger">Buy</a>
-                                    <a class="btn btn-primary">Add to cart</a>
-                                </div>
+                            <div class="carousel-inner">
+                                @for (int i = 0; i < Model.HotSaleProducts.Count(); i += 2)
+                                {
+                                    var product1 = Model.HotSaleProducts.ElementAtOrDefault(i);
+                                    var product2 = Model.HotSaleProducts.ElementAtOrDefault(i + 1);
 
-                            </div>
+                                    <div class='carousel-item @(i == 0? "active":"")'>
+                                        <div class="row mb-5">
+                                            <div class="col">
+                                                <div class="text-center" role="button" onclick="location.href = '@(Url.Action("Show", new { id = product1.Id}))'">
+                                                    <img src="@product1.ProfilePictureUrl" alt="@product1.Name" style="max-width:100%; object-fit:contain">
+                                                    <span class='badge bg-warning @(product1.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
+                                                    <span class='badge bg-success @(product1.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
+                                                    <p class="text-nowrap overflow-hidden my-0">@product1.Name</p>
+                                                    @if (product1.OnSale)
+                                                    {
+                                                        <p>
+                                                            <span class="text-danger">￥ @product1.OnSalePrice</span>
+                                                            <span class="mx-1 text-decoration-line-through small ">￥ @product1.Price</span>
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-danger">￥ @product1.Price</span>
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <div class="col">
+                                                @if (product2 != null)
+                                                {
+                                                    <div class="text-center" role="button" onclick="location.href = '@(Url.Action("Show", new { id = product2.Id}))'">
+                                                        <img src="@product2.ProfilePictureUrl" alt="@product2.Name" style="max-width:100%; object-fit:contain">
+                                                        <span class='badge bg-warning @(product2.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
+                                                        <span class='badge bg-success @(product2.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
+                                                        <p class="text-nowrap overflow-hidden my-0">@product2.Name</p>
+                                                        @if (product2.OnSale)
+                                                        {
+                                                            <p>
+                                                                <span class="text-danger">￥ @product2.OnSalePrice</span>
+                                                                <span class="mx-1 text-decoration-line-through small ">￥ @product2.Price</span>
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-danger">￥ @product2.Price</span>
+                                                        }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div></div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>                           
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>         
+
         </div>
 
-
-
-
-        <div class="col-md-2 d-md-block d-none border">
-            Hot sale
+        @*Hot Sale Colomn*@
+        <div class="col-md-2 d-md-block d-none border py-2">
+            <h5 class="text-center text-danger"><i class="bi bi-fire"></i> Hot sale</h5>
+            @foreach (var hotSaleProduct in Model.HotSaleProducts)
+            {
+                <div class="text-center my-2" role="button" onclick="location.href = '@(Url.Action("Show", new { id = hotSaleProduct.Id}))'">
+                    <img src="@hotSaleProduct.ProfilePictureUrl" alt="@hotSaleProduct.Name" style="max-width:100%; object-fit:contain">
+                    <span class='badge bg-warning @(hotSaleProduct.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
+                    <span class='badge bg-success @(hotSaleProduct.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
+                    <p class="text-nowrap overflow-hidden my-0">@hotSaleProduct.Name</p>
+                    @if (hotSaleProduct.OnSale)
+                    {
+                        <p>
+                            <span class="text-danger">￥ @hotSaleProduct.OnSalePrice</span>
+                            <span class="mx-1 text-decoration-line-through small">￥ @hotSaleProduct.Price</span>
+                        </p>
+                    }
+                    else
+                    {
+                        <span class="text-danger">￥ @hotSaleProduct.Price</span>
+                    }
+                </div>
+            }
         </div>
     </div>
-
-
 </div>
 
 

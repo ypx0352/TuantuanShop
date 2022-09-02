@@ -12,6 +12,7 @@ namespace TuantuanShop.Controllers
             _service = service;
         }
 
+        // Brand list for management
         public async Task<IActionResult> Index()
         {
             var result = await _service.GetAllAsync();
@@ -62,5 +63,17 @@ namespace TuantuanShop.Controllers
             return RedirectToAction("Index");
         }
 
+        //Brand list for users
+        public async Task<IActionResult> List()
+        {
+            var brands = await _service.GetAllAsync();
+            return View(brands);
+        }
+
+        public async Task<IActionResult> Show(int id)
+        {
+            var brand = await _service.GetByIdAsync(id, b => b.Products);
+            return View(brand);
+        }
     }
 }
