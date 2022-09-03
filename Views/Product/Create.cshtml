@@ -17,7 +17,7 @@
 
 <p>
     <span class="h3">New Product</span>
-    <a asp-action="@ViewData["ReturnAction"]" asp-route-category="@ViewData["Category"]" asp-route-brandId="@ViewData["BrandId"]" class="btn btn-outline-danger float-end">Back to List</a>
+    <a asp-action="@(ViewData["ReturnAction"] == null? "Index": ViewData["ReturnAction"])" asp-controller="@(ViewData["ReturnAction"] == null? "Management" : "Product")" asp-route-category="@ViewData["Category"]" asp-route-brandId="@ViewData["BrandId"]" class="btn btn-outline-danger float-end">Back to List</a>
 </p>
 <div class="row">
     <div class="col-md-4">

@@ -19,8 +19,9 @@ namespace TuantuanShop.Controllers
             return View(result);
         }
 
-        public IActionResult Create()
+        public IActionResult Create(string returnController)
         {
+            ViewData["ReturnController"] = returnController;
             return View();
         }
 

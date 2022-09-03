@@ -11,15 +11,15 @@
 
 <div class="mb-5">
     <span class="h3">All Products</span>
-    <a asp-action="Create" asp-route-returnAction="IndexCategoryTab" asp-route-category='@(Model.Category == 0? "": Model.Category)'  class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create New</a>
+    <a asp-action="Create" asp-route-returnAction="IndexCategoryTab" asp-route-category='@(Model.Category == 0? "": Model.Category)' class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create New</a>
 </div>
 
-<ul class="nav nav-tabs sticky-top bg-white ">
+<ul class="nav nav-tabs sticky-top bg-white" id="nav">
     <li class="nav-item">
-        <a asp-action="IndexCategoryTab" class="nav-link active">Categories</a>
+        <a asp-action="IndexCategoryTab" class="nav-link active h5" style="font-weight:bolder">Categories</a>
     </li>
     <li class="nav-item">
-        <a asp-action="IndexBrandTab"  class="nav-link">Brands</a>
+        <a asp-action="IndexBrandTab" class="nav-link">Brands</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -32,5 +32,30 @@
                 <partial name="_ProductListPartial" model="@Model.Products" view-data="ViewData" />
             </div>
         </div>
-    </div>   
+    </div>
 </div>
+
+@section Scripts{
+    <script>
+        function getBootstrapBreakpoint() {
+            var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            return (w < 576 ? 'xs' : 'md');
+        }
+
+        function setNavFill(breakpoint) {
+            if (breakpoint == 'xs') {
+                $("#nav").addClass("nav-fill")
+            } else if (breakpoint == 'md') {
+                $("#nav").removeClass("nav-fill")
+            }
+        }
+
+        $(window).resize(function() {
+            setNavFill(getBootstrapBreakpoint());
+        })
+
+        $(document).ready(function() {
+            setNavFill(getBootstrapBreakpoint());
+        })
+    </script>
+}

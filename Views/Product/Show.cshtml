@@ -9,13 +9,13 @@
         <div class="col-12 col-md-10 align-items-start">
 
             <div class="row">
-                <div class="col-12 col-md-6" style="min-height:360px">
-                    <div class="text-center">
+                <div class="col-12 col-md-5" style="min-height:360px">
+                    <div class="text-md-start text-center">
                         <img src="@Model.Product.ProfilePictureUrl" alt="@Model.Product.Name" style="max-width:100%" />
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 position-relative">
+                <div class="col-12 col-md-7 position-relative">
                     <div class="mt-3 mt-md-0">
                         <div>
                             <span class='badge bg-warning @(Model.Product.OnSale? "":"d-none")' style="font-size: small"><i class="bi bi-gem"></i> On Sale</span>
@@ -43,7 +43,7 @@
                                     <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
                                 </div>
                             </div>
-                            <div class='card mt-3 @(Model.Product.InStock ? "":"d-none")' role="button">
+                            <div class='card mt-3 @(Model.Product.InStock ? "":"d-none")' role="button" onclick="location.href='@Url.Action("InStockList","Product")'">
                                 <div class="card-body">
                                     <sapn class="card-title">In Store Qty: <b>@Model.Product.InStockQty</b></sapn>
                                     <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
@@ -59,6 +59,7 @@
                     </div>
                 </div>
 
+                 @*Mobile only shopping menu *@
                 <div class="fixed-bottom d-block d-md-none">
                     <div class="card text-center">
                         <div class="card-body">
@@ -77,6 +78,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="alert alert-primary mt-3 @(Model.Product.InStock == true? "":"d-none")" role="alert">
+                <p><i class="bi bi-info-circle"></i> <strong>In Stock Notice</strong></p>
+                This product has been shipped to the domestic location and will be shipped from there, eliminating the wait time for international shipping and customs clearance. Please note the quantity of items available for purchase.
             </div>
 
             <div class="mt-5">
@@ -99,11 +105,11 @@
                     <div class="card-body">
                         <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
                             <div class="carousel-indicators">
-                                @for(int i = 0; i < (int)Math.Ceiling((double)Model.HotSaleProducts.Count() / 2); i++)
+                                @for (int i = 0; i < (int)Math.Ceiling((double)Model.HotSaleProducts.Count() / 2); i++)
                                 {
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to=@i class='@(i == 0? "active":"")' aria-current="true" aria-label="Slide 1"></button>
-                                    
-                                }                                
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to=@i class='@(i == 0? "active":"")' aria-current="true" aria-label="Slide 1"></button>
+
+                                }
                             </div>
                             <div class="carousel-inner">
                                 @for (int i = 0; i < Model.HotSaleProducts.Count(); i += 2)
@@ -162,11 +168,11 @@
                                         </div>
                                     </div>
                                 }
-                            </div>                           
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>         
+            </div>
 
         </div>
 
@@ -179,7 +185,7 @@
                     <img src="@hotSaleProduct.ProfilePictureUrl" alt="@hotSaleProduct.Name" style="max-width:100%; object-fit:contain">
                     <span class='badge bg-warning @(hotSaleProduct.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
                     <span class='badge bg-success @(hotSaleProduct.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
-                    <p class="text-nowrap overflow-hidden my-0">@hotSaleProduct.Name</p>
+                    <p class="text-nowrap overflow-hidden my-0 text-truncate">@hotSaleProduct.Name</p>
                     @if (hotSaleProduct.OnSale)
                     {
                         <p>

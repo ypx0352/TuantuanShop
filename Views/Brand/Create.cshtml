@@ -6,7 +6,7 @@
 
 <p>
     <span class="h3">New Brand</span>
-    <a asp-action="Index" class="btn btn-outline-danger float-end">Back to List</a>
+    <a asp-action="Index" asp-controller="@ViewData["ReturnController"]" class="btn btn-outline-danger float-end">Back to List</a>
 </p>
 
 <form asp-action="Create" method="post">

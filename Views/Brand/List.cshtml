@@ -3,20 +3,27 @@
     ViewData["Title"] = "All Brands";
 }
 
-<div class="row row-cols-md-auto row-cols-2">
-    @foreach (var brand in Model)
-    {
-        <div class="col">
-            <div class="card my-3  w-100" style="max-width:300px" role="button" onclick="location.href='@Url.Action("Show", new{id=brand.Id})'">
-                <div class="text-center">
-                    <img class="card-img-top" src="@brand.ProfilePictureUrl" alt="@brand.Name" style="max-width:200px">
-                </div>
-                <div class="text-center">
-                    <p class="card-title">@brand.Name</p>
+<div class="text-center container-fluid d-block d-md-none position-relative">
+    <img src="https://images.pexels.com/photos/5707602/pexels-photo-5707602.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-100" style="max-height:30vh" />
+    <div class="position-absolute bottom-0 text-white" style="left: calc(50% - 48px); font-size:xx-large; font-weight:bolder">Brands</div>
+</div>
+
+<div class="container-fluid mb-3">
+    <div class="row row-cols-md-auto row-cols-2">
+        @foreach (var brand in Model)
+        {
+            <div class="col">
+                <div class="card my-3  w-100" style="max-width:300px" role="button" onclick="location.href='@Url.Action("Show", new{id=brand.Id})'">
+                    <div class="text-center">
+                        <img class="card-img-top w-100" src="@brand.ProfilePictureUrl" alt="@brand.Name" style="max-width:300px">
+                    </div>
+                    <div class="text-center">
+                        <p class="card-title">@brand.Name</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <partial name="_BottomNavigationBarPartial" />

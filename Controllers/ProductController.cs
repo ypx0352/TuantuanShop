@@ -67,7 +67,7 @@ namespace TuantuanShop.Controllers
 
         }
 
-        public async Task<IActionResult> Create(string returnAction, ProductCategory category, int brandId)
+        public async Task<IActionResult> Create(string? returnAction, ProductCategory category, int brandId)
         {
             var brands = await _brandService.GetAllAsync();
             var viewModel = new ProductViewModel(new Product(), brands);
@@ -163,15 +163,29 @@ namespace TuantuanShop.Controllers
             var viewModel = new ProductShowViewModel()
             {
                 Product = product,
-                HotSaleProducts = (await _productService.GetHotSaleProducts()).Select(product => new ProductHotSaleProductViewModel(product))
+                HotSaleProducts = (await _productService.GetHotSaleProducts()).Select(product => new ProductForListViewModel(product))
             };
             return View(viewModel);
         }
 
         public async Task<IActionResult> HotSaleList()
         {
-            var hotSaleProducts = (await _productService.GetHotSaleProducts()).Select(product => new ProductHotSaleProductViewModel(product));
+            var hotSaleProducts = (await _productService.GetHotSaleProducts()).Select(product => new ProductForListViewModel(product));
             return View(hotSaleProducts);
+        }
+
+        public async Task<IActionResult> InStockList()
+        {
+            var inStockProducts = (await _productService.GetInStockProducts()).Select(product => new ProductForListViewModel(product));
+            return View(inStockProducts);
+        }
+
+        public async Task<IActionResult> List()
+        {
+            var products = (await _productService.GetAllAsync()).Select(product => new ProductForListViewModel(product));
+            var brandNames = (await _brandService.GetAllAsync()).Select(brand => brand.Name);
+            ViewData["BrandNames"] = brandNames;
+            return View(products);
         }
     }
 }
