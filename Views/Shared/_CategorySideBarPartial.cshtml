@@ -1,18 +1,16 @@
 ﻿@using TuantuanShop.Data.Enums
 
 
-<div class="flex-column my-3 sticky-top" >
+<div class="flex-column my-3" >
     <ul class="nav nav-pills flex-column">
         <li class="nav-item my-2">
-            <a class='nav-link text-center @(ViewData["Category"].GetHashCode() == 0? "active":"")' asp-action="IndexCategoryTab" asp-controller="Product" asp-route-category="0">All</a>
+            <a class='nav-link text-start @(ViewData["Category"].GetHashCode() == 0? "active":"")' asp-action="@ViewData["Action"]" asp-controller="Product" asp-route-category="0" asp-route-tab="category">All</a>
         </li>
         @foreach (var category in Enum.GetValues(typeof(ProductCategory)))
         {
             <li class="nav-item my-2">
-                <a class='nav-link text-center @(ViewData["Category"].Equals(@category) ? "active": "")' asp-action="IndexCategoryTab" asp-controller="Product" asp-route-category="@category">@category</a>
+                <a class='nav-link text-start @(ViewData["Category"].Equals(@category) ? "active": "")' asp-action="@ViewData["Action"]" asp-controller="Product" asp-route-category="@category" asp-route-tab="category">@category</a>
             </li>
         }
-
     </ul>
-
 </div>

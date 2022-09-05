@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 using TuantuanShop.Data.Enums;
 using TuantuanShop.Data.Services;
 using TuantuanShop.Models;
@@ -32,16 +33,16 @@ namespace TuantuanShop.Controllers
 
         public async Task<IActionResult> IndexCategoryTab(ProductCategory category, bool returnAll)
         {
-            IEnumerable<Product> products;
+            IEnumerable<ProductForListViewModel> products;
             if (category == 0 || returnAll)
             {
-                products = await _productService.GetAllAsync(p => p.Brand);
-                ViewData["ReturnAll"] = true;                
+                products = (await _productService.GetAllAsync()).Select(product => new ProductForListViewModel(product));
+                ViewData["ReturnAll"] = true;
                 category = 0;
             }
             else
             {
-                products = await _productService.GetProductsByCategory(category);
+                products = (await _productService.GetProductsByCategory(category)).Select(product => new ProductForListViewModel(product));
                 ViewData["ReturnAll"] = false;
             }
 
@@ -50,17 +51,17 @@ namespace TuantuanShop.Controllers
 
         public async Task<IActionResult> IndexBrandTab(int brandId, bool returnAll)
         {
-            IEnumerable<Product> products;
-            var brands = await _brandService.GetAllAsync();
+            IEnumerable<ProductForListViewModel> products;
+            var brands = (await _brandService.GetAllAsync()).Select(brand => new ProductBrandForSidebarModelView(brand));
             if (brandId == 0 || returnAll)
             {
-                products = await _productService.GetAllAsync(p => p.Brand);
+                products = (await _productService.GetAllAsync()).Select(product => new ProductForListViewModel(product));
                 ViewData["ReturnAll"] = true;
                 brandId = 0;
             }
             else
             {
-                products = await _productService.GetProductsByBrandId(brandId);
+                products = (await _productService.GetProductsByBrandId(brandId)).Select(product => new ProductForListViewModel(product));
                 ViewData["ReturnAll"] = false;
             }
             return View("IndexBrandTab", new ProductIndexBrandTabViewModel(products, brands, brandId));
@@ -71,9 +72,9 @@ namespace TuantuanShop.Controllers
         {
             var brands = await _brandService.GetAllAsync();
             var viewModel = new ProductViewModel(new Product(), brands);
-            ViewData["ReturnAction"] = returnAction;            
+            ViewData["ReturnAction"] = returnAction;
             ViewData["BrandId"] = brandId;
-            if(category != 0)
+            if (category != 0)
             {
                 ViewData["Category"] = category;
             }
@@ -180,11 +181,32 @@ namespace TuantuanShop.Controllers
             return View(inStockProducts);
         }
 
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(IEnumerable<string> filters, string tab = "category", ProductCategory category = 0, int brandId = 0)
         {
-            var products = (await _productService.GetAllAsync()).Select(product => new ProductForListViewModel(product));
-            var brandNames = (await _brandService.GetAllAsync()).Select(brand => brand.Name);
-            ViewData["BrandNames"] = brandNames;
+            IEnumerable<ProductForListViewModel> products;
+
+            if (tab == "category" && category != 0)
+            {
+                products = (await _productService.GetProductsByCategory(category)).Select(product => new ProductForListViewModel(product));
+            }
+            else if (tab == "brand" && brandId != 0)
+            {
+                products = (await _productService.GetProductsByBrandId(brandId)).Select(product => new ProductForListViewModel(product));
+            }
+            else
+            {
+                products = (await _productService.GetAllAsync()).Select(product => new ProductForListViewModel(product));
+            }
+
+            var brands = (await _brandService.GetAllAsync()).Select(brand => new ProductBrandForSidebarModelView(brand));
+
+            ViewData["Tab"] = tab;
+            ViewData["Category"] = category;
+            ViewData["Caller"] = "User";
+            ViewData["Brands"] = brands;
+            ViewData["BrandId"] = brandId;
+            ViewData["Filters"] = filters;
+
             return View(products);
         }
     }

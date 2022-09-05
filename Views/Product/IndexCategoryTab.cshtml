@@ -6,34 +6,39 @@
     ViewData["Caller"] = "Management";
     ViewData["Category"] = Model.Category;
     ViewData["ReturnAction"] = "IndexCategoryTab";
+    ViewData["Action"] = "IndexCategoryTab";
 
 }
 
-<div class="mb-5">
-    <span class="h3">All Products</span>
-    <a asp-action="Create" asp-route-returnAction="IndexCategoryTab" asp-route-category='@(Model.Category == 0? "": Model.Category)' class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create New</a>
-</div>
+<div class="container-fluid">
+    <div class="mb-5">
+        <span class="h3">Product Management</span>
+        <a asp-action="Create" asp-route-returnAction="IndexCategoryTab" asp-route-category='@(Model.Category == 0? "": Model.Category)' class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create New</a>
+    </div>
 
-<ul class="nav nav-tabs sticky-top bg-white" id="nav">
-    <li class="nav-item">
-        <a asp-action="IndexCategoryTab" class="nav-link active h5" style="font-weight:bolder">Categories</a>
-    </li>
-    <li class="nav-item">
-        <a asp-action="IndexBrandTab" class="nav-link">Brands</a>
-    </li>
-</ul>
-<div class="tab-content">
-    <div class="tab-pane active">
-        <div class="row align-items-start">
-            <div class="col-3 col-md-2" style="position:sticky; top:35px">
-                <partial name="_CategorySideBarPartial" view-data="ViewData" />
-            </div>
-            <div class="col-9 col-md-10">
-                <partial name="_ProductListPartial" model="@Model.Products" view-data="ViewData" />
+    <ul class="nav nav-tabs sticky-top bg-white" id="nav">
+        <li class="nav-item">
+            <a asp-action="IndexCategoryTab" class="nav-link active h5" role="button" style="font-weight:bolder">Categories</a>
+        </li>
+        <li class="nav-item">
+            <a asp-action="IndexBrandTab" class="nav-link" role="button">Brands</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <div class="row align-items-start">
+                <div class="col-3 col-md-2" style="position:sticky; top:35px">
+                    <partial name="_CategorySideBarPartial" view-data="ViewData" />
+                </div>
+                <div class="col-9 col-md-10">
+                    <partial name="_ProductListPartial" model="@Model.Products" view-data="ViewData" />
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts{
     <script>

@@ -12,8 +12,9 @@ namespace TuantuanShop.ViewModels
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public bool InStock { get; set; }
         public bool HotSale { get; set; }
+        public bool Disabled { get; set; }
 
-        public ProductForListViewModel(int id, string name, bool onSale, double price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale)
+        public ProductForListViewModel(int id, string name, bool onSale, double price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale, bool disabled)
         {
             Id = id;
             Name = name;
@@ -23,9 +24,10 @@ namespace TuantuanShop.ViewModels
             ProfilePictureUrl = profilePictureUrl;
             InStock = inStock;
             HotSale = hotSale;
+            Disabled = disabled;          
         }
 
-        public ProductForListViewModel(Product product) : this(product.Id, product.Name, product.OnSale, product.Price, product.OnSalePrice, product.ProfilePictureUrl, product.InStock, product.HotSale) { }
+        public ProductForListViewModel(Product product) : this(product.Id, product.Name, product.OnSale, product.Price, product.OnSalePrice, product.ProfilePictureUrl, product.InStock, product.HotSale, product.Disabled) { }
 
 
     }

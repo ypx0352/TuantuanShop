@@ -1,15 +1,16 @@
-﻿@model IEnumerable<Brand>
+﻿@using TuantuanShop.ViewModels
+@model IEnumerable<ProductBrandForSidebarModelView>
 
 
 <div class="flex-column my-3 sticky-top" >
     <ul class="nav nav-pills flex-column">
         <li class="nav-item my-2">
-            <a class='nav-link text-center @(ViewData["BrandId"].Equals(0)? "active":"")' asp-action="IndexBrandTab" asp-controller="Product" asp-route-brandId="0">All</a>
+            <a class='nav-link text-start @(ViewData["BrandId"].Equals(0)? "active":"")' asp-action="@ViewData["Action"]" asp-controller="Product" asp-route-brandId="0" asp-route-tab="brand">All</a>
         </li>
         @foreach (var brand in Model)
         {
             <li class="nav-item my-2">
-                <a class='nav-link text-center @(ViewData["BrandId"].Equals(@brand.Id) ? "active":"")' asp-action="IndexBrandTab" asp-controller="Product" asp-route-brandId="@brand.Id">@brand.Name</a>
+                <a class='nav-link text-start @(ViewData["BrandId"].Equals(@brand.Id) ? "active":"")' asp-action="@ViewData["Action"]" asp-controller="Product" asp-route-brandId="@brand.Id" asp-route-tab="brand">@brand.Name</a>
             </li>
         }
     </ul>

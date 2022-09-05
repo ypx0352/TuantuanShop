@@ -15,7 +15,7 @@ namespace TuantuanShop.Data.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByCategory(ProductCategory category) => await _context.Products.Include(p => p.Brand).Where(p => p.Category == category).ToListAsync();
+        public async Task<IEnumerable<Product>> GetProductsByCategory(ProductCategory category) => await _context.Products.Where(p => p.Category == category).ToListAsync();
 
         public async Task<IEnumerable<Product>> GetProductsByBrandId(int brandId)
         {
