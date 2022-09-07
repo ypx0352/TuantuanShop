@@ -12,14 +12,13 @@
             }).ToList();
 }
 
-
 <p>
     <span class="h3">Edit Product</span>
-    <a asp-action="@ViewData["ReturnAction"]" asp-route-category="@Model.Category" asp-route-brandId="@Model.BrandId" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-danger float-end">Back to List</a>
+    <a asp-action="Index" asp-route-category="@Model.Category" asp-route-brandId="@Model.BrandId" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-danger float-end">Back to List</a>
 </p>
 <div class="row">
     <div class="col-lg-6 offset-lg-3 align-middle">
-        <form asp-action="Edit" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" method="post">
+        <form asp-action="Edit" asp-route-tab="@ViewData["Tab"]" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="text-center my-2">

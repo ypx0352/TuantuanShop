@@ -1,22 +1,26 @@
-﻿@using TuantuanShop.ViewModels
+﻿@using Newtonsoft.Json
+@using TuantuanShop.ViewModels;
 @model IEnumerable<ProductForListViewModel>
 
+@{
+    dynamic filtersObj = JsonConvert.DeserializeObject(ViewData["Filters"].ToString());
+}
+
+@*Filter*@
+<div class="mt-3 text-start bg-white pt-3" style="position:sticky; top: 35px; z-index:2">
+    <div class="position-relative" style="height:70px">
+        <div class="position-absolute bottom-0 w-100">
+            <i class="bi bi-funnel"></i>
+            <a class="btn btn-outline-warning btn-sm @((bool)filtersObj["OnSale"]?"active":"")" onclick="setFilter('OnSale')"><i class="bi bi-gem d-none d-md-inline"></i> On Sale</a>
+            <a class="btn btn-outline-success btn-sm @((bool)filtersObj["InStock"]?"active":"")" onclick="setFilter('InStock')"><i class="bi bi-shop d-none d-md-inline"></i> In Stock</a>
+            <a class="btn btn-outline-danger btn-sm @((bool)filtersObj["HotSale"]?"active":"")" onclick="setFilter('HotSale')"><i class="bi bi-fire d-none d-md-inline"></i> Hot Sale</a>
+            <hr />
+        </div>
+    </div>
+</div>
 
 @if (Model.Count() > 0)
 {
-    @*Filter*@
-    <div class="mt-3 text-start bg-white pt-3" style="position:sticky; top: 35px; z-index:2">
-        <div class="position-relative" style="height:70px">
-            <div class="position-absolute bottom-0 w-100">
-                <i class="bi bi-funnel"></i>
-                <a class="btn btn-outline-warning btn-sm"><i class="bi bi-gem d-none d-md-inline"></i> On Sale</a>
-                <a class="btn btn-outline-success btn-sm"><i class="bi bi-shop d-none d-md-inline"></i> In Stock</a>
-                <a class="btn btn-outline-danger btn-sm"><i class="bi bi-fire d-none d-md-inline"></i> Hot Sale</a>
-                <hr />
-            </div>
-        </div>
-    </div>
-
     @*Mobile only list*@
     <div class="d-block d-md-none">
         <ul class="list-unstyled my-4 mx-md-4 mx-1">
@@ -43,11 +47,10 @@
                                     </span>
                                 </div>
                                 <div class="text-start @(ViewData["Caller"] == "Management"? "":"d-none") mt-2">
-                                    <a asp-action="Edit" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
-                                    <a asp-action="Details" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
-                                    <a asp-action="Delete" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
+                                    <a asp-action="Edit" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
+                                    <a asp-action="Details" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
+                                    <a asp-action="Delete" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
                                 </div>
-
                             }
                             else
                             {
@@ -57,9 +60,9 @@
                                 <h5 class="mb-2">@product.Name</h5>
                                 <span class="text-primary">￥ @product.Price </span>
                                 <div class="text-start @(ViewData["Caller"] == "Management"? "":"d-none") mt-2">
-                                    <a asp-action="Edit" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
-                                    <a asp-action="Details" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
-                                    <a asp-action="Delete" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
+                                    <a asp-action="Edit" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
+                                    <a asp-action="Details" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
+                                    <a asp-action="Delete" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
                                 </div>
                                 <span class="float-end @(ViewData["Caller"] == "User"? "":"d-none")">
                                     <a asp-action="Add" asp-controller="Cart"><i class="bi bi-cart-plus-fill float-end" style="font-size:large"></i></a>
@@ -95,9 +98,9 @@
                                     <span class="text-primary">￥ @product.OnSalePrice </span>
                                     <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
                                     <div class="text-start @(ViewData["Caller"] == "Management"? "":"d-none") mt-2">
-                                        <a asp-action="Edit" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
-                                        <a asp-action="Details" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
-                                        <a asp-action="Delete" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
+                                        <a asp-action="Edit" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
+                                        <a asp-action="Details" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
+                                        <a asp-action="Delete" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
                                     </div>
                                     <span class="float-end @(ViewData["Caller"] == "User"? "":"d-none")">
                                         <a asp-action="Add" asp-controller="Cart"><i class="bi bi-cart-plus-fill float-end" style="font-size:large"></i></a>
@@ -111,9 +114,9 @@
                                 <h5 class="mb-2">@product.Name</h5>
                                 <span class="text-primary">￥ @product.Price </span>
                                 <div class="text-start @(ViewData["Caller"] == "Management"? "":"d-none") mt-2">
-                                    <a asp-action="Edit" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
-                                    <a asp-action="Details" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
-                                    <a asp-action="Delete" asp-route-id="@product.Id" asp-route-returnAction="@ViewData["ReturnAction"]" asp-route-returnAll="@ViewData["ReturnAll"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
+                                    <a asp-action="Edit" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-success btn-sm mb-1"><i class="bi bi-pencil-square"></i> <p class="d-none d-lg-inline">Edit</p></a>
+                                    <a asp-action="Details" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-warning btn-sm mb-1"><i class="bi bi-eye"></i> <p class="d-none d-lg-inline">Details</p></a>
+                                    <a asp-action="Delete" asp-route-id="@product.Id" asp-route-tab="@ViewData["Tab"]" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"> <p class="d-none d-lg-inline">Delete</p></i></a>
                                 </div>
                                 <span class="float-end @(ViewData["Caller"] == "User"? "":"d-none")">
                                     <a asp-action="Add" asp-controller="Cart"><i class="bi bi-cart-plus-fill float-end" style="font-size:large"></i></a>

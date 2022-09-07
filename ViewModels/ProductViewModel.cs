@@ -25,12 +25,12 @@ namespace TuantuanShop.ViewModels
             Brands = brands;
         }
         
-        [Required]
+        [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = String.Empty;
         [Required(ErrorMessage = "Price is required."), Range(0.01, 100000, ErrorMessage = "Price must be greater than 0.")]
-        public double Price { get; set; }
+        public double? Price { get; set; }
         public string? Subtitle { get; set; }
-        [Required(ErrorMessage = "Category is required."), Display(Name = "Category")]
+        [Required(ErrorMessage = "Category is required.")]
         public ProductCategory Category { get; set; }
         [Display(Name = "On Sale")]
         public bool OnSale { get; set; }

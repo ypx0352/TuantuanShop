@@ -14,12 +14,12 @@ namespace TuantuanShop.ViewModels
         public bool HotSale { get; set; }
         public bool Disabled { get; set; }
 
-        public ProductForListViewModel(int id, string name, bool onSale, double price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale, bool disabled)
+        public ProductForListViewModel(int id, string name, bool onSale, double? price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale, bool disabled)
         {
             Id = id;
             Name = name;
             OnSale = onSale;
-            Price = price;
+            Price = price.GetValueOrDefault();
             OnSalePrice = onSalePrice;
             ProfilePictureUrl = profilePictureUrl;
             InStock = inStock;

@@ -2,18 +2,24 @@
 @using TuantuanShop.ViewModels
 @model IEnumerable<ProductForListViewModel>
 @{
-    ViewData["Title"] = "Products";
-    ViewData["Action"] = "List";
+    ViewData["Title"] = "Product Management";
+    ViewData["Action"] = "Index";
 }
 
+
 <div class="container-fluid">
+    <div class="mb-5">
+        <span class="h3">Product Management</span>
+        <a asp-action="Create" asp-route-tab="@ViewData["Tab"]" asp-route-brandId="@ViewData["BrandId"]" asp-route-category='@(ViewData["Category"].GetHashCode().Equals(0) ? "":ViewData["Category"])' class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create One</a>
+    </div>
+
     @*Tab*@
     <ul class="nav nav-tabs sticky-top bg-white" id="nav">
         <li class="nav-item">
-            <a asp-action="List" asp-controller="Product" asp-route-tab="category" class="nav-link @(ViewData["Tab"].Equals("category") ? "active" : "")" role="button" style="font-weight:bolder">Categories</a>
+            <a asp-action="Index" asp-controller="Product" asp-route-tab="category" class="nav-link @(ViewData["Tab"].Equals("category") ? "active" : "")" role="button" style="font-weight:bolder">Categories</a>
         </li>
         <li class="nav-item">
-            <a asp-action="List" asp-controller="Product" asp-route-tab="brand" class="nav-link @(ViewData["Tab"].Equals("brand") ? "active" : "")" role="button" style="font-weight:bolder">Brands</a>
+            <a asp-action="Index" asp-controller="Product" asp-route-tab="brand" class="nav-link @(ViewData["Tab"].Equals("brand") ? "active" : "")" role="button" style="font-weight:bolder">Brands</a>
         </li>
     </ul>
 
@@ -35,6 +41,7 @@
         </div>
     </div>
 </div>
+
 <partial name="_BottomNavigationBarPartial" />
 
 

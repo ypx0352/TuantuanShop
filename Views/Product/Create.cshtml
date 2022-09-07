@@ -17,12 +17,12 @@
 
 <p>
     <span class="h3">New Product</span>
-    <a asp-action="@(ViewData["ReturnAction"] == null? "Index": ViewData["ReturnAction"])" asp-controller="@(ViewData["ReturnAction"] == null? "Management" : "Product")" asp-route-category="@ViewData["Category"]" asp-route-brandId="@ViewData["BrandId"]" class="btn btn-outline-danger float-end">Back to List</a>
+    <a asp-action="Index" asp-controller="@ViewData["CallerController"]" asp-route-tab="@ViewData["Tab"]" asp-route-category="@ViewData["Category"]" asp-route-brandId="@ViewData["BrandId"]" class="btn btn-outline-danger float-end">Back to List</a>
 </p>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" asp-route-returnAction="@ViewData["ReturnAction"]" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="col-lg-6 offset-lg-3 align-middle">
+        <form asp-action="Create" asp-route-tab="@ViewData["Tab"]" asp-route-category="@ViewData["Category"]" asp-route-brandId="@ViewData["BrandId"]" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert-danger"></div>
 
             <div class="text-center my-2">
                 <img style="max-width:150px" id="ProfilePicturePreview" />
@@ -52,7 +52,7 @@
 
             <div class="form-group my-2">
                 <label asp-for="ProfilePictureUrl" class="control-label"></label>
-                <span>(350px*350px)</span>
+                <span>(350px square)</span>
                 <input asp-for="ProfilePictureUrl" class="form-control" />
                 <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
             </div>
@@ -86,8 +86,8 @@
             </div>
             <div class="form-group my-2">
                 <span>@Html.CheckBox("InStock",false)</span>
-                <label asp-for="InStockQty" class="form-check-label"></label>
-                <span asp-validation-for="InStockQty" class="text-danger"></span>
+                <label asp-for="InStock" class="form-check-label"></label>
+                <span asp-validation-for="InStock" class="text-danger"></span>
             </div>
              <div class="form-group my-2 visually-hidden" id="InStockQtyGroup">
                 <label asp-for="InStockQty" class="control-label"></label>

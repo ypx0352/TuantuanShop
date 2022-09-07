@@ -1,6 +1,7 @@
 ﻿using TuantuanShop.Data.Base;
 using TuantuanShop.Data.Enums;
 using TuantuanShop.Models;
+using TuantuanShop.ViewModels;
 
 namespace TuantuanShop.Data.Services
 {
@@ -11,5 +12,6 @@ namespace TuantuanShop.Data.Services
         Task<IEnumerable<Product>> GetProductsByBrandId(int brandId);
         Task<IEnumerable<Product>> GetHotSaleProducts();
         Task<IEnumerable<Product>> GetInStockProducts();
+        IEnumerable<ProductForListViewModel> FilterProducts(IEnumerable<ProductForListViewModel> products, string filters);
     }
 }

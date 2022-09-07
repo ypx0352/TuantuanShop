@@ -11,7 +11,7 @@ namespace TuantuanShop.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; } = String.Empty;
-        public double Price { get; set; } 
+        public double? Price { get; set; } 
         public string? Subtitle { get; set; }
         [AssertThat("Category != 0", ErrorMessage = "Category can not be All.")]
         public ProductCategory Category { get; set; }
