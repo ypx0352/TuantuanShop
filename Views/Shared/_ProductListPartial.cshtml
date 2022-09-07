@@ -54,7 +54,7 @@
                             }
                             else
                             {
-                                <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small"><i class="bi bi-shop d-none d-md-inline"></i> In Stock</span>
+                                <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small"><i class="bi bi-shop"></i> In Stock</span>
                                 <span class='badge bg-danger @(product.HotSale? "":"d-none")' style="font-size: xx-small"><i class="bi bi-fire"></i> Hot Sale</span>
                                 <span class='badge bg-dark @(product.Disabled? "":"d-none")' style="font-size: xx-small">Disabled</span>
                                 <h5 class="mb-2">@product.Name</h5>
@@ -83,7 +83,7 @@
             @foreach (var product in Model)
             {
                 <div class="col my-2">
-                    <div class="card h-100 w-100" style="max-width:246px; min-height:180px" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                    <div class="card h-100 w-100 " style="max-width:246px; min-height:180px" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
                         <div class="text-center">
                             <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" style="max-width:300px" />
                         </div>
@@ -93,6 +93,7 @@
                                 <span class="badge bg-warning" style="font-size:xx-small"><i class="bi bi-gem"></i> On Sale</span>
                                 <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small"><i class="bi bi-shop"></i> In Stock</span>
                                 <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small"><i class="bi bi-fire"></i> Hot Sale</span>
+                                <span class='badge bg-dark @(product.Disabled? "":"d-none")' style="font-size: xx-small">Disabled</span>
                                 <h5 class="mb-2">@product.Name</h5>
                                 <div>
                                     <span class="text-primary">￥ @product.OnSalePrice </span>
@@ -111,6 +112,7 @@
                             {
                                 <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small"><i class="bi bi-shop"></i> In Stock</span>
                                 <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small"><i class="bi bi-fire"></i> Hot Sale</span>
+                                <span class='badge bg-dark @(product.Disabled? "":"d-none")' style="font-size: xx-small">Disabled</span>
                                 <h5 class="mb-2">@product.Name</h5>
                                 <span class="text-primary">￥ @product.Price </span>
                                 <div class="text-start @(ViewData["Caller"] == "Management"? "":"d-none") mt-2">

@@ -7,11 +7,14 @@ namespace TuantuanShop.Data.Services
 {
     public interface IProductService : IEntityBaseRepository<Product>
     {
-
+        Task<IEnumerable<Product>> GetAllEnabledFirstAsync();
+        Task<IEnumerable<Product>> GetEnabledAllAsync();
         Task<IEnumerable<Product>> GetProductsByCategory(ProductCategory category);
+        Task<IEnumerable<Product>> GetEnabledProductsByCategory(ProductCategory category);
         Task<IEnumerable<Product>> GetProductsByBrandId(int brandId);
-        Task<IEnumerable<Product>> GetHotSaleProducts();
-        Task<IEnumerable<Product>> GetInStockProducts();
+        Task<IEnumerable<Product>> GetEnabledProductsByBrandId(int brandId);
+        Task<IEnumerable<Product>> GetEnabledHotSaleProducts();
+        Task<IEnumerable<Product>> GetEnabledInStockProducts();
         IEnumerable<ProductForListViewModel> FilterProducts(IEnumerable<ProductForListViewModel> products, string filters);
     }
 }

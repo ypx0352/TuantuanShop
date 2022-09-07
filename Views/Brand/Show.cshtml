@@ -28,7 +28,7 @@
         {
             foreach (var product in Model.Products)
             {
-                <div class="col my-2">
+                <div class="col my-2 @(product.Disabled ? "d-none" : "")">
                     <div class="card h-100 w-100" style="max-width:200px; min-height:180px" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
                         <div class="text-center">
                             <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" style="max-width:200px" />

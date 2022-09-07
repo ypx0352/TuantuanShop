@@ -8,10 +8,20 @@
 
 
 <div class="container-fluid">
-    <div class="mb-5">
-        <span class="h3">Product Management</span>
-        <a asp-action="Create" asp-route-tab="@ViewData["Tab"]" asp-route-brandId="@ViewData["BrandId"]" asp-route-category='@(ViewData["Category"].GetHashCode().Equals(0) ? "":ViewData["Category"])' class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create One</a>
+    <div class="mb-3">
+        <div>
+            <span class="h3">Product Management</span>
+            <a asp-action="Create" asp-route-tab="@ViewData["Tab"]" asp-route-brandId="@ViewData["BrandId"]" asp-route-category='@(ViewData["Category"].GetHashCode().Equals(0) ? "":ViewData["Category"])' class="btn btn-success float-end"><i class="bi bi-plus-circle-dotted"></i> Create One</a>
+
+        </div>
+        <div class="text-end mt-3 @((ViewData["Tab"].Equals("brand") && !ViewData["BrandId"].Equals(0)) ? "" : "d-none")">
+            <a asp-action="Details"asp-controller="Brand" asp-route-id="@ViewData["BrandId"]"  class="btn btn-outline-secondary "><i class="bi bi-gear-wide-connected"></i> Edit Brand</a>
+        </div>
     </div>
+
+
+
+
 
     @*Tab*@
     <ul class="nav nav-tabs sticky-top bg-white" id="nav">
@@ -22,6 +32,7 @@
             <a asp-action="Index" asp-controller="Product" asp-route-tab="brand" class="nav-link @(ViewData["Tab"].Equals("brand") ? "active" : "")" role="button" style="font-weight:bolder">Brands</a>
         </li>
     </ul>
+
 
     <div class="tab-content">
         <div class="row align-items-start">
@@ -72,13 +83,13 @@
             var action = '@ViewData["Action"]';
             var tab = '@ViewData["Tab"]';
             var brandId = @ViewData["BrandId"];
-            var category = '@ViewData["Category"]';          
+            var category = '@ViewData["Category"]';
             var filtersString = "@ViewData["Filters"]";
             filtersString = filtersString.replace(/&quot;/ig, '"');
             var filtersObj = JSON.parse(filtersString);
-            filtersObj[`${filter}`] = filtersObj[`${filter}`] ? false : true;       
-            filtersString = JSON.stringify(filtersObj);           
-            var url = `/Product/${action}?category=${category}&tab=${tab}&brandId=${brandId}&filters=${filtersString}`;            
+            filtersObj[`${filter}`] = filtersObj[`${filter}`] ? false : true;
+            filtersString = JSON.stringify(filtersObj);
+            var url = `/Product/${action}?category=${category}&tab=${tab}&brandId=${brandId}&filters=${filtersString}`;
             location.href = url;
         }
     </script>

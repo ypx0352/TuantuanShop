@@ -7,7 +7,7 @@ namespace TuantuanShop.ViewModels
 {
     public class ProductViewModel
     {
-        public ProductViewModel(Product product, IEnumerable<Brand> brands)
+        public ProductViewModel(Product product, IEnumerable<BrandNameViewModel> brands)
         {
             Name = product.Name;
             Price = product.Price;
@@ -55,6 +55,6 @@ namespace TuantuanShop.ViewModels
         //Relationships        
         [Required(ErrorMessage = "Brand is required."), Display(Name = "Brand")]
         public string BrandId { get; set; }
-        public IEnumerable<Brand>? Brands { get; set; }
+        public IEnumerable<BrandNameViewModel>? Brands { get; set; }
     }
 }

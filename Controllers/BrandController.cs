@@ -34,7 +34,7 @@ namespace TuantuanShop.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var result = await _service.GetByIdAsync(id);
+            var result = await _service.GetByIdAsync(id, b => b.Products);
             return View(result);
         }
 
@@ -53,7 +53,7 @@ namespace TuantuanShop.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _service.GetByIdAsync(id);
+            var result = await _service.GetByIdAsync(id, b => b.Products);
             return View(result);
         }
 

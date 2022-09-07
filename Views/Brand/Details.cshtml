@@ -4,14 +4,21 @@
     ViewData["Title"] = "Brand Details";
 }
 
-<p>
-    <span class="h3">Brand Details</span>
-    <a asp-action="Index"  class="btn btn-outline-danger float-end">Back to List</a>
-</p>
+
+
+<div class="mb-3">
+    <div>
+        <span class="h3">Brand Details</span>
+        <a asp-action="Index" class="btn btn-outline-danger float-end">Back to List</a>
+    </div>
+    <div class="text-end mt-3">
+        <a asp-action="Index" asp-controller="Product" asp-route-tab="brand" asp-route-brandId="@Model.Id" class="btn btn-outline-secondary "><i class="bi bi-gear-wide-connected"></i> Edit Product</a>
+    </div>
+</div>
 
 <div>
-    <div class="text-center">
-        <img src="@Model.ProfilePictureUrl" alt="Profile Picture" style="max-width:150px" />
+    <div class="text-center my-3">
+        <img class="img-fluid" src="@Model.ProfilePictureUrl" alt="Profile Picture" />
     </div>
     <dl class="row">
         <dt class="col-sm-2">
@@ -32,10 +39,17 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IntroductionText)
         </dd>
+        <dt class="col-sm-2">
+            Product Qty
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Products.Count()
+        </dd>
     </dl>
 </div>
 <div class="col-12 col-md-4 offset-md-4 ">
     <div class="my-5 text-center">
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success" style="width:100%"><i class="bi bi-pencil-square"></i> Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success my-1" style="width:100%"><i class="bi bi-pencil-square"></i> Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger my-1" style="width:100%"><i class="bi bi-trash"></i> Delete</a>
     </div>
 </div>

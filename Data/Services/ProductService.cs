@@ -17,23 +17,35 @@ namespace TuantuanShop.Data.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByCategory(ProductCategory category) => await _context.Products.Where(p => p.Category == category).ToListAsync();
+        public async Task<IEnumerable<Product>> GetAllEnabledFirstAsync() => await _context.Products.OrderBy(p => p.Disabled).ToListAsync();
+
+        public async Task<IEnumerable<Product>> GetEnabledAllAsync() => await _context.Products.Where(p => p.Disabled == false).ToListAsync();
+
+        public async Task<IEnumerable<Product>> GetProductsByCategory(ProductCategory category) => await _context.Products.Where(p => p.Category == category).OrderBy(p => p.Disabled).ToListAsync();
+
+        public async Task<IEnumerable<Product>> GetEnabledProductsByCategory(ProductCategory category) => await _context.Products.Where(p => p.Category == category && p.Disabled == false).ToListAsync();
 
         public async Task<IEnumerable<Product>> GetProductsByBrandId(int brandId)
         {
             var brand = await _context.Brands.Include(b => b.Products).FirstOrDefaultAsync(b => b.Id == brandId);
-            return brand.Products;
+            return brand.Products.OrderBy(p => p.Disabled);
         }
 
-        public async Task<IEnumerable<Product>> GetHotSaleProducts() => await _context.Products.Where(p => p.HotSale == true).ToListAsync();
+        public async Task<IEnumerable<Product>> GetEnabledProductsByBrandId(int brandId)
+        {
+            var brand = await _context.Brands.Include(b => b.Products).FirstOrDefaultAsync(b => b.Id == brandId);
+            return brand.Products.Where(p => p.Disabled == false).ToList();
+        }
 
-        public async Task<IEnumerable<Product>> GetInStockProducts() => await _context.Products.Where(p => p.InStock == true).ToListAsync();
-       
+        public async Task<IEnumerable<Product>> GetEnabledHotSaleProducts() => await _context.Products.Where(p => p.HotSale == true && p.Disabled == false).ToListAsync();
+
+        public async Task<IEnumerable<Product>> GetEnabledInStockProducts() => await _context.Products.Where(p => p.InStock == true && p.Disabled == false).ToListAsync();
+
         public IEnumerable<ProductForListViewModel> FilterProducts(IEnumerable<ProductForListViewModel> products, string filters)
         {
-            IEnumerable<ProductForListViewModel> filteredProducts = products;            
+            IEnumerable<ProductForListViewModel> filteredProducts = products;
             dynamic filtersObj = JsonConvert.DeserializeObject(filters);
-            
+
             if ((bool)filtersObj["OnSale"])
             {
                 filteredProducts = filteredProducts.Where(p => p.OnSale == true).ToList();
@@ -48,6 +60,6 @@ namespace TuantuanShop.Data.Services
             }
 
             return filteredProducts;
-        } 
+        }
     }
 }

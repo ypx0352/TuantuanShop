@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                 @*Mobile only shopping menu *@
+                @*Mobile only shopping menu *@
                 <div class="fixed-bottom d-block d-md-none">
                     <div class="card text-center">
                         <div class="card-body">
@@ -80,19 +80,20 @@
                 </div>
             </div>
 
+            @*InStock card*@
             <div class="alert alert-primary mt-3 @(Model.Product.InStock == true? "":"d-none")" role="alert">
                 <p><i class="bi bi-info-circle"></i> <strong>In Stock Notice</strong></p>
                 This product has been shipped to the domestic location and will be shipped from there, eliminating the wait time for international shipping and customs clearance. Please note the quantity of items available for purchase.
             </div>
 
+            @*Introduction *@
             <div class="mt-5">
                 <div class="border-bottom">
                     <span style="font-size:large; background-color:firebrick; color:white">Introduction</span>
                 </div>
-            </div>
-
-            <div class="text-center col-12 col-md-10 mt-3 mx-auto">
-                <img style=" max-width:100%" src="@Model.Product.IntroductionPictureUrl" alt="introduction picture" />
+                <div class="text-center col-12 col-md-10 mt-3 mx-auto">
+                    <img style=" max-width:100%" src="@Model.Product.IntroductionPictureUrl" alt="introduction picture" />
+                </div>
             </div>
 
             @*Mobile only hot sale products *@
@@ -178,7 +179,7 @@
 
         @*Hot Sale Colomn*@
         <div class="col-md-2 d-md-block d-none border py-2">
-            <h5 class="text-center text-danger"><i class="bi bi-fire"></i> Hot sale</h5>
+            <h5 class="text-center text-danger" role="button" onclick="location.href='@Url.Action("HotSaleList","Product")'"><i class="bi bi-fire"></i> Hot sale</h5>
             @foreach (var hotSaleProduct in Model.HotSaleProducts)
             {
                 <div class="text-center my-2" role="button" onclick="location.href = '@(Url.Action("Show", new { id = hotSaleProduct.Id}))'">

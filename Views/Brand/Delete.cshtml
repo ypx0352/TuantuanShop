@@ -32,12 +32,18 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IntroductionText)
         </dd>
+         <dt class="col-sm-2">
+            Product Qty
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Products.Count()
+        </dd>
     </dl>
 </div>
 <div class="col-12 col-md-4 offset-md-4 ">
     <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
         <div class="my-5 text-center">
-            <button type="submit" class="btn btn-danger" style="width:100%"><i class="bi bi-trash"></i> Delete</button>
+            <button type="submit" class="btn btn-danger @(Model.Products.Count() > 0 ? "disabled" : "")" style="width:100%"><i class="bi bi-trash"></i> Delete</button>
         </div>
     </form>
 </div>
