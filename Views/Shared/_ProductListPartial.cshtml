@@ -38,7 +38,8 @@
                                 <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small"><i class="bi bi-shop"></i> In Stock</span>
                                 <span class='badge bg-danger @(product.HotSale? "":"d-none")' style="font-size: xx-small"><i class="bi bi-fire"></i> Hot Sale</span>
                                 <span class='badge bg-dark @(product.Disabled? "":"d-none")' style="font-size: xx-small">Disabled</span>
-                                <h5 class="mb-2">@product.Name</h5>
+                              @* TODO*@
+                               <h5 class="mb-2" style="line-height:2rem">@product.Name</h5>
                                 <div>
                                     <span class="text-primary">￥ @product.OnSalePrice </span>
                                     <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>

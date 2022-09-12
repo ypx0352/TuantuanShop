@@ -1,11 +1,513 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using TuantuanShop.ViewModels
+@model HomeIndexViewModel;
+
+@{
+    ViewData["Title"] = "Home";
+    var newArrivalProducts = Model.NewArrivalProducts;
+    var hotSaleProducts = Model.HotSaleProducts;
+    var formulaProducts = Model.FormulaProducts;
+    var babyCareProducts = Model.BabyCareProducts;
+    var vitaminsProducts = Model.VitaminsProducts;
+    var homeProducts = Model.HomeProducts;
+    var personalCareProducts = Model.PersonalCareProducts;
+    var beautyProducts = Model.BeautyProducts;
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid pb-5 pb-md-1">
+    @*Banner row*@
+    <div class="row my-3">
+        <div class="col-12 col-md-10">
+            <div id="carouselBannerIndicators" class="carousel slide carousel-dark" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselBannerIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselBannerIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselBannerIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://images.unsplash.com/photo-1661956603025-8310b2e3036d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" style="max-height:400px" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1661956603025-8310b2e3036d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" style="max-height:400px" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1661956603025-8310b2e3036d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="d-block w-100" style="max-height:400px" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselBannerIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselBannerIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-2 border d-none d-md-block">
+            Notice & Help
+        </div>
+    </div>
+
+    @*New arrival & Hot sale row*@
+    <div>
+        <div class="row my-3 gy-3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ">
+            @*New arrival*@
+            <div class="col-12 col-md-6">
+                <div class="row row-cols-2 gx-2">
+
+                    @*Left side big card*@
+                    @if (newArrivalProducts.Count() > 0)
+                    {
+                        var firstNewArrivalProduct = newArrivalProducts.FirstOrDefault();
+                        <div class="col">
+                            <div>
+                                <h5 style="height:24px"><i class="bi bi-balloon-heart text-info"></i> New Arrival</h5>
+                                <div class="card" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=firstNewArrivalProduct.Id}))'">
+                                    <div class="text-center">
+                                        <img class="card-img-top img-adjusted" src="@firstNewArrivalProduct.ProfilePictureUrl" alt="@firstNewArrivalProduct.Name" />
+                                    </div>
+                                    <div class="p-2">
+                                        @if (firstNewArrivalProduct.OnSale)
+                                        {
+                                            <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                            <span class="badge bg-danger @(firstNewArrivalProduct.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                            <span class='badge bg-success @(firstNewArrivalProduct.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                            <h5 class="mb-2 " style="line-height:2rem; max-height:4rem; overflow:hidden; text-overflow:ellipsis">@firstNewArrivalProduct.Name</h5>
+                                            <div>
+                                                <span class="text-primary">￥ @firstNewArrivalProduct.OnSalePrice </span>
+                                                <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @firstNewArrivalProduct.Price</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class='badge bg-success @(firstNewArrivalProduct.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                            <span class="badge bg-danger @(firstNewArrivalProduct.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                            <h5 class="mb-2 text-wrap" style="line-height:2rem; max-height:4rem; overflow:hidden; ">@firstNewArrivalProduct.Name</h5>
+                                            <span class="text-primary">￥ @firstNewArrivalProduct.Price </span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @*Right side list*@
+                    <div class="col">
+                        <div id="carouselNewArrivalIndicators" class="carousel slide carousel-dark h-100" data-bs-ride="carousel">
+                            <div class="carousel-inner h-100 position-relative">
+                                <div class="carousel-indicators position-absolute top-0" style="height:24px">
+                                    @for (int i = 0; i < (int)Math.Ceiling((double)(newArrivalProducts.Count() - 1) / 3); i++)
+                                    {
+                                        <button type="button" data-bs-target="#carouselNewArrivalIndicators" data-bs-slide-to=@i class='@(i == 0? "active":"")' aria-current="true" aria-label="Slide @i"></button>
+                                    }
+                                </div>
+                                @for (int i = 1; i < newArrivalProducts.Count(); i += 3)
+                                {
+                                    List<ProductForListViewModel> productsForOneCarouselSlide = new List<ProductForListViewModel>();
+                                    @for (int j = 0; j < 3; j++)
+                                    {
+                                        if (newArrivalProducts.ElementAtOrDefault(i + j) != null)
+                                        {
+                                            productsForOneCarouselSlide.Add(newArrivalProducts.ElementAtOrDefault(i + j));
+                                        }
+                                    }
+
+                                    @*Each carousel slide*@
+                                    <div class="carousel-item @(i == 1? "active": "") position-absolute" style="top:30px">
+                                        <div class="row row-cols-1 gy-0">
+                                            @foreach (var product in productsForOneCarouselSlide)
+                                            {
+                                                if (product != null)
+                                                {
+                                                    @*Each product*@
+                                                    <div class="col" role="button" onclick="location.href='@Url.Action("Show","Product",new{id=product.Id})'">
+                                                        <div>
+                                                            <div class="row row-cols-2 gy-1 my-1 bg-light">
+                                                                <div class="col-4">
+                                                                    <div class="text-center ">
+                                                                        <img class="img-fluid" src="@product.ProfilePictureUrl" alt="@product.Name">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                    <p class="text-wrap" style="overflow:hidden;  line-height: 1rem; max-height: 2rem">@product.Name</p>
+                                                                    <p class="text-primary" style="padding-right:1px">￥ @(product.OnSale? product.OnSalePrice : product.Price)</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @*Hot sale*@
+            <div class="col-12 col-md-6">
+                <div class="row row-cols-2 gx-2">
+
+                    @*Left side big card*@
+                    @if (newArrivalProducts.Count() > 0)
+                    {
+                        var firstHotSaleProduct = hotSaleProducts.FirstOrDefault();
+                        <div class="col">
+                            <div>
+                                <h5 style="height:24px" role="button" onclick="location.href='@Url.Action("HotSaleList","Product")'"><i class="bi bi-fire text-danger"></i> Hot Sale <i class="bi bi-box-arrow-up-right text-danger"></i></h5>
+                                <div class="card" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=firstHotSaleProduct.Id}))'">
+                                    <div class="text-center">
+                                        <img class="card-img-top img-adjusted" src="@firstHotSaleProduct.ProfilePictureUrl" alt="@firstHotSaleProduct.Name" />
+                                    </div>
+                                    <div class="p-2">
+                                        @if (firstHotSaleProduct.OnSale)
+                                        {
+                                            <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                            <span class="badge bg-danger" style="font-size: xx-small">Hot Sale</span>
+                                            <span class='badge bg-success @(firstHotSaleProduct.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                            <h5 class="mb-2 " style="line-height:2rem; max-height:4rem; overflow:hidden; text-overflow:ellipsis">@firstHotSaleProduct.Name</h5>
+                                            <div>
+                                                <span class="text-primary">￥ @firstHotSaleProduct.OnSalePrice </span>
+                                                <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @firstHotSaleProduct.Price</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class='badge bg-success @(firstHotSaleProduct.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                            <span class="badge bg-danger " style="font-size: xx-small">Hot Sale</span>
+                                            <h5 class="mb-2 text-wrap" style="line-height:2rem; max-height:4rem; overflow:hidden; ">@firstHotSaleProduct.Name</h5>
+                                            <span class="text-primary">￥ @firstHotSaleProduct.Price </span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @*Right side list*@
+                    <div class="col">
+                        <div id="carouselHotSaleIndicators" class="carousel slide carousel-dark h-100" data-bs-ride="carousel">
+                            <div class="carousel-inner h-100 position-relative">
+                                <div class="carousel-indicators position-absolute top-0" style="height:24px">
+                                    @for (int i = 0; i < (int)Math.Ceiling((double)(hotSaleProducts.Count() - 1) / 3); i++)
+                                    {
+                                        <button type="button" data-bs-target="#carouselHotSaleIndicators" data-bs-slide-to=@i class='@(i == 0? "active":"")' aria-current="true" aria-label="Slide @i"></button>
+                                    }
+                                </div>
+                                @for (int i = 1; i < hotSaleProducts.Count(); i += 3)
+                                {
+                                    List<ProductForListViewModel> productsForOneCarouselSlide = new List<ProductForListViewModel>();
+                                    @for (int j = 0; j < 3; j++)
+                                    {
+                                        if (newArrivalProducts.ElementAtOrDefault(i + j) != null)
+                                        {
+                                            productsForOneCarouselSlide.Add(hotSaleProducts.ElementAtOrDefault(i + j));
+                                        }
+                                    }
+
+                                    @*Each carousel slide*@
+                                    <div class="carousel-item @(i == 1? "active": "") position-absolute" style="top:30px">
+                                        <div class="row row-cols-1 gy-0">
+                                            @foreach (var product in productsForOneCarouselSlide)
+                                            {
+                                                if (product != null)
+                                                {
+                                                    @*Each product*@
+                                                    <div class="col" role="button" onclick="location.href='@Url.Action("Show","Product",new{id=product.Id})'">
+                                                        <div style="max-height:100px">
+                                                            <div class="row row-cols-2 gy-1 my-1 bg-light">
+                                                                <div class="col-4">
+                                                                    <div class="text-center ">
+                                                                        <img class="img-fluid" src="@product.ProfilePictureUrl" alt="@product.Name">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                    <p class="text-wrap" style="overflow:hidden;  line-height: 1rem; max-height: 2rem">@product.Name</p>
+                                                                    <p class="text-primary" style="padding-right:1px">￥ @(product.OnSale? product.OnSalePrice : product.Price)</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Baby Formula section*@
+    @if (formulaProducts.Count() > 0)
+    {
+        <div class="my-3">
+            <div>
+                <h5 role="button" onclick="location.href='@Url.Action("List","Product",new{category="Formula", tab="category"})'">Formula <i class="bi bi-box-arrow-up-right text-success"></i></h5>
+            </div>
+            <div class="row row-cols-3 row-cols-md-6 gy-2 gx-2">
+
+                @foreach (var product in formulaProducts)
+                {
+                    <div class="col">
+                        <div class="card h-100 w-100" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                            <div class="text-center">
+                                <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" />
+                            </div>
+                            <div class="p-2">
+                                @if (product.OnSale)
+                                {
+                                    <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <p class="mb-2 " style="line-height:1rem; max-height:2rem; overflow:hidden; text-overflow:ellipsis">@product.Name</p>
+                                    <div>
+                                        <span class="text-primary">￥ @product.OnSalePrice </span>
+                                        <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <p class="mb-2 text-wrap" style="line-height:1rem; max-height:2rem; overflow:hidden; ">@product.Name</p>
+                                    <span class="text-primary">￥ @product.Price </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+
+    @*BabyCare section*@
+    @if (babyCareProducts.Count() > 0)
+    {
+        <div class="my-3">
+            <div>
+                <h5 role="button" onclick="location.href='@Url.Action("List","Product",new{category="BabyCare", tab="category"})'">Baby Care <i class="bi bi-box-arrow-up-right text-success"></i></h5>
+            </div>
+            <div class="row row-cols-3 row-cols-md-6 gy-2 gx-2">
+
+                @foreach (var product in babyCareProducts)
+                {
+                    <div class="col">
+                        <div class="card h-100 w-100" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                            <div class="text-center">
+                                <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" />
+                            </div>
+                            <div class="p-2">
+                                @if (product.OnSale)
+                                {
+                                    <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <p class="mb-2 " style="line-height:1rem; max-height:2rem; overflow:hidden; text-overflow:ellipsis">@product.Name</p>
+                                    <div>
+                                        <span class="text-primary">￥ @product.OnSalePrice </span>
+                                        <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <p class="mb-2 text-wrap" style="line-height:1rem; max-height:2rem; overflow:hidden">@product.Name</p>
+                                    <span class="text-primary">￥ @product.Price </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @*Vitamins section*@
+    @if (vitaminsProducts.Count() > 0)
+    {
+        <div class="my-3">
+            <div>
+                <h5 role="button" onclick="location.href='@Url.Action("List","Product",new{category="Vitamins", tab="category"})'">Vitamins <i class="bi bi-box-arrow-up-right text-success"></i></h5>
+            </div>
+            <div class="row row-cols-3 row-cols-md-6 gy-2 gx-2">
+
+                @foreach (var product in vitaminsProducts)
+                {
+                    <div class="col">
+                        <div class="card h-100 w-100" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                            <div class="text-center">
+                                <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" />
+                            </div>
+                            <div class="p-2">
+                                @if (product.OnSale)
+                                {
+                                    <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <p class="mb-2 " style="line-height:1rem; max-height:2rem; overflow:hidden; text-overflow:ellipsis">@product.Name</p>
+                                    <div>
+                                        <span class="text-primary">￥ @product.OnSalePrice </span>
+                                        <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <p class="mb-2 text-wrap" style="line-height:1rem; max-height:2rem; overflow:hidden; ">@product.Name</p>
+                                    <span class="text-primary">￥ @product.Price </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+     @*Home section*@
+    @if (homeProducts.Count() > 0)
+    {
+        <div class="my-3">
+            <div>
+                <h5 role="button" onclick="location.href='@Url.Action("List","Product",new{category="Home", tab="category"})'">Home <i class="bi bi-box-arrow-up-right text-success"></i></h5>
+            </div>
+            <div class="row row-cols-3 row-cols-md-6 gy-2 gx-2">
+
+                @foreach (var product in homeProducts)
+                {
+                    <div class="col">
+                        <div class="card h-100 w-100" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                            <div class="text-center">
+                                <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" />
+                            </div>
+                            <div class="p-2">
+                                @if (product.OnSale)
+                                {
+                                    <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <p class="mb-2 " style="line-height:1rem; max-height:2rem; overflow:hidden; text-overflow:ellipsis">@product.Name</p>
+                                    <div>
+                                        <span class="text-primary">￥ @product.OnSalePrice </span>
+                                        <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <p class="mb-2 text-wrap" style="line-height:1rem; max-height:2rem; overflow:hidden; ">@product.Name</p>
+                                    <span class="text-primary">￥ @product.Price </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+     @*Personal care section*@
+    @if (personalCareProducts.Count() > 0)
+    {
+        <div class="my-3">
+            <div>
+                <h5 role="button" onclick="location.href='@Url.Action("List","Product",new{category="PersonalCare", tab="category"})'">Personal Care <i class="bi bi-box-arrow-up-right text-success"></i></h5>
+            </div>
+            <div class="row row-cols-3 row-cols-md-6 gy-2 gx-2">
+
+                @foreach (var product in personalCareProducts)
+                {
+                    <div class="col">
+                        <div class="card h-100 w-100" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                            <div class="text-center">
+                                <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" />
+                            </div>
+                            <div class="p-2">
+                                @if (product.OnSale)
+                                {
+                                    <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <p class="mb-2 " style="line-height:1rem; max-height:2rem; overflow:hidden; text-overflow:ellipsis">@product.Name</p>
+                                    <div>
+                                        <span class="text-primary">￥ @product.OnSalePrice </span>
+                                        <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <p class="mb-2 text-wrap" style="line-height:1rem; max-height:2rem; overflow:hidden; ">@product.Name</p>
+                                    <span class="text-primary">￥ @product.Price </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+     @*Beauty section*@
+    @if (beautyProducts.Count() > 0)
+    {
+        <div class="my-3">
+            <div>
+                <h5 role="button" onclick="location.href='@Url.Action("List","Product",new{category="Beauty", tab="category"})'">Beauty <i class="bi bi-box-arrow-up-right text-success"></i></h5>
+            </div>
+            <div class="row row-cols-3 row-cols-md-6 gy-2 gx-2">
+
+                @foreach (var product in beautyProducts)
+                {
+                    <div class="col">
+                        <div class="card h-100 w-100" role="button" onclick="location.href='@(Url.Action("Show","Product",new{id=product.Id}))'">
+                            <div class="text-center">
+                                <img class="card-img-top img-adjusted" src="@product.ProfilePictureUrl" alt="@product.Name" />
+                            </div>
+                            <div class="p-2">
+                                @if (product.OnSale)
+                                {
+                                    <span class="badge bg-warning" style="font-size:xx-small">On Sale</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <p class="mb-2 " style="line-height:1rem; max-height:2rem; overflow:hidden; text-overflow:ellipsis">@product.Name</p>
+                                    <div>
+                                        <span class="text-primary">￥ @product.OnSalePrice </span>
+                                        <span class="text-decoration-line-through" style="font-size:x-small"> ￥ @product.Price</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class='badge bg-success @(product.InStock? "":"d-none")' style="font-size: xx-small">In Stock</span>
+                                    <span class="badge bg-danger @(product.HotSale? "":"d-none")" style="font-size: xx-small">Hot Sale</span>
+                                    <p class="mb-2 text-wrap" style="line-height:1rem; max-height:2rem; overflow:hidden; ">@product.Name</p>
+                                    <span class="text-primary">￥ @product.Price </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 </div>
 
-<partial name="_BottomNavigationBarPartial" />
 
+
+<partial name="_BottomNavigationBarPartial" />

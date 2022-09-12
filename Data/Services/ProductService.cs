@@ -61,5 +61,7 @@ namespace TuantuanShop.Data.Services
 
             return filteredProducts;
         }
+
+        public async Task<IEnumerable<Product>> GetNewArrivalProducts() => await _context.Products.Where(p => p.Disabled == false).OrderByDescending(p => p.Id).Take(7).ToListAsync();
     }
 }

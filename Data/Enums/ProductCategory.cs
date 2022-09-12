@@ -11,7 +11,7 @@ namespace TuantuanShop.Data.Enums
         Vitamins,
         Home,
         [Display(Name = "Personal Care")]
-        PersonCare,
+        PersonalCare,
         Beauty
     }
 }
