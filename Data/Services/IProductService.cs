@@ -15,6 +15,7 @@ namespace TuantuanShop.Data.Services
         Task<IEnumerable<Product>> GetEnabledProductsByBrandId(int brandId);
         Task<IEnumerable<Product>> GetEnabledHotSaleProducts();
         Task<IEnumerable<Product>> GetEnabledInStockProducts();
+        Task<IEnumerable<Product>> GetEnabledOnSaleProducts();
         IEnumerable<ProductForListViewModel> FilterProducts(IEnumerable<ProductForListViewModel> products, string filters);
         Task<IEnumerable<Product>> GetNewArrivalProducts();
     }

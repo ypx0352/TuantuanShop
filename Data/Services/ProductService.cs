@@ -37,9 +37,16 @@ namespace TuantuanShop.Data.Services
             return brand.Products.Where(p => p.Disabled == false).ToList();
         }
 
+        //public async Task<IEnumerable<Product>> GetSameBrandProducts(int brandId, int productId)
+        //{
+
+        //}
+
         public async Task<IEnumerable<Product>> GetEnabledHotSaleProducts() => await _context.Products.Where(p => p.HotSale == true && p.Disabled == false).ToListAsync();
 
         public async Task<IEnumerable<Product>> GetEnabledInStockProducts() => await _context.Products.Where(p => p.InStock == true && p.Disabled == false).ToListAsync();
+
+        public async Task<IEnumerable<Product>> GetEnabledOnSaleProducts() => await _context.Products.Where(p => p.OnSale == true && p.Disabled == false).ToListAsync();
 
         public IEnumerable<ProductForListViewModel> FilterProducts(IEnumerable<ProductForListViewModel> products, string filters)
         {

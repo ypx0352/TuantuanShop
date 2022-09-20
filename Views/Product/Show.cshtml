@@ -2,207 +2,399 @@
 @model ProductShowViewModel
 @{
     ViewData["Title"] = Model.Product.Name;
+    var product = Model.Product;
+    var hotsaleProducts = Model.HotSaleProducts;
 }
 
-<div class="container p-2">
-    <div class="row justify-content-center align-items-start">
-        <div class="col-12 col-md-10 align-items-start">
+<style>
+    .qty-btn:focus {
+        box-shadow: none;
+    }
 
-            <div class="row">
-                <div class="col-12 col-md-5" style="min-height:360px">
-                    <div class="text-md-start text-center">
-                        <img src="@Model.Product.ProfilePictureUrl" alt="@Model.Product.Name" style="max-width:100%" />
-                    </div>
-                </div>
+    .button-primary {
+        cursor: pointer;
+        color: #FFFFFF;
+        background-color: #FD8D83;
+        height: 45px;
+        border: none;
+        padding: 0 22px;
+        line-height: 16px;
+        text-align: center;
+        box-shadow: none;
+        transition: 0.7s;
+    }
 
-                <div class="col-12 col-md-7 position-relative">
-                    <div class="mt-3 mt-md-0">
-                        <div>
-                            <span class='badge bg-warning @(Model.Product.OnSale? "":"d-none")' style="font-size: small"><i class="bi bi-gem"></i> On Sale</span>
-                            <span class='badge bg-danger @(Model.Product.HotSale? "":"d-none")' style="font-size: small"><i class="bi bi-fire"></i> Hot Sale</span>
-                            <span class='badge bg-success @(Model.Product.InStock? "":"d-none")' style="font-size: small"><i class="bi bi-shop"></i> In Stock</span>
-                            <span class='badge bg-dark @(Model.Product.Disabled? "":"d-none")' style="font-size: small">Disabled</span>
-                        </div>
-                        <div style="font-size:x-large; overflow-wrap: break-word">
-                            @Model.Product.Name
-                        </div>
-                        <div style="color:firebrick">@Model.Product.Subtitle</div>
-                        <div class="mt-md-3">
-                            @if (Model.Product.OnSale)
-                            {
-                                <span style="font-size:x-large; color:firebrick">￥ @Model.Product.OnSalePrice</span>
-                                <sapn class="text-decoration-line-through mx-2">Was ￥ @Model.Product.Price</sapn>
-                            }
-                            else
-                            {
-                                <sapn style="font-size:x-large; color:firebrick">￥ @Model.Product.Price</sapn>
-                            }
-                            <div class="card mt-3" role="button" onclick="location.href='@Url.Action("Show","Brand", new{id=Model.Product.Brand.Id})'">
-                                <div class="card-body">
-                                    <sapn class="card-title">Brand: <b>@Model.Product.Brand.Name</b></sapn>
-                                    <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
-                                </div>
-                            </div>
-                            <div class='card mt-3 @(Model.Product.InStock ? "":"d-none")' role="button" onclick="location.href='@Url.Action("InStockList","Product")'">
-                                <div class="card-body">
-                                    <sapn class="card-title">In Store Qty: <b>@Model.Product.InStockQty</b></sapn>
-                                    <span class="float-end"><i class="bi bi-binoculars"></i> Learn more></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        .button-primary:hover {
+            opacity: 0.8;
+            transition: 0.7s;
+        }
 
-                    <div class="col-md-12 d-md-block d-none mt-2 position-absolute bottom-0  btn-group">
-                        <a class="btn btn-danger">Buy</a>
-                        <a class="btn btn-primary">Add to Cart</a>
-                        <a class="btn btn-outline-warning text-danger" style="font-size:large"><i class="bi bi-star"></i></a>
-                    </div>
-                </div>
+    .button-secondary {
+        cursor: pointer;
+        color: #181818;
+        background-color: transparent;
+        border: 1px black solid;
+        height: 45px;
+        padding: 0 22px;
+        line-height: 16px;
+        text-align: center;
+        box-shadow: none;
+        transition: 0.7s;
+    }
 
-                @*Mobile only shopping menu *@
-                <div class="fixed-bottom d-block d-md-none">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <div class="row ">
-                                <div class="col-4 my-auto " style="font-size:small">
-                                    <a role="button"><i class="bi bi-house-door"> </i><p class="d-inline">Home</p> </a>
-                                    <a role="button"><i class="bi bi-cart4"></i> <p class="d-inline">Cart</p></a>
-                                </div>
-                                <div class="col-8 my-auto">
-                                    <div class="btn-group w-100">
-                                        <a class="btn btn-danger">Buy</a>
-                                        <a class="btn btn-primary">Add to cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        .button-secondary:hover {
+            background-color: #181818;
+            color: #FFF;
+            transition: 0.7s;
+        }
 
-            @*InStock card*@
-            <div class="alert alert-primary mt-3 @(Model.Product.InStock == true? "":"d-none")" role="alert">
-                <p><i class="bi bi-info-circle"></i> <strong>In Stock Notice</strong></p>
-                This product has been shipped to the domestic location and will be shipped from there, eliminating the wait time for international shipping and customs clearance. Please note the quantity of items available for purchase.
-            </div>
+    #back-to-top-btn {
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        display: none;
+        z-index: 99;
+    }
 
-            @*Introduction *@
-            <div class="mt-5">
-                <div class="border-bottom">
-                    <span style="font-size:large; background-color:firebrick; color:white">Introduction</span>
-                </div>
-                <div class="text-center col-12 col-md-10 mt-3 mx-auto">
-                    <img style=" max-width:100%" src="@Model.Product.IntroductionPictureUrl" alt="introduction picture" />
-                </div>
-            </div>
+        #back-to-top-btn:hover {
+            opacity: 0.8;
+        }
 
-            @*Mobile only hot sale products *@
-            <div class="d-block d-md-none my-3">
-                <div class="card">
-                    <div class="card-header" role="button" onclick="location.href='@Url.Action("HotSaleList","Product")'">
-                        <span class="text-center text-danger h5"><i class="bi bi-fire"></i> Hot sale</span>
-                        <span class="float-end"><i class="bi bi-binoculars"></i> Learn more >></span>
-                    </div>
-                    <div class="card-body">
-                        <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                            <div class="carousel-indicators">
-                                @for (int i = 0; i < (int)Math.Ceiling((double)Model.HotSaleProducts.Count() / 2); i++)
-                                {
-                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to=@i class='@(i == 0? "active":"")' aria-current="true" aria-label="Slide 1"></button>
+        #back-to-top-btn:focus {
+            box-shadow: none;
+        }
 
-                                }
-                            </div>
-                            <div class="carousel-inner">
-                                @for (int i = 0; i < Model.HotSaleProducts.Count(); i += 2)
-                                {
-                                    var product1 = Model.HotSaleProducts.ElementAtOrDefault(i);
-                                    var product2 = Model.HotSaleProducts.ElementAtOrDefault(i + 1);
+    .nav-link, .nav-link:hover, .nav-link:focus {
+        color: #181818;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 1px;
+        padding: 0;
+        display: inline-block;
+    }
 
-                                    <div class='carousel-item @(i == 0? "active":"")'>
-                                        <div class="row mb-5">
-                                            <div class="col">
-                                                <div class="text-center" role="button" onclick="location.href = '@(Url.Action("Show", new { id = product1.Id}))'">
-                                                    <img src="@product1.ProfilePictureUrl" alt="@product1.Name" style="max-width:100%; object-fit:contain">
-                                                    <span class='badge bg-warning @(product1.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
-                                                    <span class='badge bg-success @(product1.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
-                                                    <p class="text-nowrap overflow-hidden my-0">@product1.Name</p>
-                                                    @if (product1.OnSale)
-                                                    {
-                                                        <p>
-                                                            <span class="text-danger">￥ @product1.OnSalePrice</span>
-                                                            <span class="mx-1 text-decoration-line-through small ">￥ @product1.Price</span>
-                                                        </p>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="text-danger">￥ @product1.Price</span>
-                                                    }
-                                                </div>
-                                            </div>
+        .nav-link.active {
+            border-bottom: 3px solid black;
+        }
 
-                                            <div class="col">
-                                                @if (product2 != null)
-                                                {
-                                                    <div class="text-center" role="button" onclick="location.href = '@(Url.Action("Show", new { id = product2.Id}))'">
-                                                        <img src="@product2.ProfilePictureUrl" alt="@product2.Name" style="max-width:100%; object-fit:contain">
-                                                        <span class='badge bg-warning @(product2.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
-                                                        <span class='badge bg-success @(product2.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
-                                                        <p class="text-nowrap overflow-hidden my-0">@product2.Name</p>
-                                                        @if (product2.OnSale)
-                                                        {
-                                                            <p>
-                                                                <span class="text-danger">￥ @product2.OnSalePrice</span>
-                                                                <span class="mx-1 text-decoration-line-through small ">￥ @product2.Price</span>
-                                                            </p>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="text-danger">￥ @product2.Price</span>
-                                                        }
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div></div>
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
+            .nav-link.active.nav-link:hover {
+                border-bottom: none;
+            }
+
+        .nav-link:after {
+            display: block;
+            content: '';
+            border-bottom: 3px solid black;
+            transform: scaleX(0);
+            transition: transform 250ms ease-in-out;
+        }
+
+        .nav-link:hover:after {
+            transform: scaleX(1);
+        }
+
+    #relevent-nav-list {
+        align-items: flex-end;
+        overflow-x: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+        #relevent-nav-list::-webkit-scrollbar {
+            display: none;
+        }
+
+    #relevent-content-list {
+        overflow: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+        #relevent-content-list::-webkit-scrollbar {
+            display: none;
+        }
+
+</style>
+
+
+
+<div class="container-fluid" style="background-color:#fdfbf8">
+    @*Profile section*@
+    <div class="row row-cols-1 row-cols-lg-2">
+        <div class="col d-lg-none pt-5">
+            @*Mobole: title, subtitle and price is beyond the profile picture*@
+            <div class="text-center">
+                <h1>@product.Name</h1>
+                <p style="color:#FD8D83">@product.Subtitle</p>
+                @if (product.OnSale)
+                {
+                    <span>￥ @product.OnSalePrice</span>
+                    <span class="text-decoration-line-through">￥ @product.Price</span>
+                }
+                else
+                {
+                    <p>￥ @product.Price</p>
+                }
+                <div class="pt-3">
+                    <span class='badge bg-warning @(Model.Product.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
+                    <span class='badge bg-danger @(Model.Product.HotSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-fire"></i> Hot Sale</span>
+                    <span class='badge bg-success @(Model.Product.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
+                    <span class='badge bg-dark @(Model.Product.Disabled? "":"d-none")' style="font-size: x-small">Disabled</span>
                 </div>
             </div>
-
         </div>
 
-        @*Hot Sale Colomn*@
-        <div class="col-md-2 d-md-block d-none border py-2">
-            <h5 class="text-center text-danger" role="button" onclick="location.href='@Url.Action("HotSaleList","Product")'"><i class="bi bi-fire"></i> Hot sale</h5>
-            @foreach (var hotSaleProduct in Model.HotSaleProducts)
-            {
-                <div class="text-center my-2" role="button" onclick="location.href = '@(Url.Action("Show", new { id = hotSaleProduct.Id}))'">
-                    <img src="@hotSaleProduct.ProfilePictureUrl" alt="@hotSaleProduct.Name" style="max-width:100%; object-fit:contain">
-                    <span class='badge bg-warning @(hotSaleProduct.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
-                    <span class='badge bg-success @(hotSaleProduct.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
-                    <p class="text-nowrap overflow-hidden my-0 text-truncate">@hotSaleProduct.Name</p>
-                    @if (hotSaleProduct.OnSale)
-                    {
-                        <p>
-                            <span class="text-danger">￥ @hotSaleProduct.OnSalePrice</span>
-                            <span class="mx-1 text-decoration-line-through small">￥ @hotSaleProduct.Price</span>
-                        </p>
-                    }
-                    else
-                    {
-                        <span class="text-danger">￥ @hotSaleProduct.Price</span>
-                    }
+        <div class="col">
+            @* Profile picture*@
+            <div class="text-center p-5 sticky-lg-top" style="top:300px">
+                <img class="img-fluid w-100" src="@product.ProfilePictureUrl" alt="@product.Name" />
+            </div>
+        </div>
+
+        <div class="col">
+            @*Qty input and buttons*@
+            <div class="text-center d-none d-lg-block pt-5">
+                @*Desktop: title, subtitle and price is at the top of input and buttons*@
+                <h1>@product.Name</h1>
+                <p style="color:#FD8D83">@product.Subtitle</p>
+                @if (product.OnSale)
+                {
+                    <span>￥ @product.OnSalePrice</span>
+                    <span class="text-decoration-line-through">￥ @product.Price</span>
+                }
+                else
+                {
+
+                    <p>￥ @product.Price</p>
+                }
+                <div class="pt-3">
+                    <span class='badge bg-warning @(Model.Product.OnSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-gem"></i> On Sale</span>
+                    <span class='badge bg-danger @(Model.Product.HotSale? "":"d-none")' style="font-size: x-small"><i class="bi bi-fire"></i> Hot Sale</span>
+                    <span class='badge bg-success @(Model.Product.InStock? "":"d-none")' style="font-size: x-small"><i class="bi bi-shop"></i> In Stock</span>
+                    <span class='badge bg-dark @(Model.Product.Disabled? "":"d-none")' style="font-size: x-small">Disabled</span>
                 </div>
+            </div>
+
+            @*Instock qty*@
+            @if (product.InStock)
+            {
+                <p class="text-center pt-3" style="color:#FD8D83">Domestic Stocks Qty: @product.InStockQty</p>
             }
+
+            @*Qty input*@
+            <div class="text-center pt-3">
+                <div class="d-flex justify-content-between align-items-center border bg-white">
+                    <button id="minusQtyBtn" class="btn disabled qty-btn" style="padding:1px 6px; font-size:x-large" onclick="minusQty()"><i class="bi bi-dash"></i></button>
+                    <div>Qty <span id="qtyNumber">1</span></div>
+                    <button class="btn qty-btn" style="padding:1px 6px; font-size:x-large; " onclick="plusQty()"><i class="bi bi-plus"></i></button>
+                </div>
+            </div>
+
+            @*Buttons*@
+            <div class="row row-cols-2 mt-3 gx-1">
+                <div class="col">
+                    <button class="button-secondary w-100">ADD TO WISHLIST</button>
+                </div>
+                <div class="col">
+                    <button class="button-primary w-100">ADD TO BAG</button>
+                </div>
+            </div>
+
+            @*Instock notice & brand info*@
+            <div class="pt-3">
+                @*InStock notice*@
+                @if (product.InStock)
+                {
+                    <div>
+                        <hr />
+                        <div class="btn w-100 p-0 collapseComponent-indicator" data-bs-toggle="collapse" data-bs-target="#collapseInStockNotice" aria-expanded="false" aria-controls="collapseInStockNotice" onclick="changeCollapseIcon(this)">
+                            <span class="float-start" style="font-size:18px; color:#181818">In Stock Notice</span>
+                            <span class="float-end" id="collapseIcon" style="color:#FD8D83"><i class="bi bi-caret-down"></i></span>
+                        </div>
+                        <div class="collapse pt-2 collapseComponent-content" id="collapseInStockNotice">
+                            <p>
+                                This product has been shipped to the domestic location and will be shipped from there, eliminating the wait time for international shipping and customs clearance. Please note the quantity of items available for purchase.
+                            </p>
+                        </div>
+                    </div>
+                }
+
+                @*Brand info*@
+                @if (product.Brand.IntroductionText != null)
+                {
+                    <div>
+                        <hr />
+                        <div class="btn w-100 p-0 collapseComponent-indicator" data-bs-toggle="collapse" data-bs-target="#collapseBrandInfo" aria-expanded="false" aria-controls="collapseBrandInfo" onclick="changeCollapseIcon(this)">
+                            <span class="float-start" style="font-size:18px; color:#181818">Brand Details</span>
+                            <span class="float-end" id="collapseIcon" style="color:#FD8D83"><i class="bi bi-caret-down"></i></span>
+                        </div>
+                        <div class="collapse pt-2 collapseComponent-content" id="collapseBrandInfo">
+                            <p>@product.Brand.IntroductionText</p>
+                        </div>
+                    </div>
+                }
+
+                @*Shipment info*@
+                <div>
+                    <hr />
+                    <div class="btn w-100 p-0 collapseComponent-indicator" data-bs-toggle="collapse" data-bs-target="#collapseShippingInfo" aria-expanded="false" aria-controls="collapseShippingInfo" onclick="changeCollapseIcon(this)">
+                        <span class="float-start" style="font-size:18px; color:#181818">Free Shipping</span>
+                        <span class="float-end" id="collapseIcon" style="color:#FD8D83"><i class="bi bi-caret-down"></i></span>
+                    </div>
+                    <div class="collapse pt-2" id="collapseShippingInfo">
+                        <p>Free shipping</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
+
+    @*Product introduction section*@
+    <div class="text-center pt-5">
+        <p class="text-uppercase" style="font-size:14px; color:#181818; border-bottom:2px solid #181818">introduction</p>
+        <img class="img-fluid" src="@product.IntroductionPictureUrl" alt="@product.Name" />
+    </div>
+
+    @*Relevent products section*@
+    <div class="pt-5">
+        <div>
+            @*Tabs*@
+            <div class="d-flex justify-content-between" style="border-bottom: 1px solid rgba(33,37,41,.25);">
+                <div role="button" id="relevent-nav-list-scroll-bar-left-btn" onclick='scrollToLeft("#relevent-nav-list")' style="padding-right:10px"><i class="bi bi-chevron-left"></i></div>
+                <ul class="nav nav-fill  flex-nowrap" id="relevent-nav-list">
+                    <li class="nav-item @(Model.ThisBrandProducts.Count() == 0? "d-none":"")" style="margin:0 26px 0 34px" onclick='{ backToLeft(); hideScrollBtn("#relevent-content-list") }'>
+                        <a class="active nav-link text-uppercase text-nowrap" data-bs-toggle="tab" href="#thisBrand">more from the brand</a>
+                    </li>
+                    <li class="nav-item @(Model.InStockProducts.Count() == 0? "d-none":"")" style="margin-right:26px" onclick='{ backToLeft(); hideScrollBtn("#relevent-content-list") }'>
+                        <a class="nav-link text-uppercase text-nowrap" data-bs-toggle="tab" href="#inStock">more from domestic stocks</a>
+                    </li>
+                    <li class="nav-item @(Model.HotSaleProducts.Count() == 0? "d-none":"")" style="margin-right:26px" onclick='{ backToLeft(); hideScrollBtn("#relevent-content-list") }'>
+                        <a class="nav-link text-uppercase text-nowrap" data-bs-toggle="tab" href="#hotSale">our top picks</a>
+                    </li>
+                    <li class="nav-item @(Model.OnSaleProducts.Count() == 0? "d-none":"")" style="margin-right:34px" onclick='{ backToLeft(); hideScrollBtn("#relevent-content-list") }'>
+                        <a class="nav-link text-uppercase text-nowrap" data-bs-toggle="tab" href="#onSale">on sale products</a>
+                    </li>
+                </ul>
+                <div role="button" id="relevent-nav-list-scroll-bar-right-btn" style="padding-left:10px" onclick='scrollToRight("#relevent-nav-list")'><i class="bi bi-chevron-right"></i></div>
+            </div>
+
+            @*Content*@
+            <div class="d-flex justify-content-between align-items-center pt-3">
+                <div role="button" id="relevent-content-list-scroll-bar-left-btn" onclick='scrollToLeft("#relevent-content-list")' style="padding-right:10px"><i class="bi bi-chevron-left h3"></i></div>
+                <div class="tab-content" id="relevent-content-list">
+                    <div class="tab-pane active" id="thisBrand">
+                        <partial name="_ShowSlideBarProductListPartial" model="@Model.ThisBrandProducts">
+                    </div>
+                    <div class="tab-pane" id="inStock">
+                        <partial name="_ShowSlideBarProductListPartial" model="@Model.InStockProducts">
+                    </div>
+                    <div class="tab-pane" id="hotSale">
+                        <partial name="_ShowSlideBarProductListPartial" model="@Model.HotSaleProducts">
+                    </div>
+                    <div class="tab-pane" id="onSale">
+                        <partial name="_ShowSlideBarProductListPartial" model="@Model.OnSaleProducts">
+                    </div>
+                </div>
+                <div role="button" id="relevent-content-list-scroll-bar-right-btn" style="padding-left:10px" onclick='scrollToRight("#relevent-content-list")'><i class="bi bi-chevron-right h3"></i></div>
+            </div>
+        </div>
+    </div>
+
+
+    @*Back to top*@
+    <button class="btn" onclick="backToTop()" id="back-to-top-btn"><i class="bi bi-arrow-up-square-fill" style="color:#FD8D83; font-size:30px"></i></button>
+
+
 </div>
 
+@section Scripts{
+    <script>
+        function minusQty() {
+            var qty = Number($("#qtyNumber").text());
+            qty -= 1;
+            $("#qtyNumber").text(qty);
+            if (qty == 1) {
+                $("#minusQtyBtn").addClass("disabled");
+            }
+        }
 
+        function plusQty() {
+            var qty = Number($("#qtyNumber").text());
+            qty += 1;
+            $("#qtyNumber").text(qty);
+            $("#minusQtyBtn").removeClass("disabled");
+        }
 
+        function changeCollapseIcon(el) {
+            if ($(el).attr("aria-expanded") == "false") {
+                $(el).children("#collapseIcon").children().removeClass("bi-caret-up");
+                $(el).children("#collapseIcon").children().addClass("bi-caret-down");
+            } else {
+                $(el).children("#collapseIcon").children().removeClass("bi-caret-down");
+                $(el).children("#collapseIcon").children().addClass("bi-caret-up");
+            }
+        }
+
+        function showFirstCollapse() {
+            var firstCollapseComponentIndicator = $(".collapseComponent-indicator").first();
+            $(firstCollapseComponentIndicator).click();
+            changeCollapseIcon(firstCollapseComponentIndicator);
+        }
+
+        $(document).ready(() => { showFirstCollapse(); hideScrollBtn("#relevent-nav-list"); hideScrollBtn("#relevent-content-list") });
+        $(window).resize(() => { hideScrollBtn("#relevent-nav-list"); hideScrollBtn("#relevent-content-list") });
+
+        function scroll() {
+            var myButton = $("#back-to-top-btn");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                myButton.css("display", "block");
+            } else {
+                myButton.css("display", "none");
+            }
+        }
+
+        window.onscroll = function() { scroll() };
+
+        function backToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        function scrollToLeft(containerId) {
+            var leftValue = $(containerId).scrollLeft();
+            $(containerId).animate({ scrollLeft: leftValue - 200 }, 800);
+        }
+
+        function scrollToRight(containerId) {
+            var leftValue = $(containerId).scrollLeft();
+            $(containerId).animate({ scrollLeft: leftValue + 200 }, 800);
+        }
+
+        function backToLeft() {
+            $("#relevent-content-list").animate({ scrollLeft: 0 }, 800);
+        }
+
+        $("#relevent-nav-list").scroll(() => hideScrollBtn("#relevent-nav-list"));
+        $("#relevent-content-list").scroll(() => hideScrollBtn("#relevent-content-list"));
+
+        function hideScrollBtn(listId) {
+            var leftValue = $(listId).scrollLeft();
+            if (leftValue == 0) {
+                $(`${listId}-scroll-bar-left-btn`).css({ "opacity": "0", "transition": "0.8s" })
+            } else {
+                $(`${listId}-scroll-bar-left-btn`).css({ "opacity": "1", "transition": "0.8s" })
+            }
+            // the whole width of list should be the result of adding scrollbar (visible) width and scrollLeft (invisible) width
+            var contentWidth = $(listId).get(0).scrollWidth;
+            var scrollbarWidth = $(listId).width();
+            if (leftValue + scrollbarWidth >= contentWidth - 1) {
+                $(`${listId}-scroll-bar-right-btn`).css({ "opacity": "0", "transition": "0.8s" })
+            } else {
+                $(`${listId}-scroll-bar-right-btn`).css({ "opacity": "1", "transition": "0.8s" })
+            }
+        }
+    </script>
+}
+
+ 

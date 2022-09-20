@@ -200,7 +200,10 @@ namespace TuantuanShop.Controllers
             var viewModel = new ProductShowViewModel()
             {
                 Product = product,
-                HotSaleProducts = (await _productService.GetEnabledHotSaleProducts()).Select(product => new ProductForListViewModel(product))
+                HotSaleProducts = (await _productService.GetEnabledHotSaleProducts()).Take(12).Select(product => new ProductForListViewModel(product)),
+                ThisBrandProducts = (await _productService.GetEnabledProductsByBrandId(product.Brand.Id)).Where(p => p.Id != product.Id).Take(12).Select(product => new ProductForListViewModel(product)),
+                InStockProducts = (await _productService.GetEnabledInStockProducts()).Where(p => p.Id != product.Id).Take(12).Select(product => new ProductForListViewModel(product)),
+                OnSaleProducts = (await _productService.GetEnabledOnSaleProducts()).Take(12).Select(product => new ProductForListViewModel(product)),
             };
             return View(viewModel);
         }
