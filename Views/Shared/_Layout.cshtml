@@ -11,6 +11,14 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -38,7 +46,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="InStockList"><i class="bi bi-shop text-success"></i> In Stock</a>
-                        </li>                        
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Management" asp-action="Index"><i class="bi bi-gear text-warning"></i> Management</a>
                         </li>
@@ -57,7 +65,7 @@
         <div class="container">
             &copy; 2022 - TuantuanShop - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>    
+    </footer>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

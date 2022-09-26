@@ -3,8 +3,7 @@
 namespace TuantuanShop.Data.Enums
 {
     public enum ProductCategory
-    {
-       // All = 0,
+    {       
         Formula = 1,
         [Display(Name = "Baby Care")]
         BabyCare,

@@ -1,0 +1,32 @@
+﻿@using TuantuanShop.ViewModels
+@model IEnumerable<ProductForListViewModel>
+
+
+<ul class="flex-nowrap nav nav-fill">
+    @foreach (var product in Model)
+    {
+
+       
+        <li class="border" style="width:623px; margin-right:18px">
+            <div class="row" style="width:490px; height:220px; padding-right:20px">
+                <div class="col-12 col-lg-6">
+                    <img style="max-width:100%; height:auto" src="@product.ProfilePictureUrl" alt="@product.Name">
+                </div>
+                <div class="col-12 col-lg-6 position-relative">
+                    <div>
+                        <p>@product.BrandName</p>
+                        <p>@product.Name</p>
+                        <div class="position-absolute bottom-0">
+                            <p>Shop Now</p>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </li>
+    }
+</ul>

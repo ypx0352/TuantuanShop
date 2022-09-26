@@ -59,67 +59,6 @@ namespace TuantuanShop.Controllers
             return View(products);
         }
 
-        //public async Task<IActionResult> IndexCategoryTab(ProductCategory category, bool returnAll, string filters = "")
-        //{
-        //    IEnumerable<ProductForListViewModel> products;
-
-        //    if (filters == null)
-        //    {
-        //        filters = "";
-        //    }
-
-        //    if (category == 0 || returnAll)
-        //    {
-        //        products = (await _productService.GetAllAsync()).Select(product => new ProductForListViewModel(product));
-        //        ViewData["ReturnAll"] = true;
-        //        category = 0;
-        //    }
-        //    else
-        //    {
-        //        products = (await _productService.GetProductsByCategory(category)).Select(product => new ProductForListViewModel(product));
-        //        ViewData["ReturnAll"] = false;
-        //    }
-        //    ViewData["Filters"] = filters;
-
-        //    if (filters.Trim().Length > 0)
-        //    {
-        //        products = _productService.FilterProducts(products, filters);
-        //    }
-
-        //    return View("IndexCategoryTab", new ProductIndexCategoryTabViewModel(products, category));
-        //}
-
-        //public async Task<IActionResult> IndexBrandTab(int brandId, bool returnAll, string filters)
-        //{
-        //    IEnumerable<ProductForListViewModel> products;
-
-        //    if (filters == null)
-        //    {
-        //        filters = "";
-        //    }
-
-        //    var brands = (await _brandService.GetAllAsync()).Select(brand => new ProductBrandForSidebarModelView(brand));
-        //    if (brandId == 0 || returnAll)
-        //    {
-        //        products = (await _productService.GetAllAsync()).Select(product => new ProductForListViewModel(product));
-        //        ViewData["ReturnAll"] = true;
-        //        brandId = 0;
-        //    }
-        //    else
-        //    {
-        //        products = (await _productService.GetProductsByBrandId(brandId)).Select(product => new ProductForListViewModel(product));
-        //        ViewData["ReturnAll"] = false;
-        //    }
-        //    ViewData["Filters"] = filters;
-
-        //    if (filters.Trim().Length > 0)
-        //    {
-        //        products = _productService.FilterProducts(products, filters);
-        //    }
-
-        //    return View("IndexBrandTab", new ProductIndexBrandTabViewModel(products, brands, brandId));
-        //}
-
         public async Task<IActionResult> Create(ProductCategory category = 0, int brandId = 0, string tab = "category", string callerController = "Product")
         {
             var brands = (await _brandService.GetAllAsync()).Select(brand => new BrandNameViewModel(brand));

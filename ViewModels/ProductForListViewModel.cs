@@ -6,6 +6,8 @@ namespace TuantuanShop.ViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public string Subtitle { get; }
+        public string SubTitle { get; set; } = string.Empty;
         public bool OnSale { get; set; }
         public double Price { get; set; }
         public double? OnSalePrice { get; set; }
@@ -13,21 +15,26 @@ namespace TuantuanShop.ViewModels
         public bool InStock { get; set; }
         public bool HotSale { get; set; }
         public bool Disabled { get; set; }
+        public string BrandName { get; set; }
+        public int BrandId { get; set; }
 
-        public ProductForListViewModel(int id, string name, bool onSale, double? price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale, bool disabled)
+        public ProductForListViewModel(int id, string name, string subtitle, bool onSale, double? price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale, bool disabled, string brandName, int brandId)
         {
             Id = id;
             Name = name;
+            Subtitle = subtitle;
             OnSale = onSale;
             Price = price.GetValueOrDefault();
             OnSalePrice = onSalePrice;
             ProfilePictureUrl = profilePictureUrl;
             InStock = inStock;
             HotSale = hotSale;
-            Disabled = disabled;          
+            Disabled = disabled;
+            BrandName = brandName;
+            BrandId = brandId;
         }
 
-        public ProductForListViewModel(Product product) : this(product.Id, product.Name, product.OnSale, product.Price, product.OnSalePrice, product.ProfilePictureUrl, product.InStock, product.HotSale, product.Disabled) { }
+        public ProductForListViewModel(Product product) : this(product.Id, product.Name, product.Subtitle, product.OnSale, product.Price, product.OnSalePrice, product.ProfilePictureUrl, product.InStock, product.HotSale, product.Disabled, product.Brand.Name, product.Brand.Id) { }
 
 
     }

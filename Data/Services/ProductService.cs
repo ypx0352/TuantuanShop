@@ -19,11 +19,11 @@ namespace TuantuanShop.Data.Services
 
         public async Task<IEnumerable<Product>> GetAllEnabledFirstAsync() => await _context.Products.OrderBy(p => p.Disabled).ToListAsync();
 
-        public async Task<IEnumerable<Product>> GetEnabledAllAsync() => await _context.Products.Where(p => p.Disabled == false).ToListAsync();
+        public async Task<IEnumerable<Product>> GetEnabledAllAsync() => await _context.Products.Include(P => P.Brand).Where(p => p.Disabled == false).ToListAsync();
 
         public async Task<IEnumerable<Product>> GetProductsByCategory(ProductCategory category) => await _context.Products.Where(p => p.Category == category).OrderBy(p => p.Disabled).ToListAsync();
 
-        public async Task<IEnumerable<Product>> GetEnabledProductsByCategory(ProductCategory category) => await _context.Products.Where(p => p.Category == category && p.Disabled == false).ToListAsync();
+        public async Task<IEnumerable<Product>> GetEnabledProductsByCategory(ProductCategory category) => await _context.Products.Include(P => P.Brand).Where(p => p.Category == category && p.Disabled == false).ToListAsync();
 
         public async Task<IEnumerable<Product>> GetProductsByBrandId(int brandId)
         {
@@ -37,16 +37,11 @@ namespace TuantuanShop.Data.Services
             return brand.Products.Where(p => p.Disabled == false).ToList();
         }
 
-        //public async Task<IEnumerable<Product>> GetSameBrandProducts(int brandId, int productId)
-        //{
+        public async Task<IEnumerable<Product>> GetEnabledHotSaleProducts() => await _context.Products.Include(P =>P.Brand).Where(p => p.HotSale == true && p.Disabled == false).ToListAsync();
 
-        //}
+        public async Task<IEnumerable<Product>> GetEnabledInStockProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.InStock == true && p.Disabled == false).ToListAsync();
 
-        public async Task<IEnumerable<Product>> GetEnabledHotSaleProducts() => await _context.Products.Where(p => p.HotSale == true && p.Disabled == false).ToListAsync();
-
-        public async Task<IEnumerable<Product>> GetEnabledInStockProducts() => await _context.Products.Where(p => p.InStock == true && p.Disabled == false).ToListAsync();
-
-        public async Task<IEnumerable<Product>> GetEnabledOnSaleProducts() => await _context.Products.Where(p => p.OnSale == true && p.Disabled == false).ToListAsync();
+        public async Task<IEnumerable<Product>> GetEnabledOnSaleProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.OnSale == true && p.Disabled == false).ToListAsync();
 
         public IEnumerable<ProductForListViewModel> FilterProducts(IEnumerable<ProductForListViewModel> products, string filters)
         {
@@ -69,6 +64,6 @@ namespace TuantuanShop.Data.Services
             return filteredProducts;
         }
 
-        public async Task<IEnumerable<Product>> GetNewArrivalProducts() => await _context.Products.Where(p => p.Disabled == false).OrderByDescending(p => p.Id).Take(7).ToListAsync();
+        public async Task<IEnumerable<Product>> GetNewArrivalProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.Disabled == false).OrderByDescending(p => p.Id).Take(7).ToListAsync();
     }
 }
