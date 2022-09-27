@@ -32,8 +32,9 @@ namespace TuantuanShop.Controllers
             var banners = await _bannerService.GetBannersByLocation(BannerLocation.Home);
             var hotSaleProducts = (await _productService.GetEnabledHotSaleProducts()).Select(product => new ProductForListViewModel(product)).ToList();
             var newArrivalProducts = (await _productService.GetNewArrivalProducts()).Select(product => new ProductForListViewModel(product)).ToList();
+            var inStockProducts = (await _productService.GetEnabledInStockProducts()).Select(product => new ProductForListViewModel(product)).ToList();
            
-            var viewModel = new HomeIndexViewModel(banners,hotSaleProducts, newArrivalProducts);
+            var viewModel = new HomeIndexViewModel(banners,hotSaleProducts, newArrivalProducts, inStockProducts);
             return View(viewModel);
         }
 
