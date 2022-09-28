@@ -8,8 +8,6 @@
 }
 
 <style>
-
-
     #top-picks-slider-wrapper {
         width: 100%;
         overflow-x: scroll;
@@ -32,14 +30,13 @@
         opacity: 0;
         transform: translate(0, 10vh);
         transition: all 0.5s ease;
-        transition-delay: 0.2s;
+        transition-delay: 0.3s;
     }
 
         .top-picks-slider-element.visible {
             opacity: 1;
             transform: translate(0, 0);
         }
-
 
         .top-picks-slider-element:hover {
             background-color: rgba(241, 185, 169,0.3);
@@ -67,6 +64,29 @@
     .top-picks-slider-element:hover .shop-now:after {
         transform: scaleX(1);
         transform-origin: bottom left;
+    }
+
+    .content-container-new {
+        opacity: 0;
+        transform: translate(-10vw, 0);
+        transition: all 0.5s ease;
+    }
+
+    .content-container-onsale {
+        opacity: 0;
+        transform: translate(10vw, 0);
+        transition: all 0.5s ease;
+    }
+
+    .content-container-instock {
+        opacity: 0;
+        transform: translate(0, 10vh);
+        transition: all 0.5s ease;
+    }
+
+    .content-container.visible {
+        opacity: 1;
+        transform: translate(0, 0);
     }
 
     .content-title-section {
@@ -118,25 +138,61 @@
     .content-wrapper:hover .overlay {
         opacity: 1;
     }
-     
-   
 
-  @@media only screen and (max-width: 576px){
-      .instock-content-wrapper{
-          background-color:inherit;
-      }
-  }
+    @@media only screen and (max-width: 576px) {
+        .instock-content-wrapper {
+            background-color: inherit;
+        }
+    }
 
-   @@media only screen and (min-width: 576px){
-      .instock-content-wrapper{
-          background-color:white;
-      }
-  }
+    @@media only screen and (min-width: 576px) {
+        .instock-content-wrapper {
+            background-color: white;
+        }
+    }
+
+    .category-overlay-block {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: black;
+        opacity: 0.3;
+    }
+
+    .category-overlay-text {
+        position: absolute;
+        bottom: 10%;
+        left: 15%;
+        color: white;
+    }
+
+    .category-img {
+        transition: all 0.8s;
+    }
+
+    .category-slider-element:hover .category-img {
+        transform: scale(1.1);
+    }
+
+    .category-slider-element:hover .category-overlay-text {
+        color: #F58E88;
+    }
+
+    .category-slider-element:hover .category-overlay-block {
+        opacity: 0;
+    }
+
+    .category-slider-element:hover #category-shop-now-arrow {
+        transform: translate(20px);
+        transition: transform 0.8s;
+    }
 
 </style>
 
 <div class="container-fluid pb-5 pb-md-1">
-    @*Banner row*@
+    @*Banner section*@
     @if (Model.Banners.Count() > 0)
     {
         <div>
@@ -160,12 +216,12 @@
     }
 
 
-    @*Top picks*@
+    @*Top picks section*@
     @if (Model.HotSaleProducts.Count() > 0)
     {
         <div class="mt-5">
             @*Title row*@
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between pb-lg-3">
                 <h2>Top Picks</h2>
                 <p><i class="bi bi-chevron-left" id="scroller-left-btn" role="button" onclick="scrollerToLeft()" style="font-size:20px"></i> <i class="bi bi-chevron-right" id="scroller-right-btn" role="button" onclick="scrollerToRight()" style="padding-left:5px; font-size:20px"></i></p>
             </div>
@@ -200,7 +256,7 @@
         <div class="row">
             @*New Arrivial section*@
             <div class="col col-12 col-sm-6">
-                <div class="content-container">
+                <div class="content-container content-container-new">
                     <div class="content-wrapper" style="padding-left:5%" role="button" onclick="location.href='@Url.Action("List","Product")'">
                         <div style="padding:0 10%">
                             <div class="position-relative overflow-hidden">
@@ -227,7 +283,7 @@
 
             @*Onsale Section*@
             <div class="col col-12 col-sm-6 pt-5 pt-sm-0 ps-sm-5">
-                <div class="content-container">
+                <div class="content-container content-container-onsale">
                     <div class="content-wrapper" role="button" onclick="location.href='@Url.Action("List","Product")'">
                         <div class="content-title-section">
                             <div class="d-flex align-items-center justify-content-between">
@@ -260,28 +316,30 @@
             @if (Model.InStockProducts.Count() > 0)
             {
                 <div class="col col-md-10 col-md-offset-1" style="margin: 50px auto">
-                    <div class="content-wrapper instock-content-wrapper pe-0"  role="button" onclick="location.href='@Url.Action("List","Product")'">
-                        <div class="row">
-                            <div class="col col-12 col-sm-6">
-                                <div style="padding-right:10%">
-                                    <div class="position-relative overflow-hidden">
-                                        <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw3801ac4a/images/homepage/2022/october/WK1/t3-market-leaders@1x.jpg" alt="New Arrival" />
-                                        <div class="overlay d-flex justify-content-center align-items-center img-fluid">
-                                            <span class="text-uppercase">shop now</span>
+                    <div class="content-container content-container-instock">
+                        <div class="content-wrapper instock-content-wrapper pe-0" role="button" onclick="location.href='@Url.Action("List","Product")'">
+                            <div class="row">
+                                <div class="col col-12 col-sm-6">
+                                    <div style="padding-right:10%">
+                                        <div class="position-relative overflow-hidden">
+                                            <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw3801ac4a/images/homepage/2022/october/WK1/t3-market-leaders@1x.jpg" alt="New Arrival" />
+                                            <div class="overlay d-flex justify-content-center align-items-center img-fluid">
+                                                <span class="text-uppercase">shop now</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col col-12 col-sm-6">
-                                <div>
-                                    <div class="content-title-section pt-sm-5 pt-0">
-                                        <span style="font-size:12px; margin:0">03</span>
-                                        <p>Early departure for the unknown</p>
-                                    </div>
-                                    <p class="context-text">Get ready for a month of beauty like no other, featuring new arrivals from our biggest brands.</p>
-                                    <div class="shop-now-section mt-5">
-                                        <span class="text-uppercase" style="margin-right:20px;" id="shop-now-text">shop now</span>
-                                        <i class="bi bi-arrow-right h5 d-inline-block me-3" id="shop-now-arrow"></i>
+                                <div class="col col-12 col-sm-6">
+                                    <div>
+                                        <div class="content-title-section pt-sm-5 pt-0">
+                                            <span style="font-size:12px; margin:0">03</span>
+                                            <p>Early departure for the unknown</p>
+                                        </div>
+                                        <p class="context-text">Get ready for a month of beauty like no other, featuring new arrivals from our biggest brands.</p>
+                                        <div class="shop-now-section mt-5">
+                                            <span class="text-uppercase" style="margin-right:20px;" id="shop-now-text">shop now</span>
+                                            <i class="bi bi-arrow-right h5 d-inline-block me-3" id="shop-now-arrow"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -293,72 +351,187 @@
         </div>
     </div>
 
-    @section Scripts{
-        <script>
-            $(document).ready(function() { changeSliderElementWidth(); scrollerElementFadeIn(); disableSliderButton(); changeSliderElementTextPadding(); });
-            $(window).resize(function() { changeSliderElementWidth(); changeSliderElementTextPadding(); });
-            $("#top-picks-slider-wrapper").on("scroll", function() { scrollerElementFadeIn(); disableSliderButton(); });
+    @*Shop by category section*@
+    <div class="category-container mt-5">
+        <div class="category-wrapper">
+            @*Title row*@
+            <div class="pb-lg-3">
+                <h2>Shop by category</h2>
+            </div>
 
-            function changeSliderElementWidth() {
-                if ($(window).width() >= 992) {
-                    $(".top-picks-slider-element").css("width", "40vw");
-                } else {
-                    $(".top-picks-slider-element").css("width", "20vw")
+            @*Slider row*@
+            <div class="category-wrapper">
+                <div class="row gy-2 gx-1">
+                    <div class="col-6 col-lg-4">
+                        <div class="category-slider-element position-relative overflow-hidden">
+                            <img class="w-100 category-img" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw4491220e/images/homepage/2022/october/WK1/homepage_cycler_online_only_mobile.jpg" alt="Formula" />
+                            <div class="category-overlay-block"></div>
+                            <div class="category-overlay-text">
+                                <h1>Formula</h1>
+                                <div class="mt-2">
+                                    <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop now</span>
+                                    <i class="bi bi-arrow-right d-inline-block" id="category-shop-now-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-4">
+                        <div class="category-slider-element position-relative overflow-hidden">
+                            <img class="w-100 category-img" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dwbd4f33b8/images/homepage/2022/october/WK1/homepage_cycler_candles_and_home_fragrance_desktop.jpg" alt="Baby Care" />
+                            <div class="category-overlay-block"></div>
+                            <div class="category-overlay-text">
+                                <h1>Baby Care</h1>
+                                <div class="mt-2">
+                                    <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop now</span>
+                                    <i class="bi bi-arrow-right d-inline-block" id="category-shop-now-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-4">
+                        <div class="category-slider-element position-relative overflow-hidden">
+                            <img class="w-100 category-img" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw7c344da6/images/homepage/2022/october/WK1/homepage_cycler_facial_masks_desktop.jpg" alt="Vitamins" />
+                            <div class="category-overlay-block"></div>
+                            <div class="category-overlay-text">
+                                <h1>Vitamins</h1>
+                                <div class="mt-2">
+                                    <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop now</span>
+                                    <i class="bi bi-arrow-right d-inline-block" id="category-shop-now-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-4">
+                        <div class="category-slider-element position-relative overflow-hidden">
+                            <img class="w-100 category-img" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw4dc64ba9/images/homepage/2022/october/WK1/homepage_cycler_foundation_desktop.jpg" alt="Home" />
+                            <div class="category-overlay-block"></div>
+                            <div class="category-overlay-text">
+                                <h1>Home</h1>
+                                <div class="mt-2">
+                                    <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop now</span>
+                                    <i class="bi bi-arrow-right d-inline-block" id="category-shop-now-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-4">
+                        <div class="category-slider-element position-relative overflow-hidden">
+                            <img class="w-100 category-img" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw4491220e/images/homepage/2022/october/WK1/homepage_cycler_online_only_mobile.jpg" alt="Personal Care" />
+                            <div class="category-overlay-block"></div>
+                            <div class="category-overlay-text">
+                                <h1>Personal Care</h1>
+                                <div class="mt-2">
+                                    <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop now</span>
+                                    <i class="bi bi-arrow-right d-inline-block" id="category-shop-now-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-4">
+                        <div class="category-slider-element position-relative overflow-hidden">
+                            <img class="w-100 category-img" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw4491220e/images/homepage/2022/october/WK1/homepage_cycler_online_only_mobile.jpg" alt="Beauty" />
+                            <div class="category-overlay-block"></div>
+                            <div class="category-overlay-text">
+                                <h1>Beauty</h1>
+                                <div class="mt-2">
+                                    <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop now</span>
+                                    <i class="bi bi-arrow-right d-inline-block" id="category-shop-now-arrow"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function() { changeSliderElementWidth(); scrollerElementFadeIn(); disableSliderButton(); changeSliderElementTextPadding(); });
+        $(window).resize(function() { changeSliderElementWidth(); changeSliderElementTextPadding(); });
+        $(window).on("scroll", function() { contentContainerFadeIn(); });
+        $("#top-picks-slider-wrapper").on("scroll", function() { scrollerElementFadeIn(); disableSliderButton(); });
+
+        function changeSliderElementWidth() {
+            if ($(window).width() >= 992) {
+                $(".top-picks-slider-element").css("width", "40vw");
+            } else {
+                $(".top-picks-slider-element").css("width", "20vw")
+            }
+        }
+
+        function changeSliderElementTextPadding() {
+            if ($(window).width() >= 992) {
+                $(".top-picks-slider-element-text").css("padding", "10px 100px 0 40px");
+            } else {
+                $(".top-picks-slider-element-text").css("padding", "20px 40px 0 0")
+            }
+        }
+
+        function scrollerToLeft() {
+            var leftValue = $("#top-picks-slider-wrapper").scrollLeft();
+            var eachElementWidth = $(".top-picks-slider-element").width() + 15;
+            $("#top-picks-slider-wrapper").animate({ scrollLeft: leftValue - eachElementWidth }, 500);
+        }
+
+        function scrollerToRight() {
+            var leftValue = $("#top-picks-slider-wrapper").scrollLeft();
+            var eachElementWidth = $(".top-picks-slider-element").width() + 15;
+            $("#top-picks-slider-wrapper").animate({ scrollLeft: leftValue + eachElementWidth }, 500);
+        }
+
+        function scrollerElementFadeIn() {
+            var elements = $(".top-picks-slider-element")
+            var scrollerWrapperWidth = $("#top-picks-slider-wrapper").innerWidth();
+            var scrollerWrapperScrollLeft = $("#top-picks-slider-wrapper").scrollLeft();
+            for (var i = 0; i < elements.length; i++) {
+                var element = elements[i];
+                var elementOffsetLeft = $(element).offset().left;
+                var elementEnter = elementOffsetLeft >= 0 && elementOffsetLeft <= scrollerWrapperWidth;
+                if (elementEnter) {
+                    $(element).addClass("visible");
                 }
             }
+        }
 
-            function changeSliderElementTextPadding() {
-                if ($(window).width() >= 992) {
-                    $(".top-picks-slider-element-text").css("padding", "10px 100px 0 40px");
-                } else {
-                    $(".top-picks-slider-element-text").css("padding", "20px 40px 0 0")
+        function disableSliderButton() {
+            var contentWidth = $("#top-picks-slider-wrapper").get(0).scrollWidth;
+            var scrollerWrapperScrollLeft = $("#top-picks-slider-wrapper").scrollLeft();
+            var scrollerWrapperWidth = $("#top-picks-slider-wrapper").innerWidth();
+            //disable scrollLeft button
+            if (scrollerWrapperScrollLeft == 0) {
+                $("#scroller-left-btn").css({ "opacity": "0", "transition": "0.8s" });
+            } else {
+                $("#scroller-left-btn").css({ "opacity": "1", "transition": "0.8s" });
+            }
+            //disable scrollRight button
+            if (scrollerWrapperScrollLeft + scrollerWrapperWidth >= contentWidth - 1) {
+                $("#scroller-right-btn").css({ "opacity": "0", "transition": "0.8s" });
+            } else {
+                $("#scroller-right-btn").css({ "opacity": "1", "transition": "0.8s" });
+            }
+        }
+
+        function contentContainerFadeIn() {
+            var containers = $(".content-container");
+
+            for (var i = 0; i < containers.length; i++) {
+                var windowHeight = window.innerHeight;
+                var containerTop = containers[i].getBoundingClientRect().top;
+                var containerVisible = 300;
+                console.log("windowHeight: ", windowHeight);
+                console.log(i, "containerTop: ", containerTop);
+                if (windowHeight - containerTop >= containerVisible) {
+                    $(containers[i]).addClass("visible");
                 }
-            }
 
-            function scrollerToLeft() {
-                var leftValue = $("#top-picks-slider-wrapper").scrollLeft();
-                var eachElementWidth = $(".top-picks-slider-element").width() + 15;
-                $("#top-picks-slider-wrapper").animate({ scrollLeft: leftValue - eachElementWidth }, 500);
             }
-
-            function scrollerToRight() {
-                var leftValue = $("#top-picks-slider-wrapper").scrollLeft();
-                var eachElementWidth = $(".top-picks-slider-element").width() + 15;
-                $("#top-picks-slider-wrapper").animate({ scrollLeft: leftValue + eachElementWidth }, 500);
-            }
-
-            function scrollerElementFadeIn() {
-                var elements = $(".top-picks-slider-element")
-                var scrollerWrapperWidth = $("#top-picks-slider-wrapper").innerWidth();
-                var scrollerWrapperScrollLeft = $("#top-picks-slider-wrapper").scrollLeft();
-                for (var i = 0; i < elements.length; i++) {
-                    var element = elements[i];
-                    var elementOffsetLeft = $(element).offset().left;
-                    var elementEnter = elementOffsetLeft >= 0 && elementOffsetLeft <= scrollerWrapperWidth;
-                    if (elementEnter) {
-                        $(element).addClass("visible");
-                    }
-                }
-            }
-
-            function disableSliderButton() {
-                var contentWidth = $("#top-picks-slider-wrapper").get(0).scrollWidth;
-                var scrollerWrapperScrollLeft = $("#top-picks-slider-wrapper").scrollLeft();
-                var scrollerWrapperWidth = $("#top-picks-slider-wrapper").innerWidth();
-                //disable scrollLeft button
-                if (scrollerWrapperScrollLeft == 0) {
-                    $("#scroller-left-btn").css({ "opacity": "0", "transition": "0.8s" });
-                } else {
-                    $("#scroller-left-btn").css({ "opacity": "1", "transition": "0.8s" });
-                }
-                //disable scrollRight button
-                if (scrollerWrapperScrollLeft + scrollerWrapperWidth >= contentWidth - 1) {
-                    $("#scroller-right-btn").css({ "opacity": "0", "transition": "0.8s" });
-                } else {
-                    $("#scroller-right-btn").css({ "opacity": "1", "transition": "0.8s" });
-                }
-            }
-        </script>
+        }
+    </script>
     }
 
 
@@ -368,4 +541,4 @@
 
 
 
-        @*<partial name="_BottomNavigationBarPartial" />*@
+    @*<partial name="_BottomNavigationBarPartial" />*@
