@@ -123,6 +123,7 @@
     .overlay {
         position: absolute;
         bottom: 0;
+        right: 0;
         background-color: rgba(245,142,136,0.8);
         color: white;
         width: 100%;
@@ -189,6 +190,83 @@
         transition: transform 0.8s;
     }
 
+    /* less than lg*/
+    @@media only screen and (max-width: 992px) {
+        .brand-section-content::after {
+        }
+    }
+
+    /* greater than lg*/
+    @@media only screen and (min-width: 992px) {
+        .brand-section-content::after {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            content: "";
+            background-color: black;
+            height: 100%;
+            width: 1.5px;
+        }
+    }
+
+    .brand-section-content {
+    }
+
+    .brand-section-title {
+        padding-bottom: 20px;
+        opacity: 0;
+        transform: translate(0, -10vh);
+        transition: all 0.8s ease-out;
+    }
+
+        .brand-section-title.visible {
+            padding-bottom: 20px;
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+    .brand-right {
+        opacity: 0;
+        transform: translate(10vw, 0);
+        transition: all 0.8s ease-out;
+    }
+
+        .brand-right.visible {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+    .brand-left {
+        opacity: 0;
+        transform: translate(-10vw, 0);
+        transition: all 0.8s ease-out;
+    }
+
+        .brand-left.visible {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+    .brand-section-content {
+        position: relative;
+    }
+
+    .brand-title {
+        font-size: 36px;
+    }
+
+    .brand-item {
+        padding: 10% 0;
+    }
+
+        .brand-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .brand-item:hover #shop-arrow {
+            transform: translate(20px);
+            transition: transform 0.8s;
+        }
 </style>
 
 <div class="container-fluid pb-5 pb-md-1">
@@ -265,7 +343,6 @@
                                     <span class="text-uppercase">shop new</span>
                                 </div>
                             </div>
-
                         </div>
                         <div class="content-title-section">
                             <p style="font-size:12px; margin:0">01</p>
@@ -276,7 +353,6 @@
                             <span class="text-uppercase" style="margin-right:20px;" id="shop-now-text">shop new</span>
                             <i class="bi bi-arrow-right h5 d-inline-block" id="shop-now-arrow"></i>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -347,7 +423,6 @@
                     </div>
                 </div>
             }
-
         </div>
     </div>
 
@@ -355,7 +430,7 @@
     <div class="category-container mt-5">
         <div class="category-wrapper">
             @*Title row*@
-            <div class="pb-lg-3">
+            <div class="pb-3">
                 <h2>Shop by category</h2>
             </div>
 
@@ -442,11 +517,71 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 
+    @*Brand section*@
+    <div class="brand-section-container mt-5">
+        <div class="brand-section-wrapper">
+            <div class="brand-section-title">
+                <h1 class="text-center">Brand names to know</h1>
+            </div>
+            <div class="brand-section-content">
+                @*First brand item*@
+                <div class="row gx-0 gy-3 brand-item">
+                    <div class="col col-12 col-lg-6">
+                        <div class="brand-left ps-lg-5 ps-0">
+                            <div class="position-relative">
+                                <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw18a4a656/images/homepage/2022/october/WK1/bbtk-cosmetics-27@xl.jpg" alt="A2" />
+                                <div class="overlay d-flex justify-content-center align-items-center">
+                                    <span class="text-uppercase">shop a2</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col col-12 col-lg-6">
+                        <div class="brand-right ps-lg-5 ps-0">
+                            <h5 class="brand-name text-uppercase">A2</h5>
+                            <h3 class="brand-title pb-3 pb-lg-5">Luxuriously nourishing skincare</h3>
+                            <p class="brand-info pb-3">French pharmacist Michèle Evrard proves the power of plant-derived ingredients in her pioneering cosmeceutical skincare brand, Cosmetics 27. Your stressed-out skin will thank you!</p>
+                            <div class="mt-2" style="color: #F58E88;">
+                                <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop A2</span>
+                                <i class="bi bi-arrow-right d-inline-block" id="shop-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Second brand item*@
+                <div class="row gx-0 gy-3 brand-item">
+                    <div class="col col-12 col-lg-6 order-last order-lg-first">
+                        <div class="brand-left pe-lg-5 pe-0">
+                            <h5 class="brand-name text-uppercase">swisse</h5>
+                            <h3 class="brand-title pb-3 pb-lg-5">The beauty of two words</h3>
+                            <p class="brand-info pb-3">Wild Himalayan herbs meet Swiss botanicals in Abhati Suisse’s supercharged formulas for body, face and hair. And, behind every product is an act of kindness to people and planet. </p>
+                            <div class="mt-2" style="color: #F58E88;">
+                                <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop swisse</span>
+                                <i class="bi bi-arrow-right d-inline-block" id="shop-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-lg-6 order-first order-lg-last">
+                        <div class="pe-0 pe-lg-5">
+                            <div class="brand-right pe-lg-5 pe-o">
+                                <div class="position-relative">
+                                    <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dwb279ff03/images/homepage/2022/october/WK1/bbtk-abhati-suisse@xl.jpg" alt="Swisse" />
+                                    <div class="overlay d-flex justify-content-center align-items-center">
+                                        <span class="text-uppercase">shop swisse</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{
@@ -517,28 +652,15 @@
         }
 
         function contentContainerFadeIn() {
-            var containers = $(".content-container");
-
+            var containers = $(".content-container, .brand-left, .brand-right, .brand-section-title");
             for (var i = 0; i < containers.length; i++) {
                 var windowHeight = window.innerHeight;
                 var containerTop = containers[i].getBoundingClientRect().top;
                 var containerVisible = 300;
-                console.log("windowHeight: ", windowHeight);
-                console.log(i, "containerTop: ", containerTop);
                 if (windowHeight - containerTop >= containerVisible) {
                     $(containers[i]).addClass("visible");
                 }
-
             }
         }
     </script>
     }
-
-
-
-
-
-
-
-
-    @*<partial name="_BottomNavigationBarPartial" />*@
