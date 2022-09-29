@@ -209,9 +209,6 @@
         }
     }
 
-    .brand-section-content {
-    }
-
     .brand-section-title {
         padding-bottom: 20px;
         opacity: 0;
@@ -266,6 +263,57 @@
         .brand-item:hover #shop-arrow {
             transform: translate(20px);
             transition: transform 0.8s;
+        }
+
+    .icon {
+        font-size: 30px;
+    }
+
+    .icon-item-1 {
+        opacity: 0;
+        transform: translate(0, 10vh);
+        transition: all 0.8s ease-out;
+    }
+
+        .icon-item-1.visible {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+    .icon-item-2 {
+        opacity: 0;
+        transform: translate(0, 10vh);
+        transition: all 0.8s ease-out;
+        transition-delay: 0.1s;
+    }
+
+        .icon-item-2.visible {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+    .icon-item-3 {
+        opacity: 0;
+        transform: translate(0, 10vh);
+        transition: all 0.8s ease-out;
+        transition-delay: 0.2s;
+    }
+
+        .icon-item-3.visible {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+    .icon-item-4 {
+        opacity: 0;
+        transform: translate(0, 10vh);
+        transition: all 0.8s ease-out;
+        transition-delay: 0.3s;
+    }
+
+        .icon-item-4.visible {
+            opacity: 1;
+            transform: translate(0, 0);
         }
 </style>
 
@@ -522,61 +570,92 @@
 
     @*Brand section*@
     <div class="brand-section-container mt-5">
-        <div class="brand-section-wrapper">
-            <div class="brand-section-title">
-                <h1 class="text-center">Brand names to know</h1>
-            </div>
-            <div class="brand-section-content">
-                @*First brand item*@
-                <div class="row gx-0 gy-3 brand-item">
-                    <div class="col col-12 col-lg-6">
-                        <div class="brand-left ps-lg-5 ps-0">
-                            <div class="position-relative">
-                                <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw18a4a656/images/homepage/2022/october/WK1/bbtk-cosmetics-27@xl.jpg" alt="A2" />
-                                <div class="overlay d-flex justify-content-center align-items-center">
-                                    <span class="text-uppercase">shop a2</span>
-                                </div>
+        <div class="brand-section-title">
+            <h1 class="text-center">Brand names to know</h1>
+        </div>
+        <div class="brand-section-content">
+            @*First brand item*@
+            <div class="row gx-0 gy-3 brand-item">
+                <div class="col col-12 col-lg-6">
+                    <div class="brand-left ps-lg-5 ps-0">
+                        <div class="position-relative">
+                            <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw18a4a656/images/homepage/2022/october/WK1/bbtk-cosmetics-27@xl.jpg" alt="A2" />
+                            <div class="overlay d-flex justify-content-center align-items-center">
+                                <span class="text-uppercase">shop a2</span>
                             </div>
+                        </div>
 
+                    </div>
+                </div>
+                <div class="col col-12 col-lg-6">
+                    <div class="brand-right ps-lg-5 ps-0">
+                        <h5 class="brand-name text-uppercase">A2</h5>
+                        <h3 class="brand-title pb-3 pb-lg-5">Luxuriously nourishing skincare</h3>
+                        <p class="brand-info pb-3">French pharmacist Michèle Evrard proves the power of plant-derived ingredients in her pioneering cosmeceutical skincare brand, Cosmetics 27. Your stressed-out skin will thank you!</p>
+                        <div class="mt-2" style="color: #F58E88;">
+                            <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop A2</span>
+                            <i class="bi bi-arrow-right d-inline-block" id="shop-arrow"></i>
                         </div>
                     </div>
-                    <div class="col col-12 col-lg-6">
-                        <div class="brand-right ps-lg-5 ps-0">
-                            <h5 class="brand-name text-uppercase">A2</h5>
-                            <h3 class="brand-title pb-3 pb-lg-5">Luxuriously nourishing skincare</h3>
-                            <p class="brand-info pb-3">French pharmacist Michèle Evrard proves the power of plant-derived ingredients in her pioneering cosmeceutical skincare brand, Cosmetics 27. Your stressed-out skin will thank you!</p>
-                            <div class="mt-2" style="color: #F58E88;">
-                                <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop A2</span>
-                                <i class="bi bi-arrow-right d-inline-block" id="shop-arrow"></i>
+                </div>
+            </div>
+
+            @*Second brand item*@
+            <div class="row gx-0 gy-3 brand-item">
+                <div class="col col-12 col-lg-6 order-last order-lg-first">
+                    <div class="brand-left pe-lg-5 pe-0">
+                        <h5 class="brand-name text-uppercase">swisse</h5>
+                        <h3 class="brand-title pb-3 pb-lg-5">The beauty of two words</h3>
+                        <p class="brand-info pb-3">Wild Himalayan herbs meet Swiss botanicals in Abhati Suisse’s supercharged formulas for body, face and hair. And, behind every product is an act of kindness to people and planet. </p>
+                        <div class="mt-2" style="color: #F58E88;">
+                            <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop swisse</span>
+                            <i class="bi bi-arrow-right d-inline-block" id="shop-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-12 col-lg-6 order-first order-lg-last">
+                    <div class="pe-0 pe-lg-5">
+                        <div class="brand-right pe-lg-5 pe-o">
+                            <div class="position-relative">
+                                <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dwb279ff03/images/homepage/2022/october/WK1/bbtk-abhati-suisse@xl.jpg" alt="Swisse" />
+                                <div class="overlay d-flex justify-content-center align-items-center">
+                                    <span class="text-uppercase">shop swisse</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                @*Second brand item*@
-                <div class="row gx-0 gy-3 brand-item">
-                    <div class="col col-12 col-lg-6 order-last order-lg-first">
-                        <div class="brand-left pe-lg-5 pe-0">
-                            <h5 class="brand-name text-uppercase">swisse</h5>
-                            <h3 class="brand-title pb-3 pb-lg-5">The beauty of two words</h3>
-                            <p class="brand-info pb-3">Wild Himalayan herbs meet Swiss botanicals in Abhati Suisse’s supercharged formulas for body, face and hair. And, behind every product is an act of kindness to people and planet. </p>
-                            <div class="mt-2" style="color: #F58E88;">
-                                <span class="text-uppercase" style="margin-right:10px;" id="shop-now-text">shop swisse</span>
-                                <i class="bi bi-arrow-right d-inline-block" id="shop-arrow"></i>
-                            </div>
-                        </div>
+    @*Icon section*@
+    <div class="icon-container mt-5">
+        <h1 class="text-center">From Australia, to you</h1>
+        <div class="ps-lg-3 pe-lg-3 p-0 mt-5">
+            <div class="row row-cols-1 row-cols-lg-4 gy-3">
+                <div class="col">
+                    <div class="icon-item icon-item-1 d-flex flex-lg-column justify-content-lg-center align-items-center">
+                        <i class="bi bi-patch-check icon me-3 me-lg-0 mb-lg-2 mb-0"></i>
+                        <h5 class="text-center">Genuine product guarantee</h5>
                     </div>
-                    <div class="col col-12 col-lg-6 order-first order-lg-last">
-                        <div class="pe-0 pe-lg-5">
-                            <div class="brand-right pe-lg-5 pe-o">
-                                <div class="position-relative">
-                                    <img class="w-100" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dwb279ff03/images/homepage/2022/october/WK1/bbtk-abhati-suisse@xl.jpg" alt="Swisse" />
-                                    <div class="overlay d-flex justify-content-center align-items-center">
-                                        <span class="text-uppercase">shop swisse</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+                <div class="col">
+                    <div class="icon-item icon-item-2 d-flex flex-lg-column justify-content-lg-center align-items-center">
+                        <i class="bi bi-box2 icon me-3 me-lg-0 mb-lg-2 mb-0"></i>
+                        <h5 class="text-center">Direct shipping from Australia</h5>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="icon-item icon-item-3 d-flex flex-lg-column justify-content-lg-center align-items-center">
+                        <i class="bi bi-piggy-bank icon me-3 me-lg-0 mb-lg-2 mb-0"></i>
+                        <h5 class="text-center">Tuantuan loop rewards</h5>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="icon-item icon-item-4 d-flex flex-lg-column justify-content-lg-center align-items-center">
+                        <i class="bi bi-calendar-week icon me-3 me-lg-0 mb-lg-2 mb-0"></i>
+                        <h5 class="text-center">Customer trust for 2+ years</h5>
                     </div>
                 </div>
             </div>
@@ -652,11 +731,14 @@
         }
 
         function contentContainerFadeIn() {
-            var containers = $(".content-container, .brand-left, .brand-right, .brand-section-title");
+            var containers = $(".content-container, .brand-left, .brand-right, .brand-section-title, .icon-item");
             for (var i = 0; i < containers.length; i++) {
                 var windowHeight = window.innerHeight;
                 var containerTop = containers[i].getBoundingClientRect().top;
                 var containerVisible = 300;
+                if ($(containers[i]).hasClass("icon-item")) {
+                    containerVisible = 50;
+                }
                 if (windowHeight - containerTop >= containerVisible) {
                     $(containers[i]).addClass("visible");
                 }
