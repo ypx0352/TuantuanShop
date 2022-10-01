@@ -317,7 +317,7 @@
         }
 </style>
 
-<div class="container-fluid pb-5 pb-md-1">
+<div class="pb-5 pb-md-1">
     @*Banner section*@
     @if (Model.Banners.Count() > 0)
     {
@@ -345,7 +345,7 @@
     @*Top picks section*@
     @if (Model.HotSaleProducts.Count() > 0)
     {
-        <div class="mt-5">
+        <div class="mt-5 container-fluid">
             @*Title row*@
             <div class="d-flex justify-content-between pb-lg-3">
                 <h2>Top Picks</h2>
@@ -475,7 +475,7 @@
     </div>
 
     @*Shop by category section*@
-    <div class="category-container mt-5">
+    <div class="category-container mt-5 container-fluid">
         <div class="category-wrapper">
             @*Title row*@
             <div class="pb-3">
@@ -569,7 +569,7 @@
     </div>
 
     @*Brand section*@
-    <div class="brand-section-container mt-5">
+    <div class="brand-section-container mt-5 container-fluid">
         <div class="brand-section-title">
             <h1 class="text-center">Brand names to know</h1>
         </div>
@@ -603,7 +603,7 @@
             @*Second brand item*@
             <div class="row gx-0 gy-3 brand-item">
                 <div class="col col-12 col-lg-6 order-last order-lg-first">
-                    <div class="brand-left pe-lg-5 pe-0">
+                    <div class="brand-left pe-lg-5 pe-0 ps-lg-5 ps-0">
                         <h5 class="brand-name text-uppercase">swisse</h5>
                         <h3 class="brand-title pb-3 pb-lg-5">The beauty of two words</h3>
                         <p class="brand-info pb-3">Wild Himalayan herbs meet Swiss botanicals in Abhati Suisse’s supercharged formulas for body, face and hair. And, behind every product is an act of kindness to people and planet. </p>

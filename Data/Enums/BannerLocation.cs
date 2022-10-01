@@ -3,6 +3,8 @@
     public enum BannerLocation
     {
         Home = 1,
+        New,
+        Instock,
         Formula,
         Test
 

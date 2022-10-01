@@ -1,0 +1,175 @@
+﻿@using TuantuanShop.ViewModels
+@model ProductListViewModel
+
+@{
+    ViewData["Title"] = "New In";
+}
+
+<style>
+    .brand-slider-container {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        white-space: nowrap;
+    }
+
+    /* less than lg*/
+    @@media only screen and (max-width: 992px) {
+        .brand-slider-item-wrapper {
+            display: inline-block;
+            width: 50vw;
+            margin-right: 10px;
+        }
+    }
+
+    /* greater than lg*/
+    @@media only screen and (min-width: 992px) {
+        .brand-slider-item-wrapper {
+            display: inline-block;
+            width: 30vw;
+            margin-right: 10px;
+        }
+    }
+
+    .brand-name-block {
+        width: 60%;
+        height: 20%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: rgb(24,24,24);
+        color: rgb(255,255,255);
+        background: linear-gradient(to right, rgb(253, 141, 131) 50%, rgb(24,24,24) 50%);
+        background-size: 200% 100%;
+        background-position: right bottom;
+        margin-left: 10px;
+        transition: all 0.8s ease;
+    }
+
+    .brand-slider-item-wrapper:hover .brand-name-block {
+        background-position: left bottom;
+    }
+</style>
+
+<div>
+    @*Banner section*@
+    <div>
+        <div class="row g-0">
+            <div class="col col-12 col-lg-6 order-last order-lg-first">
+                <div class="w-100 h-100 d-flex justify-content-center align-items-center" style="background-color: rgb(183, 48, 49)">
+                    <div class="text-center pt-2 pb-2">
+                        <p class="text-uppercase">that new feeling</p>
+                        <h1 class="text-uppercase">new now wow</h1>
+                        <h5>Meet Tuantuan's latest arrivals</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-lg-6 order-first order-lg-last">
+                <div class="carousel-wrapper">
+                    <div id="carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @for (var i = 0; i < Model.Banners.Count(); i++)
+                            {
+                                <button type="button" data-bs-target="#carousel" data-bs-slide-to="@i" class="@(i == 0? "active": "")" aria-current="true" aria-label="Slide @i"></button>
+                            }
+                        </div>
+                        <div class="carousel-inner">
+                            @for (var i = 0; i < Model.Banners.Count(); i++)
+                            {
+                                <div class="carousel-item @(i == 0? "active":"")">
+                                    <img src="@Model.Banners.ElementAt(i).Url" class="d-block w-100" alt="@Model.Banners.ElementAt(i).Title">
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Breadcrumb section*@
+    <div class="container-fluid pt-3 pb-2" style="background-color:#F7F7F7">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a style="font-size:16px;color:#88888888;text-decoration:none" asp-action="Index" asp-controller="Home">Home</a></li>
+                <li class="breadcrumb-item active" style="font-size:16px;color:#88888888;text-decoration:none" aria-current="page">New</li>
+            </ol>
+        </nav>
+    </div>
+
+    @*New brand section*@
+    <div class="container-fluid mt-5">
+        <div class="d-flex justify-content-between pb-lg-3">
+            <h2>New brands at Tuantuan</h2>
+            <p><i class="bi bi-chevron-left" id="scroller-left-btn" role="button" onclick="scrollToLeft()" style="font-size:20px"></i> <i class="bi bi-chevron-right" id="scroller-right-btn" role="button" onclick="scrollToRight()" style="padding-left:5px; font-size:20px"></i></p>
+        </div>
+        <div class="brand-slider-container">
+            <div class="brand-slider-item-wrapper">
+                <div class="brand-slider-item position-relative">
+                    <img class="img-fluid" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw7ab76fa7/images/brand/brand-pages/emma-lewisham/emma-lewisham-square.jpg" alt="A2" />
+                    <div class="brand-name-block d-flex align-items-center justify-content-center ps-2 pe-2">
+                        <h5 class="text-uppercase m-0">A2</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="brand-slider-item-wrapper">
+                <div class="brand-slider-item position-relative">
+                    <img class="img-fluid" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw2b8f01fb/images/brand/brand-pages/murdock-london/murdock-london-square.jpg" alt="Swisse" />
+                    <div class="brand-name-block d-flex align-items-center justify-content-center ps-2 pe-2">
+                        <h5 class="text-uppercase m-0">swisse</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="brand-slider-item-wrapper">
+                <div class="brand-slider-item position-relative">
+                    <img class="img-fluid" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw67366f0d/images/brand/brand-pages/kit/kit-square.jpg" alt="other" />
+                    <div class="brand-name-block d-flex align-items-center justify-content-center ps-2 pe-2">
+                        <h5 class="text-uppercase m-0">other</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-slider-item-wrapper">
+                <div class="brand-slider-item position-relative">
+                    <img class="img-fluid" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw7ab76fa7/images/brand/brand-pages/emma-lewisham/emma-lewisham-square.jpg" alt="A2" />
+                    <div class="brand-name-block d-flex align-items-center justify-content-center ps-2 pe-2">
+                        <h5 class="text-uppercase m-0">A2</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="brand-slider-item-wrapper">
+                <div class="brand-slider-item position-relative">
+                    <img class="img-fluid" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw2b8f01fb/images/brand/brand-pages/murdock-london/murdock-london-square.jpg" alt="Swisse" />
+                    <div class="brand-name-block d-flex align-items-center justify-content-center ps-2 pe-2">
+                        <h5 class="text-uppercase m-0">swisse</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="brand-slider-item-wrapper">
+                <div class="brand-slider-item position-relative">
+                    <img class="img-fluid" src="https://www.mecca.com.au/on/demandware.static/-/Sites-MeccaAU-Library/default/dw67366f0d/images/brand/brand-pages/kit/kit-square.jpg" alt="other" />
+                    <div class="brand-name-block d-flex align-items-center justify-content-center ps-2 pe-2">
+                        <h5 class="text-uppercase m-0">other</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function scrollToLeft() {            
+            var leftValue = $(".brand-slider-container").scrollLeft();
+            var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
+            $(".brand-slider-container").animate({ scrollLeft: leftValue - eachElementWidth }, 500);
+        }
+
+        function scrollToRight() {
+             var leftValue = $(".brand-slider-container").scrollLeft();
+            var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
+            $(".brand-slider-container").animate({ scrollLeft: leftValue + eachElementWidth }, 500);
+        }
+    </script>
+}
+
