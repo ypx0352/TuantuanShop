@@ -5,7 +5,7 @@ using TuantuanShop.Data.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add Services
 builder.Services.AddScoped<IBrandService, BrandService>();
