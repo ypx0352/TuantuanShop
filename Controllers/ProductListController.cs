@@ -28,5 +28,10 @@ namespace TuantuanShop.Controllers
             var viewModel = new ProductListViewModel(banners, products);
             return View(viewModel);
         }
+
+        public async Task<IActionResult> Category(ProductCategory category)
+        {
+            return View();
+        }
     }
-}
+};

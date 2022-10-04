@@ -1,8 +1,19 @@
-﻿@using TuantuanShop.ViewModels
+﻿@using System;
+@using System.ComponentModel.DataAnnotations;
+@using System.Linq;
+@using System.Reflection;
+@using TuantuanShop.Data.Enums
+@using TuantuanShop.ViewModels
 @model ProductListViewModel
 
 @{
     ViewData["Title"] = "New In";
+    var categoryNames = "";
+    foreach (var name in Enum.GetNames(typeof(ProductCategory)))
+    {
+        categoryNames += name + " | ";
+    }
+    Console.WriteLine(categoryNames);
 }
 
 <style>
@@ -11,7 +22,13 @@
         overflow-y: hidden;
         width: 100%;
         white-space: nowrap;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
+
+        .brand-slider-container::-webkit-scrollbar {
+            display: none;
+        }
 
     /* less than lg*/
     @@media only screen and (max-width: 992px) {
@@ -49,6 +66,75 @@
     .brand-slider-item-wrapper:hover .brand-name-block {
         background-position: left bottom;
     }
+
+    .title a {
+        text-decoration: none;
+        color: #000000;
+        line-height: 2.5rem;
+    }
+
+    .sorter-dropdown {
+        border: 1px solid rgb(232,232,232);
+        padding: 1rem;
+        display: inline-block;
+        font-size: 1rem;
+        line-height: 1rem;
+        cursor: pointer;
+        transition: all 0.8s ease;
+    }
+
+    .sorter-icon {
+        color: #F58E88;
+        display: inline-block;
+        transition: transform 0.8s ease;
+    }
+
+    .sorter-content {
+        display: none;
+        transition: all 0.8s ease;
+    }
+
+    .sroter-item {
+        line-height: 16px;
+        cursor: pointer;
+    }
+
+    .sorter-item:hover {
+        color: #F58E88;
+    }
+
+    .sorter-dropdown:hover {
+        border: 1px solid black;
+        transition: all 0.8s ease;
+    }
+
+        .sorter-dropdown:hover .sorter-content {
+            display: block;
+            transition: all 0.8s ease;
+        }
+
+        .sorter-dropdown:hover .sorter-title {
+            padding-bottom: 1rem;
+            border-bottom: 0.5px solid #585857;
+        }
+
+        .sorter-dropdown:hover .sorter-icon {
+            transform: rotate(180deg);
+            transition: transform 0.8s ease;
+        }
+
+    .product-item-wrapper {
+        padding: 10px 10% 30px 10%;
+        height: 28rem;
+        border: 1px solid rgb(232,232,232);
+    }
+
+        .product-item-wrapper:hover .item-img {
+            transform: scale(1.1);
+            transition: transform 0.8s ease;
+            overflow: hidden;
+        }
+
 </style>
 
 <div>
@@ -100,8 +186,8 @@
     @*New brand section*@
     <div class="container-fluid mt-5">
         <div class="d-flex justify-content-between pb-lg-3">
-            <h2>New brands at Tuantuan</h2>
-            <p><i class="bi bi-chevron-left" id="scroller-left-btn" role="button" onclick="scrollToLeft()" style="font-size:20px"></i> <i class="bi bi-chevron-right" id="scroller-right-btn" role="button" onclick="scrollToRight()" style="padding-left:5px; font-size:20px"></i></p>
+            <h3>New brands at Tuantuan</h3>
+            <p class="pe-1"><i class="bi bi-chevron-left" id="scroller-left-btn" role="button" onclick="scrollToLeft()" style="font-size:20px"></i> <i class="bi bi-chevron-right" id="scroller-right-btn" role="button" onclick="scrollToRight()" style="padding-left:5px; font-size:20px"></i></p>
         </div>
         <div class="brand-slider-container">
             <div class="brand-slider-item-wrapper">
@@ -155,21 +241,123 @@
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts{
-    <script>
-        function scrollToLeft() {            
-            var leftValue = $(".brand-slider-container").scrollLeft();
-            var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
-            $(".brand-slider-container").animate({ scrollLeft: leftValue - eachElementWidth }, 500);
-        }
+    @*Title & category section*@
+    <div class="title container-fluid mt-5">
+        <h1>New</h1>
+        <div class="d-flex">
+            <div class="me-3" style="color:#888888; white-space:nowrap; line-height:2.5rem;">By category </div>
+            <div>
+                @foreach (var category in Enum.GetValues(typeof(ProductCategory)))
+                {
+                    var categoryName = category.GetType().GetMember(category.ToString()).First().GetCustomAttribute<DisplayAttribute>().GetName();
+                    <a asp-action="Category" asp-controller="ProductList" asp-route-category="@category">@categoryName</a> <span class="ms-1 me-1"> | </span>
+                }
+            </div>
+        </div>
+    </div>
 
-        function scrollToRight() {
-             var leftValue = $(".brand-slider-container").scrollLeft();
-            var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
-            $(".brand-slider-container").animate({ scrollLeft: leftValue + eachElementWidth }, 500);
-        }
-    </script>
-}
+    @*Sorter & list section*@
+    <div class="container-fluid mt-3">
+        @*Sorter*@
+        <div>
+            <div class="sorter-dropdown">
+                <div class="sorter-title">
+                    Sort by (Please Select One)
+                    <i class="bi bi-chevron-down ms-2 sorter-icon"></i>
+                </div>
+
+                <div class="sorter-content mt-3">
+                    <div class="sorter-item">A - Z</div>
+                    <div class="sorter-item mt-2">Z - A</div>
+                    <div class="sorter-item mt-2">Price (low to high)</div>
+                    <div class="sorter-item mt-2">Price (high to low)</div>
+                </div>
+            </div>
+        </div>
+
+        @*List*@
+        <div class="mt-3">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-0">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col">
+                        <div class="product-item-wrapper" role="button" onclick="location.href='@Url.Action("Show","Product",new{id=product.Id})'">
+                            <div class="d-flex flex-column justify-content-between h-100">
+                                <div>
+                                    <div class="text-center item-img">
+                                        <img class="w-100" style="max-width:200px" src="@product.ProfilePictureUrl" alt="@product.Name" />
+                                    </div>
+                                    <div class="mt-2 text-center">
+                                        <i class="bi bi-chat-square-heart-fill me-2 @(product.HotSale? "":"d-none")" style="font-size:0.8rem"> Top Picks</i>
+                                        <i class="bi bi-pin-map-fill @(product.InStock? "":"d-none")" style="font-size:0.8rem"> In Stock</i>
+                                    </div>
+                                    <div>
+                                        <div style="color:#181818;font-size:18px; margin: 20px 0 10px 0">@product.BrandName</div>
+                                        <div style="color:#666666;font-size:14px;line-height:1.5rem">@product.Name</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    @if (product.OnSale)
+                                    {
+                                        <div class="me-2" style="color:#F58E88;  font-weight:bold; display:inline-block">
+                                            ￥ @product.OnSalePrice
+                                        </div>
+                                        <div class="text-decoration-line-through d-inline-block" style="font-size:0.8rem">￥ @product.Price</div>
+                                    }
+                                    else
+                                    {
+                                        <div style="color:#181818; font-weight:bold">
+                                            ￥ @product.Price
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+    </div>
+
+    @section Scripts{
+        <script>
+            $(".brand-slider-container").on("scroll", function() { hideScrollBtn(); })
+            $(document).ready(function() { hideScrollBtn(); })
+
+            function scrollToLeft() {
+                var leftValue = $(".brand-slider-container").scrollLeft();
+                var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
+                $(".brand-slider-container").animate({ scrollLeft: leftValue - eachElementWidth }, 500);
+            }
+
+            function scrollToRight() {
+                var leftValue = $(".brand-slider-container").scrollLeft();
+                var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
+                $(".brand-slider-container").animate({ scrollLeft: leftValue + eachElementWidth }, 500);
+            }
+
+            function hideScrollBtn() {
+                var contentWidth = $(".brand-slider-container").get(0).scrollWidth;
+                var scrollerContainerScrollLeft = $(".brand-slider-container").scrollLeft();
+                var scrollerContainerWidth = $(".brand-slider-container").innerWidth();
+                //disable scrollLeft button
+                if (scrollerContainerScrollLeft == 0) {
+                    $("#scroller-left-btn").css({ "opacity": "0", "transition": "0.8s" });
+                } else {
+                    $("#scroller-left-btn").css({ "opacity": "1", "transition": "0.8s" });
+                }
+                //disable scrollRight button
+                if (scrollerContainerScrollLeft + scrollerContainerWidth >= contentWidth - 1) {
+                    $("#scroller-right-btn").css({ "opacity": "0", "transition": "0.8s" });
+                } else {
+                    $("#scroller-right-btn").css({ "opacity": "1", "transition": "0.8s" });
+                }
+            }
+        </script>
+    }
 
