@@ -18,5 +18,6 @@ namespace TuantuanShop.Data.Services
         Task<IEnumerable<Product>> GetEnabledOnSaleProducts();
         IEnumerable<ProductForListViewModel> FilterProducts(IEnumerable<ProductForListViewModel> products, string filters);
         Task<IEnumerable<Product>> GetNewArrivalProducts();
+        string GetFirstPinyin(string str);
     }
 }

@@ -20,11 +20,32 @@ namespace TuantuanShop.Controllers
             _bannerService = bannerService;
         }
 
-
-        public async Task<IActionResult> New()
-        {          
+        public async Task<IActionResult> New(SortOrder? sortOrder)
+        {
             var banners = await _bannerService.GetBannersByLocation(BannerLocation.New);
             var products = (await _productService.GetNewArrivalProducts()).Select(product => new ProductForListViewModel(product));
+            if (sortOrder != null)
+            {
+                switch (sortOrder)
+                {
+                    case SortOrder.ProductNameASC:
+                        products = products.OrderBy(product => _productService.GetFirstPinyin(product.Name));
+                        ViewData["SortOrder"] = "A - Z";
+                        break;
+                    case SortOrder.ProductNameDESC:
+                        products = products.OrderByDescending(product => _productService.GetFirstPinyin(product.Name));
+                        ViewData["SortOrder"] = "Z - A";
+                        break;
+                    case SortOrder.ProductPriceASC:
+                        products = products.OrderBy(product => product.Price);
+                        ViewData["SortOrder"] = "Price (low to high)";
+                        break;
+                    case SortOrder.ProductPriceDESC:
+                        products = products.OrderByDescending(product => product.Price);
+                        ViewData["SortOrder"] = "Price (high to low)";
+                        break;
+                }
+            }
             var viewModel = new ProductListViewModel(banners, products);
             return View(viewModel);
         }
@@ -33,5 +54,10 @@ namespace TuantuanShop.Controllers
         {
             return View();
         }
+
+       
+
+        
+
     }
 };

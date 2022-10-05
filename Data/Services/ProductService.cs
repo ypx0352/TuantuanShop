@@ -5,6 +5,7 @@ using TuantuanShop.Models;
 using TuantuanShop.ViewModels;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Microsoft.International.Converters.PinYinConverter;
 
 namespace TuantuanShop.Data.Services
 {
@@ -65,5 +66,24 @@ namespace TuantuanShop.Data.Services
         }
 
         public async Task<IEnumerable<Product>> GetNewArrivalProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.Disabled == false).OrderByDescending(p => p.Id).Take(7).ToListAsync();
+
+        public string GetFirstPinyin(string str)
+        {
+            string r = string.Empty;
+            foreach (char obj in str)
+            {
+                try
+                {
+                    ChineseChar chineseChar = new ChineseChar(obj);
+                    string t = chineseChar.Pinyins[0].ToString();
+                    r += t.Substring(0, 1);
+                }
+                catch
+                {
+                    r += obj.ToString();
+                }
+            }
+            return r;
+        }
     }
 }

@@ -8,12 +8,6 @@
 
 @{
     ViewData["Title"] = "New In";
-    var categoryNames = "";
-    foreach (var name in Enum.GetNames(typeof(ProductCategory)))
-    {
-        categoryNames += name + " | ";
-    }
-    Console.WriteLine(categoryNames);
 }
 
 <style>
@@ -73,14 +67,19 @@
         line-height: 2.5rem;
     }
 
+
+
     .sorter-dropdown {
         border: 1px solid rgb(232,232,232);
         padding: 1rem;
-        display: inline-block;
+        /*display: inline-block;*/
         font-size: 1rem;
         line-height: 1rem;
         cursor: pointer;
         transition: all 0.8s ease;
+        position: absolute;
+        z-index: 3;
+        background-color: white;
     }
 
     .sorter-icon {
@@ -91,40 +90,57 @@
 
     .sorter-content {
         display: none;
+        background: white;
+        transition: all 0.8s ease;
+        z-index: 3;
+    }
+
+    .sorter-title {
         transition: all 0.8s ease;
     }
 
-    .sroter-item {
+    .sorter-item {
+        display: block;
         line-height: 16px;
-        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
     }
 
-    .sorter-item:hover {
-        color: #F58E88;
-    }
+        .sorter-item:hover {
+            color: #F58E88;
+        }
 
-    .sorter-dropdown:hover {
+    .sorter-dropdown.show {
         border: 1px solid black;
         transition: all 0.8s ease;
     }
 
-        .sorter-dropdown:hover .sorter-content {
+        .sorter-dropdown.show .sorter-content {
             display: block;
+            transition: all 0.8s ease;
+            z-index: 3;
+            background-color: white;
+        }
+
+        .sorter-dropdown.show .sorter-title {
+            padding-bottom: 1rem;
+            border-bottom: 0.5px solid #585857;
             transition: all 0.8s ease;
         }
 
-        .sorter-dropdown:hover .sorter-title {
-            padding-bottom: 1rem;
-            border-bottom: 0.5px solid #585857;
-        }
-
-        .sorter-dropdown:hover .sorter-icon {
+        .sorter-dropdown.show .sorter-icon {
             transform: rotate(180deg);
             transition: transform 0.8s ease;
         }
 
+    .item-img {
+        transform: scale(1);
+        transition: all 0.8s ease;
+        z-index: -1;
+    }
+
     .product-item-wrapper {
-        padding: 10px 10% 30px 10%;
+        padding: 15px 10% 30px 10%;
         height: 28rem;
         border: 1px solid rgb(232,232,232);
     }
@@ -133,8 +149,91 @@
             transform: scale(1.1);
             transition: transform 0.8s ease;
             overflow: hidden;
+            z-index: -1;
         }
 
+    .filter-dropdown {
+        position: relative;
+    }
+
+    .filter-content {
+        display: none;
+        float: left;
+        position: absolute;
+        left: auto;
+        top: 100%;
+        width: 100%;
+        z-index: 3;
+    }
+
+    .filter-dropdown:hover .filter-content {
+        display: block;
+        z-index: 3;
+    }
+
+    .dropdown-wrapper {
+        margin-right: 5px;
+    }
+
+    .dropdown {
+        border: 1px solid rgb(232,232,232);
+        position: relative;
+        line-height: 1.5rem;
+        padding: 16px;
+        z-index: 3;
+        /*width: 100%;*/
+    }
+
+    .dropdown-icon {
+        color: #F58E88;
+        transition: transform 0.8s ease;
+    }
+
+    .dropdown-content {
+        position: absolute;
+        z-index: 3;
+        /*padding: 0;
+                margin: 0;*/
+        padding: 16px;
+        opacity: 0;
+        top: 3.5rem;
+        right: -1px;
+        height: 0;
+        overflow: hidden;
+        width: 100.7%;
+        background-color: #FFF;
+        transform: translate(0,-5vh);
+        transition: transform 0.8s ease;
+    }
+
+    .dropdown:hover {
+        border: 1px solid #F58E88;
+        border-bottom: none;
+        background-color: #F58E88;
+    }
+
+        .dropdown:hover .dropdown-content {
+            height: auto;
+            padding: 16px;
+            border: 1px solid #F58E88;
+            border-top: none;
+            opacity: 1;
+            transform: translate(0,0);
+            transition: transform 0.8s ease;
+        }
+
+        .dropdown:hover .dropdown-button {
+            color: #FFF;
+        }
+
+        .dropdown:hover .dropdown-icon {
+            color: #FFF;
+            transform: rotate(180deg);
+        }
+
+    /* .dropdown-wrapper:hover {
+                                border: 1px solid black;
+                            }*/
 </style>
 
 <div>
@@ -257,27 +356,99 @@
         </div>
     </div>
 
-    @*Sorter & list section*@
-    <div class="container-fluid mt-3">
-        @*Sorter*@
-        <div>
-            <div class="sorter-dropdown">
-                <div class="sorter-title">
-                    Sort by (Please Select One)
-                    <i class="bi bi-chevron-down ms-2 sorter-icon"></i>
+    @*Sorter, filter & list section*@
+    <div class="container-fluid mt-3">        
+        <div class="">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 gx-0">
+                <div class="col ">
+                    <div class="dropdown-wrapper">
+                        <div class="dropdown">
+                            <div class="dropdown-button d-flex justify-content-between">
+                                <div> @(ViewData["SortOrder"] == null? "Sort by (Please Select One)": String.Format("Sort by {0}", ViewData["SortOrder"])) </div>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </div>
+                            <div class="dropdown-content">
+                                <a class="sorter-item" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameASC)">A - Z</a>
+                                <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameDESC)">Z - A</a>
+                                <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceASC)">Price (low to high)</a>
+                                <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceDESC)">Price (high to low)</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="sorter-content mt-3">
-                    <div class="sorter-item">A - Z</div>
-                    <div class="sorter-item mt-2">Z - A</div>
-                    <div class="sorter-item mt-2">Price (low to high)</div>
-                    <div class="sorter-item mt-2">Price (high to low)</div>
+                <div class="col  ">
+                    <div class="dropdown-wrapper">
+                        <div class="dropdown">
+                            <div class="dropdown-button d-flex justify-content-between">
+                                <div>Refine by </div>
+                                <i class="bi bi-chevron-down dropdown-icon"></i>
+                            </div>
+                            <div class="dropdown-content">
+                                <a class="sorter-item" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameASC)">A - Z</a>
+                                <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameDESC)">Z - A</a>
+                                <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceASC)">Price (low to high)</a>
+                                <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceDESC)">Price (high to low)</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+
+
+
+        @*Sorter*@
+        @*<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-0">
+        <div class="col">
+        <div class="dropdown-wrapper">
+        <div class="sorter-dropdown">
+        <div class="sorter-title" onclick="dropdownSorter()">
+        @(ViewData["SortOrder"] == null? "Sort by (Please Select One)": String.Format("Sort by {0}", ViewData["SortOrder"]))
+        <i class="bi bi-chevron-down ms-2 sorter-icon"></i>
+        </div>
+
+        <div class="sorter-content mt-3">
+        <a class="sorter-item" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameASC)">A - Z</a>
+        <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameDESC)">Z - A</a>
+        <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceASC)">Price (low to high)</a>
+        <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceDESC)">Price (high to low)</a>
+        </div>
+        </div>
+        </div>
+
+        </div>
+
+
+        <div class="col">
+        <div class="sorter-dropdown">
+        <div class="sorter-title w-100 d-block" onclick="dropdownSorter()">
+        @(ViewData["SortOrder"] == null? "Refine by": String.Format("Sort by {0}", ViewData["SortOrder"]))
+
+        </div>
+
+        <div class="sorter-content mt-3">
+        <a class="sorter-item" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameASC)">A - Z</a>
+        <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameDESC)">Z - A</a>
+        <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceASC)">Price (low to high)</a>
+        <a class="sorter-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceDESC)">Price (high to low)</a>
+        </div>
+        </div>
+        </div>*@
+
+
+
+        @*Filter*@
+
+
+        @*</div>*@
+
+
+
+
+
         @*List*@
-        <div class="mt-3">
+        <div class="mt-3" style="padding-top:40px">
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-0">
                 @foreach (var product in Model.Products)
                 {
@@ -317,7 +488,6 @@
                         </div>
                     </div>
                 }
-
             </div>
         </div>
 
@@ -328,6 +498,7 @@
         <script>
             $(".brand-slider-container").on("scroll", function() { hideScrollBtn(); })
             $(document).ready(function() { hideScrollBtn(); })
+            $(".sorter-dropdown").hover(function() { $(this).addClass("show") }, function() { $(this).removeClass("show") })
 
             function scrollToLeft() {
                 var leftValue = $(".brand-slider-container").scrollLeft();
@@ -356,6 +527,15 @@
                     $("#scroller-right-btn").css({ "opacity": "0", "transition": "0.8s" });
                 } else {
                     $("#scroller-right-btn").css({ "opacity": "1", "transition": "0.8s" });
+                }
+            }
+
+            function dropdownSorter() {
+                var doesDropdown = $(".sorter-dropdown").hasClass("show");
+                if (doesDropdown) {
+                    $(".sorter-dropdown").removeClass("show");
+                } else {
+                    $(".sorter-dropdown").addClass("show");
                 }
             }
         </script>
