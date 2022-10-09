@@ -6,6 +6,7 @@ using TuantuanShop.ViewModels;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Microsoft.International.Converters.PinYinConverter;
+using System.Linq;
 
 namespace TuantuanShop.Data.Services
 {
@@ -38,7 +39,7 @@ namespace TuantuanShop.Data.Services
             return brand.Products.Where(p => p.Disabled == false).ToList();
         }
 
-        public async Task<IEnumerable<Product>> GetEnabledHotSaleProducts() => await _context.Products.Include(P =>P.Brand).Where(p => p.HotSale == true && p.Disabled == false).ToListAsync();
+        public async Task<IEnumerable<Product>> GetEnabledHotSaleProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.HotSale == true && p.Disabled == false).ToListAsync();
 
         public async Task<IEnumerable<Product>> GetEnabledInStockProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.InStock == true && p.Disabled == false).ToListAsync();
 
@@ -63,6 +64,56 @@ namespace TuantuanShop.Data.Services
             }
 
             return filteredProducts;
+        }
+
+        public IEnumerable<ProductForListViewModel> FilterProductsByTag(IEnumerable<ProductForListViewModel> products, List<string> filters)
+        {
+            IEnumerable<ProductForListViewModel> filteredProducts = products;
+
+            if (filters != null)
+            {
+                if (filters.Contains("INSTOCK"))
+                {
+                    filteredProducts = filteredProducts.Where(p => p.InStock == true);
+                }
+                if (filters.Contains("HOTSALE"))
+                {
+                    filteredProducts = filteredProducts.Where(p => p.HotSale == true);
+                }
+                if (filters.Contains("ONSALE"))
+                {
+                    filteredProducts = filteredProducts.Where(p => p.OnSale == true);
+                }
+            }
+            return filteredProducts;
+        }
+
+        public IEnumerable<ProductForListViewModel> FilterProductsByBrand(IEnumerable<ProductForListViewModel> products, List<string> brands)
+        {
+            IEnumerable<ProductForListViewModel> filteredProducts = products;
+            if(brands != null)
+            {
+                filteredProducts = products.Where(product => brands.Contains(product.BrandId.ToString()));
+            }
+
+            return filteredProducts;
+
+        }
+
+        public IEnumerable<ProductListBrandForFilter> GetUniqueBrands(IEnumerable<ProductForListViewModel> products)
+        {
+            var brandNames = products.Select(product => product.BrandName);
+            var uniqueBrandNames = new HashSet<string>(brandNames);
+            var brandIds = products.Select(product => product.BrandId);
+            var uniqueBrandIds = new HashSet<int>(brandIds);
+            var brands = new List<ProductListBrandForFilter>();
+            for (int i = 0; i < uniqueBrandIds.Count; i++)
+            {
+                var count = products.Where(product => product.BrandId == uniqueBrandIds.ElementAt(i)).Count();
+                var brand = new ProductListBrandForFilter(uniqueBrandNames.ElementAt(i), uniqueBrandIds.ElementAt(i), count);
+                brands.Add(brand);
+            }
+            return brands;
         }
 
         public async Task<IEnumerable<Product>> GetNewArrivalProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.Disabled == false).OrderByDescending(p => p.Id).Take(7).ToListAsync();
