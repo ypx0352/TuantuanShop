@@ -1,4 +1,5 @@
-﻿using TuantuanShop.Models;
+﻿using TuantuanShop.Data.Enums;
+using TuantuanShop.Models;
 
 namespace TuantuanShop.ViewModels
 {
@@ -17,8 +18,9 @@ namespace TuantuanShop.ViewModels
         public bool Disabled { get; set; }
         public string BrandName { get; set; }
         public int BrandId { get; set; }
+        public ProductCategory Category { get; set; }
 
-        public ProductForListViewModel(int id, string name, string subtitle, bool onSale, double? price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale, bool disabled, string brandName, int brandId)
+        public ProductForListViewModel(int id, string name, string subtitle, bool onSale, double? price, double? onSalePrice, string profilePictureUrl, bool inStock, bool hotSale, bool disabled, string brandName, int brandId, ProductCategory category)
         {
             Id = id;
             Name = name;
@@ -32,9 +34,10 @@ namespace TuantuanShop.ViewModels
             Disabled = disabled;
             BrandName = brandName;
             BrandId = brandId;
+            Category = category;
         }
 
-        public ProductForListViewModel(Product product) : this(product.Id, product.Name, product.Subtitle, product.OnSale, product.Price, product.OnSalePrice, product.ProfilePictureUrl, product.InStock, product.HotSale, product.Disabled, product.Brand.Name, product.Brand.Id) { }
+        public ProductForListViewModel(Product product) : this(product.Id, product.Name, product.Subtitle, product.OnSale, product.Price, product.OnSalePrice, product.ProfilePictureUrl, product.InStock, product.HotSale, product.Disabled, product.Brand.Name, product.Brand.Id, product.Category) { }
 
 
     }

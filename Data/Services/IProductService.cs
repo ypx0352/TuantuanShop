@@ -22,5 +22,6 @@ namespace TuantuanShop.Data.Services
         IEnumerable<ProductListBrandForFilter> GetUniqueBrands(IEnumerable<ProductForListViewModel> products);
         Task<IEnumerable<Product>> GetNewArrivalProducts();
         string GetFirstPinyin(string str);
+        Task<IEnumerable<Product>> GetNewArrivalProductsByCategory(ProductCategory category);
     }
 }

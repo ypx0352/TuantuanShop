@@ -116,7 +116,7 @@ namespace TuantuanShop.Data.Services
             return brands;
         }
 
-        public async Task<IEnumerable<Product>> GetNewArrivalProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.Disabled == false).OrderByDescending(p => p.Id).Take(7).ToListAsync();
+        public async Task<IEnumerable<Product>> GetNewArrivalProducts() => await _context.Products.Include(P => P.Brand).Where(p => p.Disabled == false).OrderByDescending(p => p.Id).Take(50).ToListAsync();
 
         public string GetFirstPinyin(string str)
         {
@@ -136,5 +136,8 @@ namespace TuantuanShop.Data.Services
             }
             return r;
         }
+
+        public async Task<IEnumerable<Product>> GetNewArrivalProductsByCategory(ProductCategory category) => await _context.Products.Include(p => p.Brand).Where(p => p.Category == category).OrderByDescending(p => p.Id).Take(50).ToListAsync();
+        
     }
 }

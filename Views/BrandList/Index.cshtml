@@ -1,0 +1,60 @@
+﻿@using TuantuanShop.ViewModels
+@model List<BrandNameGroup>
+@{
+    ViewData["Title"] = "Brands";
+}
+
+<style>
+    .list-wrapper {
+        padding: 0 15%;
+    }
+
+    .brand-link {
+        color: #000000;
+        text-decoration: none;
+    }
+
+        .brand-link:hover {
+            color: #000000;
+            text-decoration: underline;
+        }
+</style>
+
+<div>
+    @*Breadcrumb section*@
+    <div class="container-fluid pt-3 pb-2" style="background-color:#F7F7F7">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a style="font-size:16px;color:#88888888;text-decoration:none" asp-action="Index" asp-controller="Home">Home</a></li>
+                <li class="breadcrumb-item active" style="font-size:16px;color:#88888888;text-decoration:none" aria-current="page">Brands</li>
+            </ol>
+        </nav>
+    </div>
+
+    @*Title section*@
+    <div class="container-fluid text-center mt-5">
+        <h1>Access the best brands</h1>
+    </div>
+
+    @*Brand list section*@
+    <div class="list-wrapper">
+        <div class="container-fluid mt-5">
+            <div class="row row-cols-3 gy-5">
+                @foreach (var brandGroup in Model)
+                {
+                    <div class="col">
+                        <h1>@brandGroup.Letter</h1>
+                        <div>
+                            @foreach (var brand in brandGroup.Brands)
+                            {
+                                <div>
+                                    <a asp-action="Show" asp-route-id="@brand.BrandId" class="brand-link">@brand.BrandName</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

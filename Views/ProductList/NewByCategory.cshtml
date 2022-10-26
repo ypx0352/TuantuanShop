@@ -1,0 +1,119 @@
+﻿@using Newtonsoft.Json
+@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+@using TuantuanShop.ViewModels
+@using TuantuanShop.Data.Enums
+@model ProductListViewModel
+@{
+
+
+    var categoryName = ViewData["Category"].GetType().GetMember(ViewData["Category"].ToString()).First().GetCustomAttribute<DisplayAttribute>().GetName();
+    ViewData["Title"] = categoryName;
+    ViewData["Action"] = "NewByCategory";
+}
+
+<style>
+    .page-container {
+        max-width: 1920px;
+        margin: 0 auto;
+    }
+
+    .breadcrumb-item {
+        font-size: 16px;
+        color: #88888888;
+        text-decoration: none;
+    }
+
+        .breadcrumb-item > a {
+            font-size: 16px;
+            color: #88888888;
+            text-decoration: none;
+        }    
+</style>
+
+<div class="page-container">
+    @*Breadcrumb section*@
+    <div class="container-fluid pt-3 pb-2" style="background-color:#F7F7F7">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+                <li class="breadcrumb-item"><a asp-action="New" asp-controller="ProductList">New</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@categoryName</li>
+            </ol>
+        </nav>
+    </div>
+
+    @*Title section*@
+    <div class="title container-fluid mt-5" category="@ViewData["Category"]">
+        <h1>@categoryName</h1>
+    </div>
+
+    @*Sorter, filter & list section*@
+    <partial name="_SorterFilterListPartialView" model="@Model" view-data="ViewData"  />
+</div>
+
+@*@section Scripts{
+    <script>
+        $(".form-check-input").on("click", function() { enableFilterApplyBtn(); })
+        $("#sorter-dropdown").hover(function() { $(this).addClass("show") }, function() { $(this).removeClass("show") })
+        $("#filter-dropdown").hover(function() { $(this).addClass("show") }, function() { $(this).removeClass("show") })
+
+        function dropdown(id) {
+            var doesDropdown = $(id).hasClass("show");
+            if (doesDropdown) {
+                $(id).removeClass("show");
+            } else {
+                $(id).addClass("show");
+            }
+        }
+
+        function toggleChildDropdown(element) {
+            if ($(element).parent().hasClass("show")) {
+                $(element).parent().removeClass("show");
+            } else {
+                $(element).parent().addClass("show");
+            }
+        }
+
+        function getFilterString() {
+            var filters = { tags: [], brands: [] };
+            $(".tag-check-input").each(function() {
+                if ($(this).is(":checked")) {
+                    filters.tags.push($(this).val());
+                }
+            })
+            $(".brand-check-input").each(function() {
+                if ($(this).is(":checked")) {
+                    filters.brands.push($(this).val());
+                }
+            })
+            return JSON.stringify(filters);
+        }
+
+        function enableFilterApplyBtn() {
+            var currentFilterString = getFilterString();
+            var previousFilterString = $("#filter-dropdown").attr("filter-string");
+            if (previousFilterString == "null") {
+                previousFilterString = '{"tags":[],"brands":[]}';
+            }
+            if (previousFilterString != currentFilterString) {
+                $(".check-apply-btn").removeClass("disabled");
+            } else {
+                $(".check-apply-btn").addClass("disabled");
+            }
+        }
+
+        function submitFilter() {
+            var sortOrder = $("#sorter-dropdown").attr("sort-order");
+            var filterString = getFilterString();
+            var category = $(".title").attr("category");
+            var url = "";
+            if (sortOrder == undefined) {
+                url = `/ProductList/NewByCategory?category=${category}&filter=${filterString}`
+            } else {
+                url = `/ProductList/NewByCategory?category=${category}&sortOrder=${sortOrder}&filter=${filterString}`
+            }
+            location.href = url;
+        }
+    </script>
+}*@

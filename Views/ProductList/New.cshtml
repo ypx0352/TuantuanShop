@@ -9,11 +9,15 @@
 
 @{
     ViewData["Title"] = "New In";
-    ProductListFilter filterObj = (ProductListFilter)ViewData["FilterObj"];
-    string filterString = JsonConvert.SerializeObject(filterObj);
+    ViewData["Action"] = "New";
 }
 
 <style>
+    .page-container {
+        max-width: 1920px;
+        margin: 0 auto;
+    }
+
     .brand-slider-container {
         overflow-x: scroll;
         overflow-y: hidden;
@@ -70,100 +74,6 @@
         line-height: 2.5rem;
     }
 
-    .dropdown-wrapper {
-        margin-right: 5px;
-    }
-
-    .dropdown {
-        border: 1px solid rgb(232,232,232);
-        position: relative;
-        line-height: 1.5rem;
-        padding: 16px;
-        z-index: 5;
-    }
-
-    .dropdown-button {
-        color: #888888;
-        z-index: 4;
-    }
-
-    .dropdown-icon {
-        color: #F58E88;
-        transition: transform 0.8s ease;
-    }
-
-    .dropdown-content {
-        position: absolute;
-        z-index: -1;
-        opacity: 0;
-        top: 20rem;
-        right: -1px;
-        height: 0;
-        overflow: hidden;
-        pointer-events: none;
-        width: 100.7%;
-        background-color: #FFF;
-        transform: translate(0,-2vh);
-        transition: transform 0.8s ease;
-    }
-
-    .dropdown-item {
-        display: block;
-        line-height: 16px;
-        text-decoration: none;
-        color: inherit;
-    }
-
-        .dropdown-item:focus {
-            color: inherit;
-            background-color: inherit;
-        }
-
-        .dropdown-item:hover {
-            color: #F58E88;
-        }
-
-    .dropdown.show {
-        border: 1px solid #F58E88;
-        border-bottom: none;
-        background-color: #F58E88;
-    }
-
-    .dropdown.active {
-        border: 1px solid #F58E88;
-        background-color: #F58E88;
-    }
-
-    .dropdown.show .dropdown-content {
-        height: auto;
-        padding: 16px;
-        top: 3.5rem;
-        border: 1px solid #F58E88;
-        border-top: none;
-        opacity: 1;
-        z-index: 3;
-        pointer-events: auto;
-        transform: translate(0,0);
-        transition: transform 0.8s ease;
-    }
-
-    .dropdown.show .dropdown-button {
-        color: #FFF;
-    }
-
-    .dropdown.show .dropdown-icon {
-        color: #FFF;
-        transform: rotate(180deg);
-    }
-
-    .dropdown.active .dropdown-button {
-        color: #FFF;
-    }
-
-    .dropdown.active .dropdown-icon {
-        color: #FFF;
-    }
-
     .item-img {
         transform: scale(1);
         transition: all 0.8s ease;
@@ -182,76 +92,9 @@
             overflow: hidden;
             z-index: -1;
         }
-
-    .child-dropdown {
-        border-bottom: 1px solid rgb(232,232,232);
-    }
-
-    .child-dropdown-icon {
-        color: #F58E88;
-        transition: transform 0.8s ease;
-    }
-
-    .child-dropdown-button {
-        padding: 1rem 0;
-    }
-
-    .child-dropdown-content {
-        display: none;
-    }
-
-    .form-check-input:checked {
-        background-color: #F58E88;
-        border-color: white;
-    }
-
-    .form-check-input:focus {
-        box-shadow: none;
-        border-color: #F58E88;
-    }
-
-    .chitext-alignopdown.show .child-dropdown-icon {
-        transform: rotate(180deg);
-        transition: transform 0.8s ease;
-    }
-
-    .child-dropdown.show .child-dropdown-content {
-        display: block;
-    }
-
-    .check-apply-btn {
-        width: 100%;
-        text-align: center;
-        line-height: 1rem;
-        padding: 0.5rem;
-        border: 1px solid #F58E88;
-        background-color: white;
-        color: #F58E88;
-        cursor: pointer;
-        display: block;
-        transition: all 0.8s ease;
-    }
-
-        .check-apply-btn.disabled {
-            display: none;
-        }
-
-
-        .check-apply-btn:hover {
-            width: 100%;
-            text-align: center;
-            line-height: 1rem;
-            padding: 0.5rem;
-            background-color: #F58E88;
-            color: white;
-            cursor: pointer;
-            display: block;
-            transition: all 0.8s ease;
-        }
-
 </style>
 
-<div>
+<div class="page-container">
     @*Banner section*@
     <div>
         <div class="row g-0">
@@ -365,178 +208,20 @@
                 @foreach (var category in Enum.GetValues(typeof(ProductCategory)))
                 {
                     var categoryName = category.GetType().GetMember(category.ToString()).First().GetCustomAttribute<DisplayAttribute>().GetName();
-                    <a asp-action="Category" asp-controller="ProductList" asp-route-category="@category">@categoryName</a> <span class="ms-1 me-1"> | </span>
+                    <a asp-action="NewByCategory" asp-controller="ProductList" asp-route-category="@category">@categoryName</a> <span class="ms-1 me-1"> | </span>
                 }
             </div>
         </div>
     </div>
 
     @*Sorter, filter & list section*@
-    <div class="container-fluid mt-3">
-        <div>
-            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 gx-0">
-                @*Sorter dropdown*@
-                <div class="col">
-                    <div class="dropdown-wrapper">
-                        <div class="dropdown @(ViewData["SortOrderCode"] != null ? "active" : "")" id="sorter-dropdown" sort-order="@(ViewData["SortOrderCode"] ?? null)">
-                            <div class="dropdown-button d-flex justify-content-between" role="button" onclick="dropdown('#sorter-dropdown')">
-                                <div> @(ViewData["SortOrderCode"] == null? "Sort by": String.Format("Sort by {0}", ViewData["SortOrderText"])) </div>
-                                <i class="bi bi-chevron-down dropdown-icon"></i>
-                            </div>
-                            <div class="dropdown-content">
-                                <a class="dropdown-item" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameASC)" asp-route-filter="@(filterString ?? "")">A - Z</a>
-                                <a class="dropdown-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductNameDESC)" asp-route-filter="@(filterString ?? "")">Z - A</a>
-                                <a class="dropdown-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceASC)" asp-route-filter="@(filterString ?? "")">Price (low to high)</a>
-                                <a class="dropdown-item mt-2" asp-action="New" asp-route-sortOrder="@(SortOrder.ProductPriceDESC)" asp-route-filter="@(filterString ?? "")">Price (high to low)</a>
-                                @if (ViewData["SortOrderCode"] != null)
-                                {
-                                    <a class="dropdown-item mt-2 text-decoration-underline" asp-action="New" asp-route-filter="@(filterString ?? "")"><i class="bi bi-chevron-double-left"></i> Back to default</a>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                @*Filter dropdown*@
-                <div class="col">
-                    <div class="dropdown-wrapper">
-                        <div class="dropdown @(object.Equals(filterObj, null) ? "" : "active")" id="filter-dropdown" filter-string=@(filterString)>
-                            <div class="dropdown-button d-flex justify-content-between" role="button" onclick="dropdown('#filter-dropdown')">
-                                @if (object.Equals(filterObj, null))
-                                {
-                                    <div>Refine by </div>
-                                }
-                                else if (filterObj.tags.Count() > 0 && filterObj.brands.Count() == 0)
-                                {
-                                    <div>Refine by tag</div>
-                                }
-                                else if (filterObj.tags.Count() == 0 && filterObj.brands.Count() > 0)
-                                {
-                                    <div>Refine by brand</div>
-                                }
-                                else
-                                {
-                                    <div>Refine by tag & brand</div>
-                                }
-
-                                <i class="bi bi-chevron-down dropdown-icon"></i>
-                            </div>
-                            <div class="dropdown-content">
-                                @*Tag dropdown*@
-                                <div class="child-dropdown @(object.Equals(filterObj, null) ? "" :filterObj.tags.Count() > 0 ? "show" : "")">
-                                    <div class="child-dropdown-button d-flex justify-content-between" role="button" onclick="toggleChildDropdown(this)">
-                                        <div>Tag</div>
-                                        <i class="bi bi-chevron-down child-dropdown-icon"></i>
-                                    </div>
-                                    <div class="child-dropdown-content">
-                                        <div class="form-check">
-                                            <input class="form-check-input tag-check-input" type="checkbox" value="INSTOCK" id="instock-check" @(object.Equals(filterObj, null) ? "" :filterObj.tags.Contains("INSTOCK")?"checked":"")>
-                                            <label class="form-check-label" for="instock-check">
-                                                Instock
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input tag-check-input" type="checkbox" value="HOTSALE" id="hotSale-check" @(object.Equals(filterObj, null) ? "" :filterObj.tags.Contains("HOTSALE")?"checked":"")>
-                                            <label class="form-check-label" for="hotSale-check">
-                                                Top picks
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input tag-check-input" type="checkbox" value="ONSALE" id="onSale-check" @(object.Equals(filterObj, null) ? "" :filterObj.tags.Contains("ONSALE")?"checked":"")>
-                                            <label class="form-check-label" for="onSale-check">
-                                                On sale
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                @*Brand dropdown*@
-                                <div class="child-dropdown @(object.Equals(filterObj, null) ? "" :filterObj.brands.Count() > 0 ? "show" : "")">
-                                    <div class="child-dropdown-button d-flex justify-content-between" role="button" onclick="toggleChildDropdown(this)">
-                                        <div>Brand</div>
-                                        <i class="bi bi-chevron-down child-dropdown-icon"></i>
-                                    </div>
-                                    <div class="child-dropdown-content">
-                                        @foreach (var brand in Model.Brands)
-                                        {
-                                            <div class="form-check">
-                                                <input class="form-check-input brand-check-input" type="checkbox" value="@brand.Id" id="@brand.Id-brand-check" @(object.Equals(filterObj, null) ? "" :filterObj.brands.Contains(brand.Id.ToString())?"checked":"")>
-                                                <label class="form-check-label" for="@brand.Id-brand-check">
-                                                    @brand.Name (@brand.ItemCount)
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                                <div class="check-apply-btn mt-3 disabled" onclick="submitFilter()">Apply</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @*List*@
-        @if (Model.Products.Count() > 0)
-        {
-            <div class="mt-3">
-                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-0">
-                    @foreach (var product in Model.Products)
-                    {
-                        <div class="col">
-                            <div class="product-item-wrapper" role="button" onclick="location.href='@Url.Action("Show","Product",new{id=product.Id})'">
-                                <div class="d-flex flex-column justify-content-between h-100">
-                                    <div>
-                                        <div class="text-center item-img">
-                                            <img class="w-100" style="max-width:200px" src="@product.ProfilePictureUrl" alt="@product.Name" />
-                                        </div>
-                                        <div class="mt-2 text-center">
-                                            <i class="bi bi-chat-square-heart-fill me-2 @(product.HotSale? "":"d-none")" style="font-size:0.8rem"> Top Picks</i>
-                                            <i class="bi bi-pin-map-fill @(product.InStock? "":"d-none")" style="font-size:0.8rem"> In Stock</i>
-                                        </div>
-                                        <div>
-                                            <div style="color:#181818;font-size:18px; margin: 20px 0 10px 0">@product.BrandName</div>
-                                            <div style="color:#666666;font-size:14px;line-height:1.5rem">@product.Name</div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        @if (product.OnSale)
-                                        {
-                                            <div class="me-2" style="color:#F58E88;  font-weight:bold; display:inline-block">
-                                                ￥ @product.OnSalePrice
-                                            </div>
-                                            <div class="text-decoration-line-through d-inline-block" style="font-size:0.8rem">￥ @product.Price</div>
-                                        }
-                                        else
-                                        {
-                                            <div style="color:#181818; font-weight:bold">
-                                                ￥ @product.Price
-                                            </div>
-                                        }
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        }
-        else
-        {
-            <partial name="_EmptyListPartialView" />
-        }
-    </div>
+    <partial name="_SorterFilterListPartialView" model="@Model" view-data="ViewData" />
 </div>
 
 @section Scripts{
     <script>
         $(".brand-slider-container").on("scroll", function() { hideScrollBtn(); })
-        $(".form-check-input").on("click", function() { enableFilterApplyBtn(); })
         $(document).ready(function() { hideScrollBtn(); })
-        $("#sorter-dropdown").hover(function() { $(this).addClass("show") }, function() { $(this).removeClass("show") })
-        $("#filter-dropdown").hover(function() { $(this).addClass("show") }, function() { $(this).removeClass("show") })
-
 
         function scrollToLeft() {
             var leftValue = $(".brand-slider-container").scrollLeft();
@@ -566,66 +251,6 @@
             } else {
                 $("#scroller-right-btn").css({ "opacity": "1", "transition": "0.8s" });
             }
-        }
-
-        function dropdown(id) {
-            var doesDropdown = $(id).hasClass("show");
-            if (doesDropdown) {
-                $(id).removeClass("show");
-            } else {
-                $(id).addClass("show");
-            }
-        }
-
-        function toggleChildDropdown(element) {
-            if ($(element).parent().hasClass("show")) {
-                $(element).parent().removeClass("show");
-            } else {
-                $(element).parent().addClass("show");
-            }
-        }
-
-        function getFilterString() {
-            var filters = { tags: [], brands: [] };
-            $(".tag-check-input").each(function() {
-                if ($(this).is(":checked")) {
-                    filters.tags.push($(this).val());
-                }
-            })
-            $(".brand-check-input").each(function() {
-                if ($(this).is(":checked")) {
-                    filters.brands.push($(this).val());
-                }
-            })
-            return JSON.stringify(filters);
-        }
-
-        function enableFilterApplyBtn() {
-            var currentFilterString = getFilterString();
-            var previousFilterString = $("#filter-dropdown").attr("filter-string");
-            if (previousFilterString == "null") {
-                previousFilterString = '{"tags":[],"brands":[]}';
-            }
-            if (previousFilterString != currentFilterString) {
-                $(".check-apply-btn").removeClass("disabled");
-            } else {
-                $(".check-apply-btn").addClass("disabled");
-
-            }
-        }
-
-        function submitFilter() {
-            var sortOrder = $("#sorter-dropdown").attr("sort-order");
-            var filterString = getFilterString();
-            var url = "";
-            if (sortOrder == undefined) {
-                url = `/ProductList/New?filter=${filterString}`
-            } else {
-                url = `/ProductList/New?sortOrder=${sortOrder}&filter=${filterString}`
-            }
-            location.href = url;
-
-
         }
     </script>
     }

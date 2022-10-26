@@ -2,7 +2,8 @@
 {
     public enum SortOrder
     {
-        ProductNameASC = 1,
+        Null=0,
+        ProductNameASC,
         ProductNameDESC,
         ProductPriceASC,
         ProductPriceDESC,
