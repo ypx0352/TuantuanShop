@@ -13,18 +13,7 @@ namespace TuantuanShop.Data.Services
         public BrandService(ApplicationDbContext context) : base(context)
         {
             _context = context;
-        }
-
-        //public async Task<IEnumerable<BrandNameGroup>> GetBrandNameGroups()
-        //{
-        //    IEnumerable<BrandNameGroup> brandNameGroups;
-        //    var allBrands = await _context.Brands.ToListAsync();
-        //    foreach (var brand in allBrands)
-        //    {
-        //        brandNameGroups.Append(new BrandNameGroup { Letter=brand.Name.Substring(0,1)})
-        //    }
-        //    return brandNameGroups;
-        //}
+        }        
 
         public async Task<List<BrandNameGroup>> GetBrandNameGroups()
         {

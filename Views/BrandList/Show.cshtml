@@ -1,0 +1,282 @@
+﻿@using TuantuanShop.ViewModels
+@model BrandListShowViewModel
+@{
+    ViewData["Title"] = Model.Brand.Name;
+}
+
+<style>
+    .page-container {
+        max-width: 1920px;
+        margin: 0 auto;       
+    }
+
+    .breadcrumb-item {
+        font-size: 16px;
+        color: #88888888;
+        text-decoration: none;
+    }
+
+        .breadcrumb-item > a {
+            font-size: 16px;
+            color: #88888888;
+            text-decoration: none;
+        }
+
+    .brand-slider-container {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        white-space: nowrap;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+        .brand-slider-container::-webkit-scrollbar {
+            display: none;
+        }
+
+    /* less than lg*/
+    @@media only screen and (max-width: 992px) {
+        .brand-slider-item-wrapper {
+            display: inline-block;
+            width: 50vw;
+            margin-right: 10px;
+        }
+    }
+
+    /* greater than lg*/
+    @@media only screen and (min-width: 992px) {
+        .brand-slider-item-wrapper {
+            display: inline-block;
+            width: 30vw;
+            margin-right: 10px;
+        }
+    }
+
+    .brand-name-block {
+        width: 60%;
+        height: 20%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: rgb(24,24,24);
+        color: rgb(255,255,255);
+        background: linear-gradient(to right, rgb(253, 141, 131) 50%, rgb(24,24,24) 50%);
+        background-size: 200% 100%;
+        background-position: right bottom;
+        margin-left: 10px;
+        transition: all 0.8s ease;
+    }
+
+    .brand-slider-item-wrapper:hover .brand-name-block {
+        background-position: left bottom;
+    }
+
+    .title a {
+        text-decoration: none;
+        color: #000000;
+        line-height: 2.5rem;
+    }
+
+    .item-img {
+        transform: scale(1);
+        transition: all 0.8s ease;
+        z-index: -1;
+    }
+
+    .product-item-wrapper {
+        padding: 15px 10% 30px 10%;
+        height: 28rem;
+        border: 1px solid rgb(232,232,232);
+    }
+
+        .product-item-wrapper:hover .item-img {
+            transform: scale(1.1);
+            transition: transform 0.8s ease;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+
+    #relevent-nav-list {
+        align-items: flex-end;
+        overflow-x: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+        #relevent-nav-list::-webkit-scrollbar {
+            display: none;
+        }
+
+    #relevent-content-list {
+        overflow: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+        #relevent-content-list::-webkit-scrollbar {
+            display: none;
+        }
+</style>
+
+<div class="page-container">
+    @*Banner section*@
+    <div>
+        <div class="row g-0">
+            <div class="col col-12 col-lg-6 order-last order-lg-first">
+                <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background-color:#a3605c">
+                    <div class="pt-2 pb-2">
+                        <h1 class="text-uppercase" style="color:#fdf2f2">@Model.Brand.Name</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-lg-6 order-first order-lg-last">
+                <img class="img-fluid" src="@Model.Brand.BannerPictureUrl" alt="@Model.Brand.Name" />
+            </div>
+        </div>
+    </div>
+
+    @*BreadCrumb section*@
+    <div class="container-fluid pt-3 pb-2" style="background-color:#F7F7F7">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Home</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="BrandList">Brands</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Brand.Name</li>
+            </ol>
+        </nav>
+    </div>
+
+    @*Introduction section*@
+    <div class="container-fluid mt-5">
+        <h2>@Model.Brand.IntroductionTitle</h2>
+        <div class="row mt-3">
+            <div class="col col-12 col-md-8">
+                <p style="line-height:1.5rem">@Model.Brand.IntroductionText</p>
+            </div>
+        </div>
+        <hr />
+    </div>
+
+    @*BestSeller section*@
+    <div>
+        <div class="container-fluid mt-5">
+            <div class="row gy-2">
+                <div class="col col-12 col-md-2">
+                    <h2>Bestsellers</h2>
+                </div>
+                <div class="col col-12 col-md-10">
+                    @*<div class="d-flex justify-content-between align-items-center pt-3">
+                        <div role="button" id="relevent-content-list-scroll-bar-left-btn" onclick='scrollToLeft("#relevent-content-list")' style="padding-right:10px"><i class="bi bi-chevron-left h3"></i></div>
+                        <div class="tab-content" id="relevent-content-list">
+                            <div class="tab-pane active" id="thisBrand">
+                                <partial name="_ShowSlideBarProductListPartial" model="@Model.Bestsellers">
+                            </div>
+                        </div>
+                        <div role="button" id="relevent-content-list-scroll-bar-right-btn" style="padding-left:10px" onclick='scrollToRight("#relevent-content-list")'><i class="bi bi-chevron-right h3"></i></div>
+                    </div>*@
+                    <partial name="_SliderForProductPartialView" model="@Model.Bestsellers" />
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    @*Product list section*@
+</div>
+
+
+@section Scripts{
+    <script>
+        $(".brand-slider-container").on("scroll", function() { hideScrollBtn(); })
+        $(document).ready(function() { hideScrollBtn(); })
+
+        function scrollToLeft() {
+            var leftValue = $(".brand-slider-container").scrollLeft();
+            var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
+            $(".brand-slider-container").animate({ scrollLeft: leftValue - eachElementWidth }, 500);
+        }
+
+        function scrollToRight() {
+            var leftValue = $(".brand-slider-container").scrollLeft();
+            var eachElementWidth = $(".brand-slider-item-wrapper").width() + 10;
+            $(".brand-slider-container").animate({ scrollLeft: leftValue + eachElementWidth }, 500);
+        }
+
+        function hideScrollBtn() {
+            var contentWidth = $(".brand-slider-container").get(0).scrollWidth;
+            var scrollerContainerScrollLeft = $(".brand-slider-container").scrollLeft();
+            var scrollerContainerWidth = $(".brand-slider-container").innerWidth();
+            //disable scrollLeft button
+            if (scrollerContainerScrollLeft == 0) {
+                $("#scroller-left-btn").css({ "opacity": "0", "transition": "0.8s" });
+            } else {
+                $("#scroller-left-btn").css({ "opacity": "1", "transition": "0.8s" });
+            }
+            //disable scrollRight button
+            if (scrollerContainerScrollLeft + scrollerContainerWidth >= contentWidth - 1) {
+                $("#scroller-right-btn").css({ "opacity": "0", "transition": "0.8s" });
+            } else {
+                $("#scroller-right-btn").css({ "opacity": "1", "transition": "0.8s" });
+            }
+        }
+
+        // slider function
+
+        $(document).ready(() => { showFirstCollapse(); hideScrollBtn("#relevent-nav-list"); hideScrollBtn("#relevent-content-list") });
+        $(window).resize(() => { hideScrollBtn("#relevent-nav-list"); hideScrollBtn("#relevent-content-list") });
+
+        function scroll() {
+            var myButton = $("#back-to-top-btn");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                myButton.css("display", "block");
+            } else {
+                myButton.css("display", "none");
+            }
+        }
+
+        window.onscroll = function() { scroll() };
+
+        function backToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        function scrollToLeft(containerId) {
+            var leftValue = $(containerId).scrollLeft();
+            $(containerId).animate({ scrollLeft: leftValue - 200 }, 800);
+        }
+
+        function scrollToRight(containerId) {
+            var leftValue = $(containerId).scrollLeft();
+            $(containerId).animate({ scrollLeft: leftValue + 200 }, 800);
+        }
+
+        function backToLeft() {
+            $("#relevent-content-list").animate({ scrollLeft: 0 }, 800);
+        }
+
+        $("#relevent-nav-list").scroll(() => hideScrollBtn("#relevent-nav-list"));
+        $("#relevent-content-list").scroll(() => hideScrollBtn("#relevent-content-list"));
+
+        function hideScrollBtn(listId) {
+            var leftValue = $(listId).scrollLeft();
+            if (leftValue == 0) {
+                $(`${listId}-scroll-bar-left-btn`).css({ "opacity": "0", "transition": "0.8s" })
+            } else {
+                $(`${listId}-scroll-bar-left-btn`).css({ "opacity": "1", "transition": "0.8s" })
+            }
+            // the whole width of list should be the result of adding scrollbar (visible) width and scrollLeft (invisible) width
+            var contentWidth = $(listId).get(0).scrollWidth;
+            var scrollbarWidth = $(listId).width();
+            if (leftValue + scrollbarWidth >= contentWidth - 1) {
+                $(`${listId}-scroll-bar-right-btn`).css({ "opacity": "0", "transition": "0.8s" })
+            } else {
+                $(`${listId}-scroll-bar-right-btn`).css({ "opacity": "1", "transition": "0.8s" })
+            }
+        }
+    </script>
+    }

@@ -137,7 +137,6 @@ namespace TuantuanShop.Data.Services
             return r;
         }
 
-        public async Task<IEnumerable<Product>> GetNewArrivalProductsByCategory(ProductCategory category) => await _context.Products.Include(p => p.Brand).Where(p => p.Category == category).OrderByDescending(p => p.Id).Take(50).ToListAsync();
-        
+        public async Task<IEnumerable<Product>> GetNewArrivalProductsByCategory(ProductCategory category) => await _context.Products.Include(p => p.Brand).Where(p => p.Category == category).OrderByDescending(p => p.Id).Take(50).ToListAsync();       
     }
 }
